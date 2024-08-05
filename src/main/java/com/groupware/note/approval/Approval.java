@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.groupware.note.department.Departments;
+import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,6 +42,6 @@ public class Approval {
 	@JoinColumn(name = "department_id")
 	private Departments department;
 	
-	@OneToMany(mappedBy = "approval" , cascade = CascadeType.REMOVE)
-	private List<ApprovalFile> fileList;
+	@OneToMany
+	private List<Files> fileList;
 }

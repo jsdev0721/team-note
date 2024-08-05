@@ -15,6 +15,8 @@ public class ApprovalForm {
 	private String title;
 	@NotEmpty(message = "내용을 입력히세요.")
 	private String content;
+	@NotEmpty
+	private String departmentName;
 	
 	private List<MultipartFile> multipartFiles;
 }
