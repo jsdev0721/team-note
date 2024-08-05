@@ -7,7 +7,7 @@
 					<h5 class="card-title" th:text="${approval.content}"></h5>
 						<label for="formFileMultiple" class="form-label">다운로드</label>
 					<div class="card-text"  th:each="file : ${fileList}">
-                   		<a class="form-control btn btn-primary" id="formFileMultiple"th:text="${file.originFileName}" th:href="@{|/approval/download/${file.approvalFileId}|}"></a>
+                   		<a class="form-control btn btn-primary" id="formFileMultiple"th:text="${file.originFileName}" th:href="@{|/approval/download/${file.fileId}|}"></a>
 						<br/>
 					</div>
 					<div class="btn-group" role="group" aria-label="Basic mixed styles example">
