@@ -39,6 +39,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'  //24.07.30 엑셀 업로드
+	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0' //24.07.30 엑셀 업로드
+	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+	
+
+
 }
 
 tasks.named('test') {
