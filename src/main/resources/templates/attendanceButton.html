@@ -1,0 +1,25 @@
+<html layout:decorate="~{layout}">
+	<div layout:fragment="content" class="container my-3">
+		<center>
+			
+	    <form id="imageForm" th:action="@{/attendance/checkin}" method="post">
+	   
+	    <!-- 이미지 -->
+	    <img src="/images/clock.png" alt="Submit" id="submitImage" style="cursor: pointer;">
+
+	    <!-- JavaScript -->
+	    <script>
+	        document.getElementById('submitImage').addEventListener('click', function() { // 이미지 클릭 이벤트 리스너 추가
+	        document.getElementById('imageForm').submit(); // 폼 제출
+	        });
+	    </script>
+		
+	    </form>
+		
+		</center>
+	</div>
+
+	</body>
+	</html>
+
+</html>
