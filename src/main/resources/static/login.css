@@ -1,0 +1,12 @@
+a{text-decoration: none;color: #000;font-size: 14px;}
+
+form{margin-top: 50px !important;padding: 30px;border: 1px solid rgb(32, 62, 110);border-radius: 10px;width: 500px;margin: 0 auto;}
+input{border: 1px solid rgb(32, 62, 110) !important;}
+
+.join{margin: 0 auto;width: 80%;margin-top: 10px !important;display: flex;justify-content: space-between;margin-bottom: 40px;}
+.join a{color: #777;}
+.join a:after{content: "|";padding-left: 30px;color: #aaa;}
+.join a:nth-child(3):after{content: "";padding: 0;}
+
+.btn{width: 100%;background-color: rgb(32, 62, 110);color: #fff;height: 50px;}
+.btn:hover{background-color: rgb(32, 62, 110);color: #fff;}
