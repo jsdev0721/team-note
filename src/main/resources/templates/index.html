@@ -1,5 +1,17 @@
 <html layout:decorate="~{layout}">
 	<div layout:fragment="content" class="container my-3">
 		<p>메인</p>
+		<!--캘린더-->
+		<button class="btn btn-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">캘린더버튼</button>
+		<div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+			<div class="offcanvas-header">
+				<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">캘린더</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body">
+			<div th:replace="~{calendar :: calendarFragment}"></div>
+			</div>
+		</div>
+		<!--캘린더-->
 	</div>
 </html>
