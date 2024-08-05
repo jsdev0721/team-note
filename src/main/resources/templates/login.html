@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/login.css}">
+		<script th:src="@{/bootstrap.min.js}"></script>
+		<title>로그인</title>
+	</head>
+	<body class="container">
+		<img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;">
+		<form th:action="@{/user/login}" method="post">
+			<div th:if="${param.error}">
+				<div class="alert alert-danger">사용자 ID 또는 비밀번호를 확인해 주세요</div>
+			</div>
+			
+			<input type="text" name="username" id="username" placeholder="아이디" class="form-control">
+			<input type="password" name="password" id="password" placeholder="비밀번호" class="form-control mt-1">
+			
+			<div class="join">
+				<a href="#">아이디 찾기</a>
+				<a href="#">비밀번호 찾기</a>
+				<a th:href="@{/user/regist}">회원가입</a>
+			</div>
+			
+			<button type="submit" class="btn">로그인</button>
+		</form>
+	</body>
+</html>
