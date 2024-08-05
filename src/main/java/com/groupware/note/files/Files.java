@@ -1,27 +1,19 @@
-package com.groupware.note.approval;
+package com.groupware.note.files;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @Entity
-public class ApprovalFile {
+public class Files {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer approvalFileId;
-	
+	private Integer fileId;
 	private String originFileName;
-	
 	private String storeFileName;
-	
-	@ManyToOne
-	@JoinColumn(name = "Approval_id")
-	private Approval approval;
 }
