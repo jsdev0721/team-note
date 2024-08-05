@@ -2,10 +2,12 @@ package com.groupware.note.user;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +55,32 @@ public class UserController {
 		}
 		
 		return "index";
+	}
+	
+	@GetMapping("/find/id")
+	public String findID() {
+		return "findID";
+	}
+	
+	@PostMapping("/find/id")
+	public String findID(Model model, @RequestParam("email") String email) {
+		System.out.println("email"+email);
+		UserDetails userDetails = this.userDetailsService.findID(email);
+		Users users = userDetails.getUser();
+		model.addAttribute("users", users);
+		return "findID";
+	}
+	
+	@GetMapping("/find/pw")
+	public String findPW() {
+		return "findPW";
+	}
+	
+	@PostMapping("/find/pw")
+	public String findPW(Model model, @RequestParam(value = "username") String username) {
+		Users users = this.userService.getUser(username);
+		model.addAttribute("users", users);
+		return "findPW";
 	}
 
 }

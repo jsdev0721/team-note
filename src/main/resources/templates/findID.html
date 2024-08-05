@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+		<script th:src="@{/bootstrap.min.js}"></script>
+		<title>아이디 찾기</title>
+	</head>
+	<body class="container">
+		<img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;">
+		<form th:action="@{/user/find/id}" method="post" class="was-validated">
+			
+			<input type="text" id="email" name="email" class="form-control" placeholder="이메일을 입력해 주세요" required>
+			<div class="invalid-feedback">아이디 찾기를 위해 이메일을 입력해 주세요.</div>
+			
+			<button type="submit" class="btn btn-success mt-3">아이디 찾기</button>
+		</form>
+		
+		<div th:if="${#strings.isEmpty(users)}" th:text="${users}"></div>
+		<div th:unless="${#strings.isEmpty(users)}" th:text="${users.username}"></div>
+	</body>
+</html>
