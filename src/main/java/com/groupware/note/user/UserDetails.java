@@ -2,6 +2,8 @@ package com.groupware.note.user;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -16,7 +18,7 @@ import lombok.Setter;
 public class UserDetails {
 	
 	@Id
-	private Integer userId;
+	private Integer userId; //아래의 user와 같음 (기본키이면서 외래키)
 	
 	@OneToOne
 	@MapsId
