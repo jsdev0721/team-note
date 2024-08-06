@@ -130,11 +130,11 @@
 		<!--gps-->
 		<title>게시판</title>
 	</head>
+	<body onload="startTime()">
 	<form id="checkOutForm" method="post" th:action="@{/attendance/checkout}">
 			    <input type="hidden" id="outlatitude" name="outlatitude">
 			    <input type="hidden" id="outlongitude" name="outlongitude">
 	</form>
-	<body onload="startTime()">
 		<div id="header" class="container-fluid">
 			<a href="#" id="time" onclick="sendOutLocation(event)">
 				<p id="clock"></p>
