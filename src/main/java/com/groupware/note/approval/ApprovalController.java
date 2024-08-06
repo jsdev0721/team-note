@@ -33,13 +33,15 @@ public class ApprovalController {
 	private final FileService fileService;
 	private final DepartmentService departmentService;
 	
-	@GetMapping("/list")
-	public String approvalList() {
-		return "redirect:/approval/list/queue";
-	}
+//	@PreAuthorize("isAuthenticated()")
+//	@GetMapping("/list")
+//	public String approvalList() {
+//		return "redirect:/approval/list/queue";
+//	}
 	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/list/{status}")
-	public String approvalList(Model model , @PathVariable(value = "status") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal) {
+	@GetMapping("/list")
+	public String approvalList(Model model , @RequestParam(value = "status" , defaultValue = "queue") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal) {
+		System.out.println("-------------------status: "+status);
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
 		model.addAttribute("approvalList", this.approvalService.ApprovalList(page ,department , status));
@@ -50,6 +52,7 @@ public class ApprovalController {
 	public String approvalCreate(ApprovalForm approvalForm) {
 		return "approvalCreate";
 	}
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create")
 	public String approvalCreate(@Valid ApprovalForm approvalForm , BindingResult bindingResult , Principal principal) {
 		if(bindingResult.hasErrors()) {
@@ -57,8 +60,9 @@ public class ApprovalController {
 		}
 		try {
 			Approval _approval = new Approval();
+			Users user = this.userService.getUser(principal.getName());
+			_approval.setUser(user);
 			if(approvalForm.getDepartmentName().equals("General")) {
-				Users user = this.userService.getUser(principal.getName());
 				_approval.setDepartment(user.getPosition().getDepartment());
 			}
 			else {
@@ -72,7 +76,7 @@ public class ApprovalController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/";
+		return "redirect:/approval/list";
 	}
 	
 	@GetMapping("/detail/{id}")

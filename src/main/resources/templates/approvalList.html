@@ -1,20 +1,47 @@
 <html layout:decorate="~{layout}">
-	<div layout::fragment="content" class="container-fluid">
+	<div layout:fragment="content" class="container-fluid">
+		
 		<div class="card text-center">
-			<div class="card-header">
-				<div class="btn-group" role="group" aria-label="Vertical radio toggle button group">
-				  <a type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio1" autocomplete="off" checked>
-				  <label class="btn btn-outline-danger" for="vbtn-radio1">Radio 1</label>
-				  <a type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio2" autocomplete="off">
-				  <label class="btn btn-outline-danger" for="vbtn-radio2">Radio 2</label>
-				  <a type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio3" autocomplete="off">
-				  <label class="btn btn-outline-danger" for="vbtn-radio3">Radio 3</label>
-				</div>
-		  </div>
-		  <div class="card-body" th:each="approval : ${approvalList}">
-		    <h5 class="card-title"><a th:href="@{|/approval/detail/${approval.id}|}" th:text="approval.title"></a></h5>
-		  </div>
+			<nav aria-label="Page navigation example">
+			  <ul class="pagination">
+			    <li class="page-item"><a class="page-link" th:href="@{?status=queue}">QUEUE</a></li>
+			    <li class="page-item"><a class="page-link" th:href="@{?status=process}">PROCESS</a></li>
+			    <li class="page-item"><a class="page-link" th:href="@{?status=complete}">COMPLETE</a></li>
+			  </ul>
+			</nav>
 		</div>
-		<a type=""></a>
+		<table class="table table-scriped-columns table-hover align-middle">
+			<thead>
+				<tr>
+					<th>제목</th>
+				</tr>
+			</thead>
+		<tbody>
+			<tr th:each="approval : ${approvalList}">
+				<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
+			</tr>
+		</tbody>
+		</table>
+		<div th:if="${!approvalList.isEmpty()}">
+			<ul class="pagination justify-content-center">
+				<li class="page-item" th:classappend="${!approvalList.hasPrevious}?'disabled'">
+					<a class="page-link" th:href="@{|?page=${approvalList.number-1}|}">
+						<span>이전</span>
+					</a>
+				</li>
+				<li th:each="page : ${#numbers.sequence(0, approvalList.totalPages-1)}" th:if="${page >= approvalList.number -3 and page<= approvalList.number +3}" th:classappend="${page==approvalList.number} ? 'active'" class="page-item">
+					<a th:text="${page+1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+				</li>
+				<li class="page-item" th:classappend="${!approvalList.hasNext}?'disabled'">
+					<a class="page-link" th:href="@{|?page=${approvalList.number+1}|}">
+						<span>다음</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		
+		<div>
+			<a th:href="@{/approval/create}">새글 생성</a>
+		</div>
 	</div>
 </html>

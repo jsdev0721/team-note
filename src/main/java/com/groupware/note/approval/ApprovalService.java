@@ -27,8 +27,9 @@ public class ApprovalService {
 		List<Sort.Order>sorts = new ArrayList<>();
 		sorts.add(Sort.Order.desc("updateTime"));
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+		List<Approval> _approvalList = this.approvalRepository.findByDepartment(department);
 		List<Approval> approvalList = new ArrayList<>();
-		for(Approval approval : this.approvalRepository.findByDepartment(department, pageable)) {
+		for(Approval approval : _approvalList) {
 			if(approval.getStatus().equals(status)) {
 				approvalList.add(approval);
 			}
