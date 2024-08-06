@@ -35,5 +35,14 @@ public class UserService {
 			throw new DataNotFoundException("데이터가 존재하지 않습니다.");
 		}
 	}
+	
+	public Users findPW(String username) {
+		Optional<Users> users = this.userRepository.findByUsername(username);
+		if(users.isPresent()) {
+			return users.get();
+		}else {
+			return new Users();
+		}
+	}
 
 }
