@@ -29,7 +29,7 @@ public class UserDetailsService {
 		if(userDetails.isPresent()) {
 			return userDetails.get();
 		}else {
-			throw new DataNotFoundException("일치하는 이메일이 존재하지 않습니다.");
+			return new UserDetails();
 		}
 	}
 
