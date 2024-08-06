@@ -26,6 +26,7 @@ public class UserService {
 		Users users = new Users();
 		users.setUsername(username);
 		users.setPassword(passwordEncoder.encode(password));
+		users.setStatus("대기");
 		users.setPosition(this.positionService.findById(Integer.parseInt("14")));
 		return this.userRepository.save(users);
 	}
@@ -36,6 +37,15 @@ public class UserService {
 			return users.get();
 		}else {
 			throw new DataNotFoundException("데이터가 존재하지 않습니다.");
+		}
+	}
+	
+	public Users findPW(String username) {
+		Optional<Users> users = this.userRepository.findByUsername(username);
+		if(users.isPresent()) {
+			return users.get();
+		}else {
+			return new Users();
 		}
 	}
 

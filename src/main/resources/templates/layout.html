@@ -54,12 +54,89 @@
 			});
 		</script>
 		<!--캘린더-->
+		<!--gps-->
+		<script>
+			function sendInLocation(event) {
+				event.preventDefault(); // 폼의 기본 동작을 막음
+
+					if (navigator.geolocation) {
+				    	navigator.geolocation.getCurrentPosition(function(position) {
+				    		const latitude = position.coords.latitude;
+				            const longitude = position.coords.longitude;
+							const date = new Date();
+							const hour = date.getHours();
+									
+									
+							if (hour >= 9) {
+								const reason = prompt("9시 이후 출근입니다. 사유를 입력해 주세요.")
+								if(!reason){
+									alert("사유를 입력해야 합니다.");
+									return;
+									}
+								document.getElementById("reason").value = reason;
+								}
+
+				                // 히든 필드에 위치 데이터 설정
+				                document.getElementById("inlatitude").value = latitude;
+				                document.getElementById("inlongitude").value = longitude;
+
+				                // 폼을 제출
+				                document.getElementById("checkInForm").submit();
+				         	}, showError);
+				      	} else {
+				       		alert("해당 브라우저는 Geolocation를 지원하지 않음");
+				       		}
+				}
+				
+				function sendOutLocation(event) {
+					event.preventDefault(); // 폼의 기본 동작을 막음
+
+						if (navigator.geolocation) {
+					    	navigator.geolocation.getCurrentPosition(function(position) {
+					    		const latitude = position.coords.latitude;
+					            const longitude = position.coords.longitude;
+								const date = new Date();
+								const hour = date.getHours();
+
+					                // 히든 필드에 위치 데이터 설정
+					                document.getElementById("outlatitude").value = latitude;
+					                document.getElementById("outlongitude").value = longitude;
+
+					                // 폼을 제출
+					                document.getElementById("checkOutForm").submit();
+					         	}, showError);
+					      	} else {
+					       		alert("해당 브라우저는 Geolocation를 지원하지 않음");
+					       		}
+					}
+					
+			function showError(error) {
+				switch (error.code) {
+					case error.PERMISSION_DENIED:
+				    	alert("위치 요청을 거부하셨습니다.");
+				        break;
+				    case error.POSITION_UNAVAILABLE:
+				        alert("위치 정보를 얻을 수 없음.");
+				        break;
+				    case error.TIMEOUT:
+				        alert("타임아웃 에러");
+				        break;
+				    case error.UNKNOWN_ERROR:
+				        alert("원인불명 에러 발생.");
+				        break;
+					}
+				}
+		</script>
+		<!--gps-->
 		<title>게시판</title>
 	</head>
+	<form id="checkOutForm" method="post" th:action="@{/attendance/checkout}">
+			    <input type="hidden" id="outlatitude" name="outlatitude">
+			    <input type="hidden" id="outlongitude" name="outlongitude">
+	</form>
 	<body onload="startTime()">
-		
 		<div id="header" class="container-fluid">
-			<a href="#" id="time">
+			<a href="#" id="time" onclick="sendOutLocation(event)">
 				<p id="clock"></p>
 			</a>
 			<a th:href="@{/question/list}" class="logo"><img src="/images/header_logo.png"></a>
