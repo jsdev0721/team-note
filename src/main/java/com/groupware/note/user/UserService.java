@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.groupware.note.DataNotFoundException;
+import com.groupware.note.position.PositionService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,7 @@ public class UserService {
 	
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final PositionService positionService;
 	
 	public Users create(String username, String password) {
 		Optional<Users> option = this.userRepository.findByUsername(username);
@@ -24,6 +26,7 @@ public class UserService {
 		Users users = new Users();
 		users.setUsername(username);
 		users.setPassword(passwordEncoder.encode(password));
+		users.setPosition(this.positionService.findById(Integer.parseInt("14")));
 		return this.userRepository.save(users);
 	}
 	

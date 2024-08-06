@@ -2,6 +2,6 @@ package com.groupware.note.position;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PositionsRepository extends JpaRepository<Positions, Integer>{
-
+public interface PositionRepository extends JpaRepository<Positions, Integer>{
+	
 }
