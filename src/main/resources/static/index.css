@@ -1,0 +1,17 @@
+a{text-decoration: none;color: #000 !important;}
+
+#main{display: flex;}
+.txt h3{font-size: 22px;color: rgb(31, 33, 131);}
+.txt img{width: 30px;}
+
+/* approval */
+#approval{width: 45%;margin-right: 10%;}
+.nav{display: flex;}
+.nav-item{flex: 1;}
+.nav-link.active{color: #fff !important;background-color: rgb(32, 62, 110) !important;}
+.nav-link{background-color: #ddd !important;border-color: rgb(32, 62, 110) !important;text-align: center;}
+
+/* right */
+#right{width: 45%;}
+
+.calendar{position: absolute;right: 0;top: 50%;}
