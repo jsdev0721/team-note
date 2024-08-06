@@ -12,6 +12,7 @@ import com.groupware.note.user.Users;
 
 @Repository
 public interface ApprovalRepository extends JpaRepository<Approval, Integer> {
-	List<Approval> findByDepartment(Departments department , Pageable pageable);
 	Page<Approval> findByUser(Users user , Pageable pageable);
+	List<Approval> findByDepartment(Departments department);
+	
 }
