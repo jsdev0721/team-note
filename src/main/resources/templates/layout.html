@@ -131,7 +131,7 @@
 		</script>
 		<!--gps-->
 		<script>
-			function photoUpdate() {
+			function photoUpdate() { //사진 업로드 토글 버튼
 				$(".imgUpdate").toggle();
 			}
 		</script>
@@ -181,7 +181,7 @@
 		
 		<div id="footer" class="container-fluid">
 			<div class="container">
-				<a href="#" class="f_logo"><img src="/images/footer_logo.png"></a>
+				<a th:href="@{/}" class="f_logo"><img src="/images/footer_logo.png"></a>
 				<p class="address">경기도 김포시 김포한강4로 125 10층 이젠아카데미컴퓨터학원</p>
 				<div class="copy container">
 					<p>Copyright&#169;2024 NoTE all rights reserved.</p>
