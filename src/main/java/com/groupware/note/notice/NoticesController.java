@@ -1,6 +1,8 @@
 package com.groupware.note.notice;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.groupware.note.files.FileService;
+import com.groupware.note.files.Files;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
 
@@ -26,6 +30,7 @@ public class NoticesController {
 	
 	private final NoticesService noticesService;
 	private final UserService userService;
+	private final FileService fileService;
 	
 	
 	@GetMapping("/list")
@@ -65,11 +70,13 @@ public class NoticesController {
 		if(bindingResult.hasErrors()) {
 			return "notices_form";
 		}
+		
+		List<Files> files = new ArrayList<>();
+		files = this.fileService.uploadFile(noticeForm.getMultiPartFile());
 		Users users = this.userService.getUser(principal.getName());
-		this.noticesService.create(noticeForm.getTitle(), noticeForm.getContent(),noticeForm.getAttachment(), users);
+		this.noticesService.create(noticeForm.getTitle(), noticeForm.getContent(), users,files);
+		
 		return "redirect:/notices/list";
 	}
-	
-	
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.files.FileService;
+import com.groupware.note.files.Files;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -102,15 +103,13 @@ public class UserController {
 	@PostMapping("/photo")
 	public String photoUpdate(@RequestParam(value = "multipartFiles") MultipartFile multipartFile, Principal principal) {
 		try {
-			UserDetails _userDetails = new UserDetails();
 			Users users = this.userService.getUser(principal.getName());
-			_userDetails.setUser(users);
-			_userDetails.setPhoto(this.fileService.uploadPhoto(multipartFile));
-			
+			Files files = this.fileService.uploadPhoto(multipartFile);
+			this.userDetailsService.uploadPhoto(users, files);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "";
+		return "redirect:/user/index";
 	}
 
 }

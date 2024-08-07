@@ -91,6 +91,7 @@ public class FileService {
 				storeFileName = UUID.randomUUID().toString();
 			}
 			String filePath = setFilePath(originFileName, storeFileName);
+			multipartFile.transferTo(new File(filePath));
 			Thumbnailator.createThumbnail(new File(filePath), 50, 50);
 			photo.setOriginFileName(originFileName);
 			photo.setStoreFileName(storeFileName);

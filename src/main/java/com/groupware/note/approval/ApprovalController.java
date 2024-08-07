@@ -1,8 +1,11 @@
 package com.groupware.note.approval;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -33,18 +36,18 @@ public class ApprovalController {
 	private final FileService fileService;
 	private final DepartmentService departmentService;
 	
-//	@PreAuthorize("isAuthenticated()")
-//	@GetMapping("/list")
-//	public String approvalList() {
-//		return "redirect:/approval/list/queue";
-//	}
+	public Page<Approval> getPageable(int page , List<Approval> approvalList){
+		return this.approvalService.getPage(0, approvalList);
+	}
+
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
 	public String approvalList(Model model , @RequestParam(value = "status" , defaultValue = "queue") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal) {
 		System.out.println("-------------------status: "+status);
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
-		model.addAttribute("approvalList", this.approvalService.ApprovalList(page ,department , status));
+		Page<Approval> approvalList = this.approvalService.ApprovalList(department, status , page);
+		model.addAttribute("approvalList", approvalList);
 		return "approvalList";
 	}
 	@PreAuthorize("isAuthenticated()")
@@ -99,6 +102,15 @@ public class ApprovalController {
 		approval.setStatus(status);
 		this.approvalService.save(approval);
 		return String.format("redirect:/approval/detail/%s", id);
-		
+	}
+	
+	@PostMapping("/list")
+	public String serch(Model model , @RequestParam(value = "status" , defaultValue = "queue") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal , @RequestParam(value = "search")String search) {
+		String _search = "%"+search+"%";
+		Users user = this.userService.getUser(principal.getName());
+		Departments department = user.getPosition().getDepartment();
+		Page<Approval> approvalList =  this.approvalService.findByLike(_search , department , status , page);
+		model.addAttribute("approvalList" , approvalList);
+		return "approvalList";
 	}
 }

@@ -1,6 +1,9 @@
 package com.groupware.note.attendance;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -40,10 +43,20 @@ public class AttendanceService {
 		attendance.setCheckOutTime(LocalDateTime.now());
 		attendance.setOutTimeLat(lat);
 		attendance.setOutTimeLon(lon);
+		
+		Duration duration = Duration.between(attendance.getCheckInTime(), attendance.getCheckOutTime());
+		LocalTime workTime = LocalTime.ofSecondOfDay(duration.getSeconds());
+		
+		attendance.setWorkTime(workTime);
+		
 		this.attendanceRepository.save(attendance);
 		
 		user.setStatus("퇴근"); // 유저 상태 출근으로 변경
 		this.userRepository.save(user);
+	}
+	
+	public List<Attendance> attendanceList(Integer userId){
+		return this.attendanceRepository.findByUserId(userId);
 	}
 	
 }

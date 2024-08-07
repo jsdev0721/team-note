@@ -23,25 +23,24 @@ import lombok.RequiredArgsConstructor;
 public class ApprovalService {
 	private final ApprovalRepository approvalRepository;
 	
-	public Page<Approval> ApprovalList(int page , Departments department , String status) {
+	public Page<Approval> getPage(int page , List<Approval> _approvalList){
+		
+		Pageable pageable = getPageable(page);
+		return new PageImpl<>(_approvalList, pageable, _approvalList.size());
+	}
+	public Pageable getPageable(int page) {
 		List<Sort.Order>sorts = new ArrayList<>();
 		sorts.add(Sort.Order.desc("updateTime"));
-		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-		List<Approval> _approvalList = this.approvalRepository.findByDepartment(department);
-		List<Approval> approvalList = new ArrayList<>();
-		for(Approval approval : _approvalList) {
-			if(approval.getStatus().equals(status)) {
-				approvalList.add(approval);
-			}
-		}
-		return new PageImpl<>(approvalList, pageable, page);
+		return  PageRequest.of(page, 10, Sort.by(sorts));
+	}
+	public Page<Approval> ApprovalList(Departments department , String status , int page) {
+		Pageable pageable = getPageable(page);
+		return this.approvalRepository.findByDepartmentAndStatus(department, status, pageable);
 	}
 	
-	public Page<Approval> ApprovalfindbyUser(int page , Users user) {
-		List<Sort.Order>sorts = new ArrayList<>();
-		sorts.add(Sort.Order.desc("updateTime"));
-		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-		return this.approvalRepository.findByUser(user, pageable);
+	public Page<Approval> ApprovalfindbyUser(Users user , int page) {
+		Pageable pageable = getPageable(page);
+		return this.approvalRepository.findByUser(user , pageable);
 	}
 	
 	public Approval save(Approval approval) {
@@ -59,5 +58,10 @@ public class ApprovalService {
 			throw new DataNotFoundException("게시물을 찾을 수 없습니다.");
 		}
 		return _approval.get();
+	}
+	
+	public Page<Approval> findByLike(String search , Departments department , String status , int page) {
+		Pageable pageable = getPageable(page);
+		return this.approvalRepository.findByDepartmentAndStatusAndTitleLike(department, status, search, pageable);
 	}
 }

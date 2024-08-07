@@ -1,6 +1,7 @@
 package com.groupware.note.attendance;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import com.groupware.note.user.Users;
 
@@ -33,6 +34,8 @@ public class Attendance {
 	private LocalDateTime checkOutTime;
 	private double outTimeLat;
 	private double outTimeLon;
+	
+	private LocalTime workTime;
 	
 	private String reason;
 	

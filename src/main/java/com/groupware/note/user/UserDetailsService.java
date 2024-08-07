@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.groupware.note.DataNotFoundException;
+import com.groupware.note.files.Files;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +30,14 @@ public class UserDetailsService {
 			return userDetails.get();
 		}else {
 			return new UserDetails();
+		}
+	}
+	public void uploadPhoto(Users users, Files photo) {
+		Optional<UserDetails> userDetails = this.userDetailsRepository.findById(users.getUserId());
+		if(userDetails.isPresent()) {
+			UserDetails user = userDetails.get();
+			user.setPhoto(photo);
+			this.userDetailsRepository.save(user);
 		}
 	}
 
