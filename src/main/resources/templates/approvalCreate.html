@@ -1,5 +1,5 @@
 <html layout:decorate="~{layout}">
-	<div layout:fragment="content" class="container-fluid">
+	<div layout:fragment="content" class="container">
 		<form th:action="@{/approval/create}" method="post" enctype="multipart/form-data">
 			<div class="card" th:object="${approvalForm}">
 				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>

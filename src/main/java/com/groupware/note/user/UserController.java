@@ -94,12 +94,6 @@ public class UserController {
 	}
 	
 	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/index")
-	public String index() {
-		return "index";
-	}
-	
-	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/photo")
 	public String photoUpdate(@RequestParam(value = "multipartFiles") MultipartFile multipartFile, Principal principal) {
 		try {
@@ -109,7 +103,7 @@ public class UserController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/user/index";
+		return "redirect:/";
 	}
 
 }
