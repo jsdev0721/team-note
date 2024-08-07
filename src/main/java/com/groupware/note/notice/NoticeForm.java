@@ -1,5 +1,9 @@
 package com.groupware.note.notice;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +19,6 @@ public class NoticeForm {
 	private String content;
 	
 	
-	private String attachment;
+	private List<MultipartFile> multiPartFile;
 
 }

@@ -1,0 +1,24 @@
+<html layout:decorate="~{layout}">
+	<div layout:fragment="content" class="container my-3">
+		<div class="my-3 border-bottom">
+			<h4>서식 게시판</h4>
+		</div>
+		<form th:action="@{/forms/create}" th:object="${formsForm}" method="post">
+			<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
+			<div class="mb-4">
+				<label for="title" class="form-label">제목</label>
+				<input type="text" class="form-control" name="title">
+			</div>
+			<div class="mb-4">
+				<label for="content" class="form-label">내용</label>
+				<input type="text" class="form-control" name="content">
+			</div>
+			<div class="mb-4">
+				<label for="formfileMultiple" class="form-label">첨부파일</label>
+				<input type="file" class="form-control" id="formFileMultiple" name="multipartFiles" multiple>
+			</div>
+			<input type="submit" class="btn btn-success" value="등록하기">
+		</form>
+	</div>
+	<br>
+</html>
