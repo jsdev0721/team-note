@@ -31,7 +31,7 @@ public class SecurityConfig {
 				.defaultSuccessUrl("/attendance/checkin"))
 		.logout((logout) ->logout
 				.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-				.logoutSuccessUrl("/")
+				.logoutSuccessUrl("/user/login")
 				.invalidateHttpSession(true))
 		;
 		return http.build();
