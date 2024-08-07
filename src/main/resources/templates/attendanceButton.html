@@ -1,18 +1,16 @@
 <html layout:decorate="~{layout}">
+	
 	<div layout:fragment="content" class="container my-3">
 		<center>
 			
-	    <form id="imageForm" th:action="@{/attendance/checkin}" method="post">
+	    <form id="checkInForm" th:action="@{/attendance/checkin}" method="post">
 	   
+			<input type="hidden" id="inlatitude" name="inlatitude">
+			<input type="hidden" id="inlongitude" name="inlongitude">
+			<input type="hidden" id="reason" name="reason">
+			
 	    <!-- 이미지 -->
-	    <img src="/images/clock.png" alt="Submit" id="submitImage" style="cursor: pointer;">
-
-	    <!-- JavaScript -->
-	    <script>
-	        document.getElementById('submitImage').addEventListener('click', function() { // 이미지 클릭 이벤트 리스너 추가
-	        document.getElementById('imageForm').submit(); // 폼 제출
-	        });
-	    </script>
+	    <img src="/images/clock.png" alt="Submit" onclick="sendInLocation(event)" style="cursor: pointer;">
 		
 	    </form>
 		

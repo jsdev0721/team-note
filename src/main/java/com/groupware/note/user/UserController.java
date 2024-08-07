@@ -54,7 +54,7 @@ public class UserController {
 			return "regist";
 		}
 		
-		return "index";
+		return "login";
 	}
 	
 	@GetMapping("/find/id")
@@ -81,6 +81,11 @@ public class UserController {
 		Users users = this.userService.findPW(username);
 		model.addAttribute("users", users);
 		return "findPW";
+	}
+	
+	@GetMapping("/index")
+	public String index() {
+		return "index";
 	}
 
 }

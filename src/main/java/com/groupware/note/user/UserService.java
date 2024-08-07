@@ -26,6 +26,7 @@ public class UserService {
 		Users users = new Users();
 		users.setUsername(username);
 		users.setPassword(passwordEncoder.encode(password));
+		users.setStatus("대기");
 		users.setPosition(this.positionService.findById(Integer.parseInt("14")));
 		return this.userRepository.save(users);
 	}
