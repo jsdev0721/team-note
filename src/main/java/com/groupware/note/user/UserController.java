@@ -1,6 +1,11 @@
 package com.groupware.note.user;
 
+import java.security.Principal;
+
+import javax.imageio.ImageIO;
+
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.groupware.note.files.FileService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +27,7 @@ public class UserController {
 	
 	private final UserService userService;
 	private final UserDetailsService userDetailsService;
+	private final FileService fileService;
 	
 	@GetMapping("/login")
 	public String login() {
@@ -83,9 +92,25 @@ public class UserController {
 		return "findPW";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/index")
 	public String index() {
 		return "index";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/photo")
+	public String photoUpdate(@RequestParam(value = "multipartFiles") MultipartFile multipartFile, Principal principal) {
+		try {
+			UserDetails _userDetails = new UserDetails();
+			Users users = this.userService.getUser(principal.getName());
+			_userDetails.setUser(users);
+			_userDetails.setPhoto(this.fileService.uploadPhoto(multipartFile));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 }

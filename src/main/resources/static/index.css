@@ -1,6 +1,7 @@
 a{text-decoration: none;color: #000 !important;}
 
-#main{display: flex;}
+#main{display: flex;margin-top: 50px !important;}
+.txt{padding-bottom: 10px;}
 .txt h3{font-size: 22px;color: rgb(31, 33, 131);}
 .txt img{width: 30px;}
 
@@ -13,5 +14,7 @@ a{text-decoration: none;color: #000 !important;}
 
 /* right */
 #right{width: 45%;}
+#notice{height: 250px;}
+#publicForm{height: 250px;}
 
 .calendar{position: absolute;right: 0;top: 50%;}
