@@ -43,6 +43,7 @@ public class FormService {
 		form.setAttachment(attachment);
 		form.setUser(user);
 		form.setCreateDate(LocalDateTime.now());
+		this.formRepository.save(form);
 		
 	}
 
