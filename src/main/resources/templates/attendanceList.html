@@ -1,0 +1,30 @@
+<html layout:decorate="~{layout}">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/index.css}">
+		<title>note</title>
+	</head>
+	<div layout:fragment="content" class="container my-3" id="main">
+		<table class = "table table-hover table-bordered" style="text-align: center; border-color: rgb(32, 62, 110);">
+			<thead>
+				<tr>
+					<th>일자</th>
+					<th>업무 시작</th>
+					<th>업무 종료</th>
+					<th>근무 시간</th>
+					<th>초과 시간</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr th:each="attendance : ${attendanceList}">
+					<td th:text="${#temporals.format(attendance.checkInTime, 'YYYY-MM-dd')}"></td>
+					<td th:text="${#temporals.format(attendance.checkInTime, 'HH:mm')}"></td>
+					<td th:text="${#temporals.format(attendance.checkOutTime, 'HH:mm')}"></td>
+					<td th:text="${#temporals.format(attendance.workTime, 'HH:mm')}"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+</html>
