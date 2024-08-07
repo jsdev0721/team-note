@@ -93,11 +93,12 @@ public class ApprovalController {
 		return this.fileService.downloadFile(file);
 	}
 	
-	@PostMapping("/detail/{id}")
-	public String changeStatus(@PathVariable(value = "id")Integer id , @RequestParam(value = "status")String status) {
+	@GetMapping("/update/{id}")
+	public String changeStatus(@PathVariable("id")Integer id , @RequestParam(value = "status")String status) {
 		Approval approval = this.approvalService.findById(id);
 		approval.setStatus(status);
 		this.approvalService.save(approval);
-		return "redirect:/approval/detail/{id}";
+		return String.format("redirect:/approval/detail/%s", id);
+		
 	}
 }

@@ -46,7 +46,7 @@ public class ApprovalService {
 	
 	public Approval save(Approval approval) {
 		if(approval.getApprovalId()==null) {
-			approval.setStatus("queue");;
+			approval.setStatus("queue");
 		}
 		approval.setUpdateTime(LocalDateTime.now());
 		this.approvalRepository.save(approval);
