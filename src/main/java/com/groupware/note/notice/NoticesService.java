@@ -10,7 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.groupware.note.DataNotFoundException;
+import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
 import lombok.RequiredArgsConstructor;
 
@@ -23,14 +26,15 @@ public class NoticesService {
 	public Page<Notices> noticesList(int page) {
 		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
 		Pageable pageable = PageRequest.of(page, 10,Sort.by(sorts));
+		
 		return this.noticesRepository.findAll(pageable);
 	}
 	public Page<Notices> noticesSearchList(int page, String searchkeyword) {
 		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
 		Pageable pageable = PageRequest.of(page, 10,Sort.by(sorts));
+		
 		return this.noticesRepository.findByTitleLike("%"+searchkeyword+"%", pageable);
 	}
-	
 	public Notices getNotice(Integer noticeId) {
 		Optional<Notices> notices = this.noticesRepository.findById(noticeId);
 		if(notices.isPresent()) {
@@ -39,13 +43,12 @@ public class NoticesService {
 		throw new DataNotFoundException("데이터가 없습니다");
 			}
 	}
-	
-	public void create(String title,String content,String attachment,Users users) {//공지사항 작성날짜
+	public void create(String title,String content, Users users,List<Files> fileList) {//공지사항 작성날짜
 		Notices notices = new Notices();
 		notices.setTitle(title);
 		notices.setContent(content);
-		notices.setAttachment(attachment);
 		notices.setUser(users);
+		notices.setFileList(fileList);
 		notices.setCreateDate(LocalDateTime.now());
 		this.noticesRepository.save(notices);
 		
