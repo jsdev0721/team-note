@@ -2,11 +2,12 @@ package com.groupware.note.user;
 
 import java.time.LocalDate;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.groupware.note.files.Files;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
@@ -31,7 +32,8 @@ public class UserDetails {
 	
 	private String email;
 	
-	private String photo;
+	@ManyToOne
+	private Files photo;
 	
 	private long leave;
 	

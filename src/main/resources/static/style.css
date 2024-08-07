@@ -16,6 +16,9 @@ a{text-decoration: none;color: #000;}
 .myPage{height: 60px;float: right;display: block;padding-top: 10px;margin-right: 10px;}
 .myPage img{height: 100%;}
 
+.offcanvas-top{width: 350px;top: 65px !important;left: auto !important;right: 10px !important;border: 1px solid #000 !important;height: 250px !important;}
+.offcanvas-body{padding: 0 !important;}
+
 .menu:after{display: inline-block;content: "|";color: #ccc;}
 .menu{height: 60px;float: right;display: block;padding-top: 10px;margin-right: 10px;}
 .menu img{height: 100%;}

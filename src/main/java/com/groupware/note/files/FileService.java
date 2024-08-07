@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.groupware.note.DataNotFoundException;
 
 import lombok.RequiredArgsConstructor;
+import net.coobird.thumbnailator.Thumbnailator;
 
 @Service
 @RequiredArgsConstructor
@@ -80,6 +81,27 @@ public class FileService {
 		}
 		return files;
 	}
+	
+	public Files uploadPhoto(MultipartFile multipartFile) {
+		Files photo = new Files();
+		try {
+			String originFileName = multipartFile.getOriginalFilename();
+			String storeFileName = UUID.randomUUID().toString();
+			while(!this.fileRepository.findByStoreFileName(storeFileName).isEmpty()) {
+				storeFileName = UUID.randomUUID().toString();
+			}
+			String filePath = setFilePath(originFileName, storeFileName);
+			Thumbnailator.createThumbnail(new File(filePath), 50, 50);
+			photo.setOriginFileName(originFileName);
+			photo.setStoreFileName(storeFileName);
+			this.fileRepository.save(photo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DataNotFoundException("");
+		}
+		return photo;
+	}
+	
 	//download 메소드 -> ResponseEntity 으로 return
 	public ResponseEntity<Resource> downloadFile(Files file) {
 		String filePath = getFilePath(file.getOriginFileName() , file.getStoreFileName());
