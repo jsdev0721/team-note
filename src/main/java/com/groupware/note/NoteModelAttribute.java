@@ -25,10 +25,12 @@ public class NoteModelAttribute {
 	
 	@ModelAttribute
 	public void photoAttributes(Model model, Principal principal) {
-		Users users = this.userService.getUser(principal.getName());
-		UserDetails userDetails = this.userDetailsService.findByUser(users);
-		Files file = this.fileService.findByFiles(userDetails.getPhoto().getFileId());
-		model.addAttribute("file", file);
+		if(principal != null) {
+			Users users = this.userService.getUser(principal.getName());
+			UserDetails userDetails = this.userDetailsService.findByUser(users);
+			Files file = this.fileService.findByFiles(userDetails.getPhoto().getFileId());
+			model.addAttribute("file", file);			
+		}
 	}
 	
 }
