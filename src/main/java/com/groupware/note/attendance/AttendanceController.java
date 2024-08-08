@@ -41,7 +41,7 @@ public class AttendanceController {
 		if(!user.getStatus().equals("출근")) {
 			return "attendanceButton";
 		}else {
-			return "redirect:/user/index";
+			return "redirect:/";
 		}
 	}
 	
@@ -51,7 +51,7 @@ public class AttendanceController {
 		System.out.println(lat);
 		System.out.println(lon);
 		this.attendanceService.createIn(principal.getName(), lat, lon, reason);
-		return "redirect:/user/index";
+		return "redirect:/";
 	}
 	
 	@PreAuthorize("isAuthenticated()")
