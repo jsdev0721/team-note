@@ -1,15 +1,17 @@
 package com.groupware.note.user;
 
+import java.net.MalformedURLException;
 import java.security.Principal;
 
-import javax.imageio.ImageIO;
-
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,8 +53,9 @@ public class UserController {
 			return "regist";
 		}
 		try { //중복검사
+			Files files = this.fileService.findByFiles(1);
 			Users users = this.userService.create(userCreateForm.getUsername(), userCreateForm.getPassword());
-			this.userDetailsService.create(users, userCreateForm.getName(), userCreateForm.getBirthdate(), userCreateForm.getEmail());
+			this.userDetailsService.create(users, userCreateForm.getName(), userCreateForm.getBirthdate(), userCreateForm.getEmail(), files);
 		} catch (DataIntegrityViolationException e) { //SiteUser에서 주었던 unique 제약조건 위반시 해당 에러클래스가 처리함 
 			e.printStackTrace();
 			bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
@@ -104,6 +107,13 @@ public class UserController {
 			e.printStackTrace();
 		}
 		return "redirect:/";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/photo/{id}")
+	public ResponseEntity<Resource> photo(@PathVariable("id") Integer id) throws MalformedURLException{
+		Files file = this.fileService.findByFiles(id);
+		return this.fileService.photoView(file);
 	}
 
 }

@@ -43,7 +43,6 @@ public class ApprovalController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
 	public String approvalList(Model model , @RequestParam(value = "status" , defaultValue = "queue") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal) {
-		System.out.println("-------------------status: "+status);
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
 		Page<Approval> approvalList = this.approvalService.ApprovalList(department, status , page);
@@ -83,10 +82,11 @@ public class ApprovalController {
 	}
 	
 	@GetMapping("/detail/{id}")
-	public String approvalDetail(Model model , @PathVariable("id")Integer id) {
+	public String approvalDetail(Model model , @PathVariable("id")Integer id , Principal principal) {
 		Approval approval = this.approvalService.findById(id);
 		model.addAttribute("approval", approval);
 		model.addAttribute("fileList", approval.getFileList());
+		model.addAttribute("userInfo", this.userService.getUser(principal.getName()));
 		return "approvalDetail";
 	}
 	

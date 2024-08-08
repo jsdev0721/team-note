@@ -1,6 +1,7 @@
 package com.groupware.note.files;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Path;
@@ -49,20 +50,24 @@ public class FileService {
 	//FilePath 설정 고정경로+저장이름+파일확장자 조합
 	public String getFilePath(String originFileName , String storeFileName) {
 		String fileType = extendsFile(originFileName);
-		return directory+"/"+storeFileName+fileType;
+		return directory+storeFileName+"."+fileType;
 	}
 	public String setFilePath(String originFileName , String storeFileName) {
 		String fileType = extendsFile(originFileName);
-		return directory+"/"+storeFileName+fileType;
+		return directory+storeFileName+"."+fileType;
 	}
+	public String getPhotoPath(String originFileName , String storeFileName) {
+		return directory+storeFileName;
+	}
+
 	//upload 메소드 -> List<Files> 으로 return
 	public List<Files> uploadFile(List<MultipartFile> multipartFiles) {
 		List<Files> files = new ArrayList<>();
-		if(multipartFiles.isEmpty()) {
-			return null;
-		}
 		try {
 			for(MultipartFile multipartFile : multipartFiles) {
+				if(multipartFile.isEmpty()) {
+					return null;
+				}
 				String originFileName = multipartFile.getOriginalFilename();
 				String storeFileName = UUID.randomUUID().toString();
 				while(!this.fileRepository.findByStoreFileName(storeFileName).isEmpty()) {
@@ -121,6 +126,16 @@ public class FileService {
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
+	}
+	
+	//사진 보이게 하는거
+	public ResponseEntity<Resource> photoView(Files file) throws MalformedURLException{
+		String photoPath = getPhotoPath(file.getOriginFileName() , file.getStoreFileName());
+		UrlResource resource = new UrlResource("file:" + photoPath);
+		return ResponseEntity
+				.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);			
 	}
 	
 	public Files findByFiles(Integer id) {

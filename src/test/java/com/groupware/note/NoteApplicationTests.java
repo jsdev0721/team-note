@@ -4,13 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.groupware.note.approval.ApprovalService;
 import com.groupware.note.department.DepartmentRepository;
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
+import com.groupware.note.files.FileRepository;
+import com.groupware.note.files.FileService;
+import com.groupware.note.files.Files;
 import com.groupware.note.position.PositionRepository;
 import com.groupware.note.position.Positions;
-import com.groupware.note.user.UserService;
 
 @SpringBootTest
 class NoteApplicationTests {
@@ -24,10 +25,9 @@ class NoteApplicationTests {
 	private DepartmentRepository departmentRepository;
 	
 	@Autowired
-	private ApprovalService approvalService;
+	private FileRepository fileRepository;
 	
-	@Autowired
-	private UserService userService;
+	
 	
 	@Test
 	void testJpa() {
@@ -51,6 +51,11 @@ class NoteApplicationTests {
 				positionsRepository.save(pos);
 			}
 		}
+		Files file = new Files();
+		file.setOriginFileName("user.png");
+		file.setStoreFileName("user.png");
+		this.fileRepository.save(file);
+		
 		//게시판 데이터 TEST용
 //		for(int i=1 ; i<=50 ; i++) {
 //			Approval approval = new Approval();
