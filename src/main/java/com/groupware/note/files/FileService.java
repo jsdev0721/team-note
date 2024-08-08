@@ -1,6 +1,7 @@
 package com.groupware.note.files;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Path;
@@ -54,6 +55,9 @@ public class FileService {
 	public String setFilePath(String originFileName , String storeFileName) {
 		String fileType = extendsFile(originFileName);
 		return directory+"/"+storeFileName+"."+fileType;
+	}
+	public String getPhotoPath(String originFileName , String storeFileName) {
+		return directory+storeFileName;
 	}
 
 	//upload 메소드 -> List<Files> 으로 return
@@ -122,6 +126,16 @@ public class FileService {
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
+	}
+	
+	//사진 보이게 하는거
+	public ResponseEntity<Resource> photoView(Files file) throws MalformedURLException{
+		String photoPath = getPhotoPath(file.getOriginFileName() , file.getStoreFileName());
+		UrlResource resource = new UrlResource("file:" + photoPath);
+		return ResponseEntity
+				.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);			
 	}
 	
 	public Files findByFiles(Integer id) {

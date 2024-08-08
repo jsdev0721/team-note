@@ -37,7 +37,6 @@ public class AttendanceController {
 	@GetMapping("/checkin")
 	public String getCheckIn(Principal principal) {
 		Users user = this.userService.getUser(principal.getName());
-		System.out.println(user.getStatus());
 		if(!user.getStatus().equals("출근")) {
 			return "attendanceButton";
 		}else {
