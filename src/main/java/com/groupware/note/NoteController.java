@@ -1,6 +1,5 @@
 package com.groupware.note;
 
-import java.io.File;
 import java.security.Principal;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,9 +29,8 @@ public class NoteController {
 	public String defalut(Model model, Principal principal) {
 		Users users = this.userService.getUser(principal.getName());
 		UserDetails userDetails = this.userDetailsService.findByUser(users);
-		Files files = this.fileService.findByFiles(userDetails.getPhoto().getFileId());
-		String photo = this.fileService.getFilePath(files.getOriginFileName(), files.getStoreFileName());
-		model.addAttribute("photo", photo);
+		Files file = this.fileService.findByFiles(userDetails.getPhoto().getFileId());
+		model.addAttribute("file", file);
 		return "index";
 	}
 
