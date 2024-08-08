@@ -50,11 +50,11 @@ public class FileService {
 	//FilePath 설정 고정경로+저장이름+파일확장자 조합
 	public String getFilePath(String originFileName , String storeFileName) {
 		String fileType = extendsFile(originFileName);
-		return directory+"/"+storeFileName+"."+fileType;
+		return directory+storeFileName+"."+fileType;
 	}
 	public String setFilePath(String originFileName , String storeFileName) {
 		String fileType = extendsFile(originFileName);
-		return directory+"/"+storeFileName+"."+fileType;
+		return directory+storeFileName+"."+fileType;
 	}
 	public String getPhotoPath(String originFileName , String storeFileName) {
 		return directory+storeFileName;
@@ -63,11 +63,11 @@ public class FileService {
 	//upload 메소드 -> List<Files> 으로 return
 	public List<Files> uploadFile(List<MultipartFile> multipartFiles) {
 		List<Files> files = new ArrayList<>();
-		if(multipartFiles.isEmpty()) {
-			return null;
-		}
 		try {
 			for(MultipartFile multipartFile : multipartFiles) {
+				if(multipartFile.isEmpty()) {
+					return null;
+				}
 				String originFileName = multipartFile.getOriginalFilename();
 				String storeFileName = UUID.randomUUID().toString();
 				while(!this.fileRepository.findByStoreFileName(storeFileName).isEmpty()) {
