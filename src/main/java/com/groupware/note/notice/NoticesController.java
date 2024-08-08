@@ -1,10 +1,12 @@
 package com.groupware.note.notice;
 
 import java.security.Principal;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ import com.groupware.note.files.Files;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
 
+import org.springframework.core.io.Resource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -52,9 +55,15 @@ public class NoticesController {
 	@GetMapping("/detail/{noticeId}")
 	public String detail(Model model,@PathVariable("noticeId") Integer noticeId) {
 		Notices notices = this.noticesService.getNotice(noticeId);
+		model.addAttribute("fileList",notices.getFileList());
 		model.addAttribute("notices" ,notices);
 		
 		return "notices_detail";
+	}
+	@GetMapping("/download/{noticeId}")
+	public ResponseEntity<Resource> download(@PathVariable("noticedId") Integer noticeId){
+		Files files= this.fileService.findByFiles(noticeId);
+		return this.fileService.downloadFile(files);
 	}
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/create")
