@@ -112,9 +112,7 @@ public class UserController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/photo/{id}")
 	public ResponseEntity<Resource> photo(@PathVariable("id") Integer id) throws MalformedURLException{
-		System.out.println(1);
 		Files file = this.fileService.findByFiles(id);
-		System.out.println(2);
 		return this.fileService.photoView(file);
 	}
 
