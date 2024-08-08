@@ -54,7 +54,7 @@ public class FormController {
 		Forms forms = this.formService.getForm(formsId);
 		model.addAttribute("forms",forms);
 		
-		return "forms-detail";
+		return "forms_detail";
 	}
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/create")
@@ -77,22 +77,6 @@ public class FormController {
 		return "redirect:/forms/list";
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	
 
 }
