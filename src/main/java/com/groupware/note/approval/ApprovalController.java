@@ -43,7 +43,6 @@ public class ApprovalController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
 	public String approvalList(Model model , @RequestParam(value = "status" , defaultValue = "queue") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal) {
-		System.out.println("-------------------status: "+status);
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
 		Page<Approval> approvalList = this.approvalService.ApprovalList(department, status , page);
