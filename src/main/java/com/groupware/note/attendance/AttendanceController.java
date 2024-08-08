@@ -51,7 +51,7 @@ public class AttendanceController {
 		System.out.println(lat);
 		System.out.println(lon);
 		this.attendanceService.createIn(principal.getName(), lat, lon, reason);
-		return "redirect:/user/index";
+		return "redirect:/";
 	}
 	
 	@PreAuthorize("isAuthenticated()")
