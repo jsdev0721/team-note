@@ -41,7 +41,7 @@ public class AttendanceController {
 		if(!user.getStatus().equals("출근")) {
 			return "attendanceButton";
 		}else {
-			return "redirect:/user/index";
+			return "redirect:/";
 		}
 	}
 	
