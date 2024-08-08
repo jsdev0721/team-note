@@ -12,8 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.groupware.note.DataNotFoundException;
-import com.groupware.note.notice.Notices;
+import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -25,7 +26,14 @@ public class FormService {
 	public Page<Forms> formsList(int page) {
 		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
 		Pageable pageable = PageRequest.of(page, 10,Sort.by(sorts));
+		
 		return this.formRepository.findAll(pageable);
+	}
+	public Page<Forms> SearchList(int page,String searchKeyword) {
+		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
+		Pageable pageable = PageRequest.of(page, 10,Sort.by(sorts));
+		
+		return this.formRepository.findByTitleLike(pageable, "%"+searchKeyword+"%");
 	}
 	public Forms getForm(Integer formId) {
 		Optional<Forms> form = this.formRepository.findById(formId);
@@ -36,11 +44,11 @@ public class FormService {
 		}
 		 
 	}
-	public void create(String title, String content,String attachment,Users user) {
+	public void create(String title, String content,Users user,List<Files> files) {
 		Forms form = new Forms();
 		form.setTitle(title);
 		form.setContent(content);
-		form.setAttachment(attachment);
+		form.setFileList(files);
 		form.setUser(user);
 		form.setCreateDate(LocalDateTime.now());
 		this.formRepository.save(form);

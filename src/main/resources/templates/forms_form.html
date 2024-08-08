@@ -3,7 +3,7 @@
 		<div class="my-3 border-bottom">
 			<h4>서식 게시판</h4>
 		</div>
-		<form th:action="@{/forms/create}" th:object="${formsForm}" method="post">
+		<form th:action="@{/forms/create}" th:object="${formsForm}" method="post" enctype="multipart/form-data">
 			<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
 			<div class="mb-4">
 				<label for="title" class="form-label">제목</label>
@@ -15,7 +15,7 @@
 			</div>
 			<div class="mb-4">
 				<label for="formfileMultiple" class="form-label">첨부파일</label>
-				<input type="file" class="form-control" id="formFileMultiple" name="multipartFiles" multiple>
+				<input type="file" class="form-control" id="formFileMultiple" name="multiPartFile" multiple>
 			</div>
 			<input type="submit" class="btn btn-success" value="등록하기">
 		</form>

@@ -1,10 +1,74 @@
-<html layout:decorate="~{layout}">
-	
-	<div layout:fragment="content" class="container my-3">
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css}">
+		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+		<script th:src="@{/bootstrap.min.js}"></script>
+		<title>출근</title>
+
+		<!--gps-->
+		<script>
+			function sendInLocation(event) {
+				event.preventDefault(); // 폼의 기본 동작을 막음
+
+					if (navigator.geolocation) {
+				    	navigator.geolocation.getCurrentPosition(function(position) {
+				    		const latitude = position.coords.latitude;
+				            const longitude = position.coords.longitude;
+							const date = new Date();
+							const hour = date.getHours();
+									
+									
+							if (hour >= 9) {
+								const reason = prompt("9시 이후 출근입니다. 사유를 입력해 주세요.")
+								if(!reason){
+									alert("사유를 입력해야 합니다.");
+									return;
+									}
+								document.getElementById("reason").value = reason;
+								}
+
+				                // 히든 필드에 위치 데이터 설정
+				                document.getElementById("inlatitude").value = latitude;
+				                document.getElementById("inlongitude").value = longitude;
+
+				                // 폼을 제출
+				                document.getElementById("checkInForm").submit();
+				         	}, showError);
+				      	} else {
+				       		alert("해당 브라우저는 Geolocation를 지원하지 않음");
+				       		}
+				}
+					
+			function showError(error) {
+				switch (error.code) {
+					case error.PERMISSION_DENIED:
+				    	alert("위치 요청을 거부하셨습니다.");
+				        break;
+				    case error.POSITION_UNAVAILABLE:
+				        alert("위치 정보를 얻을 수 없음.");
+				        break;
+				    case error.TIMEOUT:
+				        alert("타임아웃 에러");
+				        break;
+				    case error.UNKNOWN_ERROR:
+				        alert("원인불명 에러 발생.");
+				        break;
+					}
+				}
+		</script>
+		<!--gps-->
+
+	</head>
+	<body class="container">
 		<center>
-			
+		<img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;">	
+		
 	    <form id="checkInForm" th:action="@{/attendance/checkin}" method="post">
-	   
+	 
 			<input type="hidden" id="inlatitude" name="inlatitude">
 			<input type="hidden" id="inlongitude" name="inlongitude">
 			<input type="hidden" id="reason" name="reason">

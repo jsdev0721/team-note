@@ -9,6 +9,8 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 		<script th:src="@{/bootstrap.min.js}"></script>
 		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+		
+		
 		<script th:src="@{/script.js}"></script>
 		<script>
 			function startTime() {
@@ -32,6 +34,12 @@
 			    return i;
 			}
 		</script>
+		
+		<!-- fullcalendar CDN -->
+		<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
+		<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
+		<!-- fullcalendar 언어 CDN -->
+		<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
 		<!--캘린더-->
 		<style>
 			.offcanvas-end {
@@ -42,13 +50,12 @@
 				text-decoration: none;
 			}
 		</style>
-		<script th:src="@{/index.global.min.js}"></script>	
 		<script>
-
 			document.addEventListener('DOMContentLoaded', function() {
 			var calendarEl = document.getElementById('calendar');
 			var calendar = new FullCalendar.Calendar(calendarEl, {
 				initialView: 'dayGridMonth',
+				locale: 'ko',
 				events: '',
 				dateClick: function(info){}
 				});
@@ -58,38 +65,6 @@
 		<!--캘린더-->
 		<!--gps-->
 		<script>
-			function sendInLocation(event) {
-				event.preventDefault(); // 폼의 기본 동작을 막음
-
-					if (navigator.geolocation) {
-				    	navigator.geolocation.getCurrentPosition(function(position) {
-				    		const latitude = position.coords.latitude;
-				            const longitude = position.coords.longitude;
-							const date = new Date();
-							const hour = date.getHours();
-									
-									
-							if (hour >= 9) {
-								const reason = prompt("9시 이후 출근입니다. 사유를 입력해 주세요.")
-								if(!reason){
-									alert("사유를 입력해야 합니다.");
-									return;
-									}
-								document.getElementById("reason").value = reason;
-								}
-
-				                // 히든 필드에 위치 데이터 설정
-				                document.getElementById("inlatitude").value = latitude;
-				                document.getElementById("inlongitude").value = longitude;
-
-				                // 폼을 제출
-				                document.getElementById("checkInForm").submit();
-				         	}, showError);
-				      	} else {
-				       		alert("해당 브라우저는 Geolocation를 지원하지 않음");
-				       		}
-				}
-				
 				function sendOutLocation(event) {
 					event.preventDefault(); // 폼의 기본 동작을 막음
 
@@ -99,15 +74,20 @@
 					            const longitude = position.coords.longitude;
 								const date = new Date();
 								const hour = date.getHours();
-
+								
+								var check = confirm("퇴근 하시겠습니까?");
+								if(check){
 					                // 히든 필드에 위치 데이터 설정
 					                document.getElementById("outlatitude").value = latitude;
 					                document.getElementById("outlongitude").value = longitude;
 
 					                // 폼을 제출
 					                document.getElementById("checkOutForm").submit();
+								}else{
+									return;
+								}
 					         	}, showError);
-					      	} else {
+					    } else {
 					       		alert("해당 브라우저는 Geolocation를 지원하지 않음");
 					       		}
 					}
