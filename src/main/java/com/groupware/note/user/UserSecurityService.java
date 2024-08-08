@@ -12,9 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.groupware.note.department.Departments;
-import com.groupware.note.position.Positions;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -38,9 +35,10 @@ public class UserSecurityService implements UserDetailsService {
 		//GrantedAuthority => 권한 부여를 해주는 클래스 (부여할 권한이 여러개일 수 있기 때문에 List에 넣어서 권한을 부여함)
 		
 		String departmentName = null;
-		
+		String position = null;
 		if(users.getPosition() != null) {
 			departmentName = users.getPosition().getDepartment().getDepartmentName();
+			position = users.getPosition().getPositionName();
 		}
 		
 		if("admin".equals(username)) { //관리자
@@ -59,7 +57,18 @@ public class UserSecurityService implements UserDetailsService {
 			authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
 			System.out.println("ddd");
 		}
-		
+		if("section chief".equals(position)) {
+			authorities.add(new SimpleGrantedAuthority(UserRole.SECTIONCHEIF.getValue()));
+		}
+		else if("deputy".equals(position)) {
+			authorities.add(new SimpleGrantedAuthority(UserRole.DEPUTY.getValue()));
+		}
+		else if("worker".equals(position)) {
+			authorities.add(new SimpleGrantedAuthority(UserRole.WORKER.getValue()));
+		}
+		else {
+			authorities.add(new SimpleGrantedAuthority(UserRole.INTERN.getValue()));
+		}
 		return new User(users.getUsername(), users.getPassword(), authorities); //인증 정보와 인가(권한)을 함께 User()를 통해 넘겨줌
 	}
 
