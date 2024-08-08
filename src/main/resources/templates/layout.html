@@ -9,6 +9,8 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 		<script th:src="@{/bootstrap.min.js}"></script>
 		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+		
+		
 		<script th:src="@{/script.js}"></script>
 		<script>
 			function startTime() {
@@ -32,6 +34,12 @@
 			    return i;
 			}
 		</script>
+		
+		<!-- fullcalendar CDN -->
+		<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
+		<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
+		<!-- fullcalendar 언어 CDN -->
+		<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
 		<!--캘린더-->
 		<style>
 			.offcanvas-end {
@@ -42,13 +50,12 @@
 				text-decoration: none;
 			}
 		</style>
-		<script th:src="@{/index.global.min.js}"></script>	
 		<script>
-
 			document.addEventListener('DOMContentLoaded', function() {
 			var calendarEl = document.getElementById('calendar');
 			var calendar = new FullCalendar.Calendar(calendarEl, {
 				initialView: 'dayGridMonth',
+				locale: 'ko',
 				events: '',
 				dateClick: function(info){}
 				});
