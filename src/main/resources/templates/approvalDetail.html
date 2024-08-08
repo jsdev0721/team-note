@@ -11,12 +11,12 @@
 						<br/>
 					</div>
 					<div class="btn-group" role="group" aria-label="Basic mixed styles example">
-						<a type="button" class="btn btn-outline-danger" th:href="@{|/approval/update/${id}?status=queue|}">반려</a>
-						<a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=process|}">진행</a>
-						<a type="button" class="btn btn-outline-warning"th:href="@{|/approval/update/${id}?status=process|}">보류</a>
+						<block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-danger" th:href="@{|/approval/update/${id}?status=process|}">제출</a></block>
+						<th:block sec:authorize="hasAuthority('ROLE_DEPUTY')"><a type="button" class="btn btn-outline-primary"th:href="@{|/approval/update/${id}?status=process|}">진행</a></th:block>
+						<th:block sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
+						<th:block th:if="${!approval.status.equals('complete')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-warning"th:href="@{|/approval/update/${id}?status=process|}">보류</a></th:block>
 					</div>
 				</div>
 			</div>
-
 	</div>
 </html>

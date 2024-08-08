@@ -82,10 +82,11 @@ public class ApprovalController {
 	}
 	
 	@GetMapping("/detail/{id}")
-	public String approvalDetail(Model model , @PathVariable("id")Integer id) {
+	public String approvalDetail(Model model , @PathVariable("id")Integer id , Principal principal) {
 		Approval approval = this.approvalService.findById(id);
 		model.addAttribute("approval", approval);
 		model.addAttribute("fileList", approval.getFileList());
+		model.addAttribute("userInfo", this.userService.getUser(principal.getName()));
 		return "approvalDetail";
 	}
 	
