@@ -1,6 +1,6 @@
 <html layout:decorate="~{layout}">
 	<div layout:fragment="content" class="container">
-		<form th:action="@{/approval/create}" method="post" enctype="multipart/form-data">
+		<form th:action="@{|/approval/edit/${approval.approvalId}|}" method="post" enctype="multipart/form-data">
 			<div class="card" th:object="${approvalForm}">
 				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
 				<select class="form-select" aria-label="Default select example" th:field="*{departmentName}">
@@ -9,9 +9,9 @@
 				  <option value="HR">휴가</option>
 				  <option value="Accounting">비용처리</option>
 				</select>
-				<h5 class="card-header"><input type="text" th:field="*{title}" /></h5>
+				<h5 class="card-header"><input type="text" th:value="${approval.title}" name="title" /></h5>
 				<div class="card-body">
-					<h5 class="card-title"><textarea th:field="*{content}"></textarea></h5>
+					<h5 class="card-title"><textarea th:text="${approval.content}" name="content"></textarea></h5>
 					<label for="formFileMultiple" class="form-label">파일업로드</label>
                     <input class="form-control" type="file" id="formFileMultiple" name="multipartFiles" multiple>
 					<input class="btn btn-success" type="submit" value="등록하기" />

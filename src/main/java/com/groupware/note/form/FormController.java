@@ -1,10 +1,12 @@
 package com.groupware.note.form;
 
 import java.security.Principal;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +16,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.core.io.Resource;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.notice.SearchListForm;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
+
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -49,12 +52,18 @@ public class FormController {
 		
 		return "forms_list";
 	}
-	@GetMapping("/detail/{formsId}")
-	public String detail(Model model,@PathVariable("formsId") Integer formsId) {
-		Forms forms = this.formService.getForm(formsId);
+	@GetMapping("/detail/{formId}")
+	public String detail(Model model,@PathVariable("formId") Integer formId) {
+		Forms forms = this.formService.getForm(formId);
+		model.addAttribute("fileList",forms.getFileList());
 		model.addAttribute("forms",forms);
 		
 		return "forms_detail";
+	}
+	@GetMapping("/download/{formId}")
+	public ResponseEntity<Resource> download(@PathVariable("formId") Integer formsId){
+		Files files = this.fileService.findByFiles(formsId);
+		return this.fileService.downloadFile(files);
 	}
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/create")

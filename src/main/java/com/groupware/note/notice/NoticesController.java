@@ -2,6 +2,7 @@ package com.groupware.note.notice;
 
 import java.security.Principal;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,10 +62,11 @@ public class NoticesController {
 		return "notices_detail";
 	}
 	@GetMapping("/download/{noticeId}")
-	public ResponseEntity<Resource> download(@PathVariable("noticedId") Integer noticeId){
+	public ResponseEntity<Resource> download(@PathVariable("noticeId") Integer noticeId){
 		Files files= this.fileService.findByFiles(noticeId);
 		return this.fileService.downloadFile(files);
 	}
+	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/create")
 	public String create(NoticeForm noticeForm) {
@@ -87,5 +89,6 @@ public class NoticesController {
 		
 		return "redirect:/notices/list";
 	}
-
+	
+	
 }

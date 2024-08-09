@@ -24,6 +24,11 @@
 		</table>
 		<div>
 			<form th:action="@{/approval/list}" method="post">
+				<select name="status">
+					<option value="queue">QUEUE</option>
+					<option value="process">PROCESS</option>
+					<option value="complete">COMPLETE</option>
+				</select>
 				<input type="text" name="search" />
 				<input type="submit" value="검색" />
 			</form>

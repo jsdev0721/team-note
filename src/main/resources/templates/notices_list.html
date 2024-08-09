@@ -20,8 +20,8 @@
 			<tr th:each = "notices , loop : ${paging}">
 				<td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
 				<!--<td th:text="${loop.count}"></td>-->
-				<td><a th:href="@{|/notices/detail/${notices.noticeId}|}" th:text="${notices.title}"></a>
-				</td>
+				<td><a th:href="@{|/notices/detail/${notices.noticeId}|}" th:text="${notices.title}"></a></td>
+				<td><span th:if="${notices.user != null}" th:text="${notices.user.username}"></span></td>
 				<td th:text="${#temporals.format(notices.createDate , 'yyyy-MM-dd HH:mm')}"></td>
 			</tr>
 		</tbody>
