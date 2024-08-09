@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.groupware.note.leave.LeaveForm;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -14,7 +16,7 @@ public class NoteController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/")
-	public String defalut(Model model) {
+	public String defalut(Model model, LeaveForm leaveForm) {
 		return "index";
 	}
 
