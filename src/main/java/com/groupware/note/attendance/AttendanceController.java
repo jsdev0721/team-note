@@ -1,6 +1,8 @@
 package com.groupware.note.attendance;
 
 import java.security.Principal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,8 +29,30 @@ public class AttendanceController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
 	public String getList(Principal principal, Model model) {
+		Users user = this.userService.getUser(principal.getName()); // 유저 정보 불러오기
+		List<String> dateList = this.attendanceService.getDateList(user.getUserId()); // "월-별" String List 불러오기
+		String date = dateList.get(dateList.size() - 1); // 맨 마지막 날짜를 String date 에 저장
+		dateList.remove(dateList.size() - 1); // 해당 내용 삭제 (html에서 select에 표시안하게 하려고)
+		dateList.sort(Comparator.reverseOrder()); // 역순정렬
+		model.addAttribute("date", date); // select 기본글
+		model.addAttribute("dateList", dateList); // select 내용물
+		
+		List<Attendance> attendanceList = this.attendanceService.getAttendanceList(user.getUserId(), date); // 맨마지막날짜(년-월)에 해당하는 데이터 가져오기 
+		model.addAttribute("attendanceList", attendanceList);
+		return "attendanceList";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/list")
+	public String postList(Principal principal, Model model, @RequestParam("date") String date) {
 		Users user = this.userService.getUser(principal.getName());
-		List<Attendance> attendanceList = this.attendanceService.attendanceList(user.getUserId());
+		List<String> dateList = this.attendanceService.getDateList(user.getUserId());
+		dateList.remove(new String(date));
+		dateList.sort(Comparator.reverseOrder());
+		model.addAttribute("date", date);
+		model.addAttribute("dateList", dateList);
+		
+		List<Attendance> attendanceList = this.attendanceService.getAttendanceList(user.getUserId(), date);
 		model.addAttribute("attendanceList", attendanceList);
 		return "attendanceList";
 	}
