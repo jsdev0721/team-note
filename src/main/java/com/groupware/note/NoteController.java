@@ -16,7 +16,7 @@ public class NoteController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/")
-	public String defalut(Model model, LeaveForm leaveForm) {
+	public String defalut(Model model) {
 		return "index";
 	}
 

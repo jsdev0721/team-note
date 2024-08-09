@@ -180,18 +180,17 @@
 							
 						</div>
 						<div class="content">
-							<form th:action="@{/user/leave}" th:object="${leaveForm}" method="post" enctype="multipart/form-data">
-								<div th:replace="~{form_errors :: formErrorsFragment}"></div>
+							<form th:action="@{/user/leave}" method="post" enctype="multipart/form-data">
 								
 								<div class="high"><!-- 휴가 날짜, 첨부파일 -->
 									<div class="leaveDate"><!-- 휴가 날짜 입력 -->
-										<input type="date" class="form-control" th:field="*{startDate}" placeholder="휴가 시작 날짜">
-										<input type="date" class="form-control" th:field="*{endDate}" placeholder="휴가 종료 날짜">
+										<input type="date" class="form-control" name="startDate" placeholder="휴가 시작 날짜">
+										<input type="date" class="form-control" name="endDate" placeholder="휴가 종료 날짜">
 									</div>
 									<input type="file" class="form-control" id="formFileMultiple" name="multipartFiles" multiple>
 								</div><!-- high end -->
 								<div class="low"><!-- 휴가 사유(reason) -->
-									<input type="text" class="form-control" th:field="*{reason}" placeholder="사유 입력">
+									<input type="text" class="form-control" name="reason" placeholder="사유 입력">
 								</div><!-- low -->
 								<button type="submit" class="btn btn-primary">신청</button>
 							</form>
