@@ -89,6 +89,42 @@ public class NoticesController {
 		
 		return "redirect:/notices/list";
 	}
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/update/{noticeId}") 
+	public String update(Model model,@PathVariable("noticeId") Integer noticeId,NoticeForm noticeForm,Principal principal) {
+		
+		Notices notices = this.noticesService.getNotice(noticeId);
+		noticeForm.setTitle(notices.getTitle());
+		noticeForm.setContent(notices.getContent());
+		model.addAttribute("notices",notices);
+		
+		return "notices_update";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/update/{noticeId}")	
+	public String update(Notices notices,@PathVariable("noticeId") Integer noticeId
+			,@Valid NoticeForm noticeForm,BindingResult bindingResult,Principal principal) {
+		if(bindingResult.hasErrors()) {
+			
+			return "notices_update";
+		}
+	
+		Notices notices2 = this.noticesService.getNotice(noticeId);
+		List<Files> files = new ArrayList<>();
+		files = this.fileService.uploadFile(noticeForm.getMultiPartFile());
+		Users users = this.userService.getUser(principal.getName());
+		this.noticesService.updateNotice(notices , noticeForm.getTitle(), noticeForm.getContent(),users,files);
+		
+		return "redirect:/notices/list";
+	}
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/delete/{noticeId}")
+	public String delete(@PathVariable("noticeId") Integer noticeId) {
+		this.noticesService.deleteNotices(noticeId);
+		
+		return "redirect:/notices/list";
+	}
 	
 	
 }

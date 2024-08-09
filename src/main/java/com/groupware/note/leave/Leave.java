@@ -1,7 +1,9 @@
 package com.groupware.note.leave;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
 
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +35,8 @@ public class Leave {
 	
 	private String reason;
 	
-	private String attachment;
+	@OneToMany
+	private List<Files> attachment;
 	
 	private String status;
 	
