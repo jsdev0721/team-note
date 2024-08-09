@@ -34,8 +34,12 @@ public class UserController {
 	private final FileService fileService;
 	
 	@GetMapping("/login")
-	public String login() {
-		return "login";
+	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
+		if(principal != null) {
+			return "redirect:/";
+		}else {			
+			return "login";
+		}
 	}
 	
 	@GetMapping("/regist")
