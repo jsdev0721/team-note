@@ -37,6 +37,8 @@ public class Attendance {
 	
 	private LocalTime workTime;
 	
+	private LocalTime overTime;
+	
 	private String reason;
 	
 }

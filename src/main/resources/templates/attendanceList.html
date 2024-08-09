@@ -3,7 +3,24 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/index.css}">
 		<title>note</title>
 	</head>
-	<div layout:fragment="content" class="container my-3" id="main">
+	<div layout:fragment="content" class="container my-3">
+		
+		<form method="post" th:action="@{/attendance/list}">
+			<div class="row justify-content-start my-3">
+				<div class="col-4">
+					<select class="form-select" name="date">
+		  			<option selected th:text="${date}"></option>
+					<tr th:each="dateList : ${dateList}">
+		  				<option th:value="${dateList}" th:text="${dateList}"></option>
+						</select>
+					</tr>
+				</div>
+				<div class="col-4">
+					<button class="btn" type="submit" style="background-color: rgb(32, 62, 110); color: white">확인</button>
+				</div>
+			</div>
+		</form>
+
 		<table class = "table table-hover table-bordered" style="text-align: center; border-color: rgb(32, 62, 110);">
 			<thead>
 				<tr>
@@ -18,10 +35,11 @@
 			<tbody>
 				<tr th:each="attendance : ${attendanceList}">
 					<td th:text="${#temporals.format(attendance.checkInTime, 'YYYY-MM-dd')}"></td>
-					<td th:text="${#temporals.format(attendance.checkInTime, 'HH:mm')}"></td>
+					<td th:if="${#temporals.format(attendance.checkInTime, 'HH')} <= 09" th:text="${#temporals.format(attendance.checkInTime, 'HH:mm')}"></td>
+					<td th:if="${#temporals.format(attendance.checkInTime, 'HH')} > 09" th:text="${#temporals.format(attendance.checkInTime, 'HH:mm')}" style="color: red"></td>
 					<td th:text="${#temporals.format(attendance.checkOutTime, 'HH:mm')}"></td>
 					<td th:text="${#temporals.format(attendance.workTime, 'HH:mm')}"></td>
-					<td></td>
+					<td th:text="${#temporals.format(attendance.overTime, 'HH:mm')}"></td>
 				</tr>
 			</tbody>
 		</table>

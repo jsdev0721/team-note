@@ -44,6 +44,7 @@ public class NoticesService {
 			}
 	}
 	public void create(String title,String content, Users users,List<Files> fileList) {//공지사항 작성날짜
+		
 		Notices notices = new Notices();
 		notices.setTitle(title);
 		notices.setContent(content);
@@ -53,7 +54,7 @@ public class NoticesService {
 		this.noticesRepository.save(notices);
 		
 	}
-	public void updateNotice(Notices notices, String title,String content, Users users,List<Files> fileList) {
+	public void updateNotice(Notices notices, String title,String content,Users users,List<Files> fileList) {
 		
 		notices.setTitle(title);
 		notices.setContent(content);
@@ -61,6 +62,9 @@ public class NoticesService {
 		notices.setFileList(fileList);
 		notices.setCreateDate(LocalDateTime.now());
 		this.noticesRepository.save(notices);
+	}
+	public void deleteNotices(Integer noticesId) {
+		this.noticesRepository.deleteById(noticesId);
 	}
 		
 }
