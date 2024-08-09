@@ -13,7 +13,8 @@
 				<a class="form-control btn btn-primary" id="formFileMultiple" th:text="${file.originFileName}"
 					th:href="@{|/notices/download/${file.fileId}|}"></a>
 			</div>
-			<a th:href="@{/notices/update}" class="btn btn-success my-3">글 수정</a>
+			<a th:href="@{|/notices/update/${notices.noticeId}|}" class="btn btn-success my-3">글 수정</a>
+			<a th:href="@{|/notices/delete/${notices.noticeId}|}" class="btn btn-success my-3">글 삭제</a>
 		</div>
 		<br>
 	</div>	
