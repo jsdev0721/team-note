@@ -38,6 +38,8 @@ public class Approval {
 
 	private LocalDateTime updateTime; //0729 추가생성
 	
+	private List<String> userSign;
+	
 	@ManyToOne
 	@JoinColumn(name = "department_id")
 	private Departments department;

@@ -64,4 +64,7 @@ public class ApprovalService {
 		Pageable pageable = getPageable(page);
 		return this.approvalRepository.findByDepartmentAndStatusAndTitleLike(department, status, search, pageable);
 	}
+	public void deleteById(Integer id) {
+		this.approvalRepository.deleteById(id);
+	}
 }

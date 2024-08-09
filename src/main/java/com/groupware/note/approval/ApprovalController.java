@@ -21,6 +21,8 @@ import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
+import com.groupware.note.user.UserDetails;
+import com.groupware.note.user.UserDetailsService;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
 
@@ -35,6 +37,7 @@ public class ApprovalController {
 	private final UserService userService;
 	private final FileService fileService;
 	private final DepartmentService departmentService;
+	private final UserDetailsService userDetailsService;
 	
 	public Page<Approval> getPageable(int page , List<Approval> approvalList){
 		return this.approvalService.getPage(0, approvalList);
@@ -73,7 +76,9 @@ public class ApprovalController {
 			}
 			_approval.setTitle(approvalForm.getTitle());
 			_approval.setContent(approvalForm.getContent());
-			_approval.setFileList(this.fileService.uploadFile(approvalForm.getMultipartFiles()));
+			if(!approvalForm.getMultipartFiles().isEmpty()) {
+				_approval.setFileList(this.fileService.uploadFile(approvalForm.getMultipartFiles()));
+			}
 			Approval approval = this.approvalService.save(_approval);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,20 +102,65 @@ public class ApprovalController {
 	}
 	
 	@GetMapping("/update/{id}")
-	public String changeStatus(@PathVariable("id")Integer id , @RequestParam(value = "status")String status) {
+	public String changeStatus(@PathVariable("id")Integer id , @RequestParam(value = "status")String status , Principal principal) {
 		Approval approval = this.approvalService.findById(id);
 		approval.setStatus(status);
+		if(status.equals("queue")) {
+			approval.getUserSign().clear();
+			return "redirect:/approval/list";
+		}
+		Users user = this.userService.getUser(principal.getName());
+		UserDetails userDetail = this.userDetailsService.findByUser(user);
+		if(approval.getUserSign()==null) {
+			List<String> _userSign = new ArrayList<>();
+			_userSign.add(userDetail.getName());
+			approval.setUserSign(_userSign);
+		}
+		else {
+			approval.getUserSign().add(userDetail.getName());			
+		}
+		
 		this.approvalService.save(approval);
 		return "redirect:/approval/list";
 	}
 	
 	@PostMapping("/list")
-	public String serch(Model model , @RequestParam(value = "status" , defaultValue = "queue") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal , @RequestParam(value = "search")String search) {
+	public String serch(Model model , @RequestParam(value = "status") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal , @RequestParam(value = "search")String search) {
 		String _search = "%"+search+"%";
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
 		Page<Approval> approvalList =  this.approvalService.findByLike(_search , department , status , page);
 		model.addAttribute("approvalList" , approvalList);
 		return "approvalList";
+	}
+	@GetMapping("/edit/{id}")
+	public String edit(ApprovalForm approvalForm , @PathVariable("id")Integer id , Model model) {
+		Approval approval = this.approvalService.findById(id);
+		model.addAttribute("approval", approval);
+		return "approvalEdit";
+	}
+	@PostMapping("/edit/{id}")
+	public String edit(Model model , @PathVariable("id")Integer id , @Valid ApprovalForm approvalForm , BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			model.addAttribute("approval", this.approvalService.findById(id));
+			return "approvalEdit";
+		}
+		Approval approval = this.approvalService.findById(id);
+		approval.setTitle(approvalForm.getTitle());
+		approval.setContent(approvalForm.getContent());
+		if(!approvalForm.getMultipartFiles().isEmpty()) {
+			approval.setFileList(this.fileService.uploadFile(approvalForm.getMultipartFiles()));
+		}
+		if(!approvalForm.getDepartmentName().equals("General")) {
+			Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
+			approval.setDepartment(department);
+		}
+		this.approvalService.save(approval);		
+		return String.format("redirect:/approval/detail/%s", id);
+	}
+	@GetMapping("/delete/{id}")
+	public String delete(@PathVariable("id")Integer id) {
+		this.approvalService.deleteById(id);
+		return "redirect:/approval/list";
 	}
 }
