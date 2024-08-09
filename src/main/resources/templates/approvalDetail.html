@@ -3,14 +3,14 @@
 		<div class="card">
 			<h5 class="card-header" th:text="${approval.title}"></h5>
 			<div class="card-body">
-				<div class="text-end">
+				<div class="text-end" style="float: right;">
 					<table class="table table-bordered border-primary">
 						<tr>
 							<th>작성자</th>
 							<th>대리</th>
 							<th>과장</th>
 						</tr>
-						<tr>
+						<tr style="text-align: center;border-right: 1px solid #000;">
 							<th th:each="signList : ${approval.userSign}" th:text="${signList}"></th>
 						</tr>
 					</table>
