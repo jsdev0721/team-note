@@ -1,22 +1,24 @@
 <html layout:decorate="~{layout}">
 	<div layout:fragment="content" class="container">
-
-			<div class="card">
-				<h5 class="card-header" th:text="${approval.title}"></h5>
-				<div class="card-body">
-					<h5 class="card-title" th:text="${approval.content}"></h5>
-					<div class="card-text"  th:each="file : ${fileList}" th:if="${!fileList.isEmpty()}">
-						<label for="form" class="form-label">다운로드</label>
-                   		<a class="form-control btn btn-primary" id="form"th:text="${file.originFileName}" th:href="@{|/approval/download/${file.fileId}|}"></a>
-						<br/>
-					</div>
-					<div class="btn-group" role="group" aria-label="Basic mixed styles example">
-						<block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-danger" th:href="@{|/approval/update/${id}?status=process|}">제출</a></block>
-						<th:block sec:authorize="hasAuthority('ROLE_DEPUTY')"><a type="button" class="btn btn-outline-primary"th:href="@{|/approval/update/${id}?status=process|}">진행</a></th:block>
-						<th:block sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
-						<th:block th:if="${!approval.status.equals('complete')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-warning"th:href="@{|/approval/update/${id}?status=process|}">보류</a></th:block>
-					</div>
+		<div class="card">
+			<h5 class="card-header" th:text="${approval.title}"></h5>
+			<div class="card-body">
+				<h5 class="card-title" th:text="${approval.content}"></h5>
+				<div class="card-text"  th:each="file : ${fileList}" th:if="${!fileList.isEmpty()}">
+					<label for="form" class="form-label">다운로드</label>
+               		<a class="form-control btn btn-primary" id="form"th:text="${file.originFileName}" th:href="@{|/approval/download/${file.fileId}|}"></a>
+					<br/>
+				</div>
+				<div class="btn-group" role="group" aria-label="Basic mixed styles example">
+					<block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-danger" th:href="@{|/approval/update/${id}?status=process|}">제출</a></block>
+					<th:block sec:authorize="hasAuthority('ROLE_DEPUTY')"><a type="button" class="btn btn-outline-primary"th:href="@{|/approval/update/${id}?status=process|}">진행</a></th:block>
+					<th:block sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
+					<th:block th:if="${!approval.status.equals('complete')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-warning"th:href="@{|/approval/update/${id}?status=process|}">보류</a></th:block>
 				</div>
 			</div>
+		</div>
+		<div>
+			<a type="button" class="btn btn-outline-primary" th:href="@{/approval/list}" >목록</a>
+		</div>
 	</div>
 </html>

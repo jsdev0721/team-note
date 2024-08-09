@@ -8,27 +8,27 @@
 		<div id="approval">
 			<div class="txt d-flex justify-content-between">
 				<h3>결재</h3>
-				<a href="#"><img src="/images/plus_site.png"></a>
+				<a th:href="@{/approval/list}"><img src="/images/plus_site.png"></a>
 			</div>
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item" role="presentation">
-					<a href="#" class="nav-link active" data-bs-toggle="tab" role="tab" aria-selected="true">결재 대기</a>
+					<a th:href="@{/approval/list?status=queue}" class="nav-link active" data-bs-toggle="tab" role="tab" aria-selected="true">결재 대기</a>
 				</li>
 				<li class="nav-item" role="presentation">
-				    <a href="#" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 중</a>
+				    <a th:href="@{/approval/list?status=process}" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 중</a>
 				</li>
 				<li class="nav-item" role="presentation">
-				    <a href="#" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 완료</a>
+				    <a th:href="@{/approval/list?status=complete}" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 완료</a>
 				</li>
 			</ul>
 		</div>
 		<!-- 결재 -->
-		
+	
 		<div id="right"> <!-- 오른쪽 배치 (공지, 서식, 복지몰) -->
 			<div id="notice">
 				<div class="txt d-flex justify-content-between">
 					<h3>공지사항</h3>
-					<a href="#"><img src="/images/plus_site.png"></a>
+					<a th:href="@{/notices/list}"><img src="/images/plus_site.png"></a>
 				</div>
 			</div> <!-- notice end -->
 			<div id="welfaremall">
@@ -40,7 +40,7 @@
 			<div id="publicForm">
 				<div class="txt d-flex justify-content-between">
 					<h3>서식게시판</h3>
-					<a href="#"><img src="/images/plus_site.png"></a>
+					<a th:href="@{/forms/list}"><img src="/images/plus_site.png"></a>
 				</div>
 			</div> <!-- form end -->
 		</div>

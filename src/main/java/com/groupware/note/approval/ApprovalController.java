@@ -101,7 +101,7 @@ public class ApprovalController {
 		Approval approval = this.approvalService.findById(id);
 		approval.setStatus(status);
 		this.approvalService.save(approval);
-		return String.format("redirect:/approval/detail/%s", id);
+		return "redirect:/approval/list";
 	}
 	
 	@PostMapping("/list")
