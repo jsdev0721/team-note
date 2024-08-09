@@ -53,12 +53,19 @@ public class NoticesService {
 		this.noticesRepository.save(notices);
 		
 	}
-	/*public List<Notices> search(String searchkeyword){
-		List<Notices> noticesList = noticesRepository.findByTitleContaining(searchkeyword);
-		return this.noticesRepository.findByTitleLike(searchkeyword)
-	}*/
+	public void updateNotice(Notices notices, String title,String content, Users users,List<Files> fileList) {
+		
+		notices.setTitle(title);
+		notices.setContent(content);
+		notices.setUser(users);
+		notices.setFileList(fileList);
+		notices.setCreateDate(LocalDateTime.now());
+		this.noticesRepository.save(notices);
+	}
+		
+}
 	
 	
 		
 	
-}
+

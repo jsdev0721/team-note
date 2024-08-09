@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.groupware.note.files.FileRepository;
+import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 
 import lombok.RequiredArgsConstructor;

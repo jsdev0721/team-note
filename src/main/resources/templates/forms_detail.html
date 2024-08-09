@@ -1,20 +1,20 @@
 <html layout:decorate="~{layout}">
 	<head>
-		<title>공지사항</title>
+		<title>서식 게시판</title>
 	</head>
+	
 	<div layout:fragment="content" class="container">
-		<h2 class="card-header" th:text="${notices.title}"></h2>
+		<h2 class="card-header" th:text="${forms.title}"></h2>
 		<br>
 		<div class="card-body">
-			<h5 class="card-title" th:text="${notices.content}"></h5>
-		<br>
+			<h5 class="card-title" th:text="${forms.content}"></h5>
+			<br>
 			<label for="formFileMultiple" class="form-label">다운로드</label>
 			<div class="card-text" th:each="file : ${fileList}">
 				<a class="form-control btn btn-primary" id="formFileMultiple" th:text="${file.originFileName}"
-					th:href="@{|/notices/download/${file.fileId}|}"></a>
+					th:href="@{|/forms/download/${file.fileId}|}"></a>	
+			<br>
 			</div>
-			<a th:href="@{/notices/update}" class="btn btn-success my-3">글 수정</a>
 		</div>
-		<br>
 	</div>	
 </html>
