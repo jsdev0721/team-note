@@ -160,7 +160,14 @@ public class ApprovalController {
 	}
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id")Integer id) {
+		Approval approval = this.approvalService.findById(id);
+		List<Files> fileList = approval.getFileList();
 		this.approvalService.deleteById(id);
+		if(!fileList.isEmpty()) {
+			for(Files file : fileList) {
+				this.fileService.delete(file);
+			}
+		}
 		return "redirect:/approval/list";
 	}
 }

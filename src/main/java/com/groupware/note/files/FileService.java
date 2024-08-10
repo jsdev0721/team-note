@@ -146,5 +146,11 @@ public class FileService {
 		}
 		return _file.get();
 	}
-	
+	public void delete(Files _file) {
+		String filePath = getFilePath(_file.getOriginFileName(), _file.getStoreFileName());
+		File file = new File(filePath);
+		if(file.delete()) {
+			this.fileRepository.delete(_file);
+		}
+	}
 }

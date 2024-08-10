@@ -8,6 +8,7 @@ import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,6 +45,6 @@ public class Approval {
 	@JoinColumn(name = "department_id")
 	private Departments department;
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Files> fileList;
 }
