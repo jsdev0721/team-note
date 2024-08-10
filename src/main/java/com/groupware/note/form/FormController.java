@@ -39,7 +39,7 @@ public class FormController {
 	@GetMapping("/list")
 	public String formsList(Model model
 			,@RequestParam(value = "page",defaultValue="0") int page, SearchListForm searchListForm) {
-		Page<Forms> formsList = this.formService.formsList(page);
+		Page<Forms> formsList = this.formService.formsList(page , 10);
 		model.addAttribute("paging",formsList);
 		
 		return "forms_list";

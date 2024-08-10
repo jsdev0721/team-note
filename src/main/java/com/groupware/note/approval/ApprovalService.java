@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,23 +22,18 @@ import lombok.RequiredArgsConstructor;
 public class ApprovalService {
 	private final ApprovalRepository approvalRepository;
 	
-	public Page<Approval> getPage(int page , List<Approval> _approvalList){
-		
-		Pageable pageable = getPageable(page);
-		return new PageImpl<>(_approvalList, pageable, _approvalList.size());
-	}
-	public Pageable getPageable(int page) {
+	public Pageable getPageable(int page,int quantity) {
 		List<Sort.Order>sorts = new ArrayList<>();
 		sorts.add(Sort.Order.desc("updateTime"));
-		return  PageRequest.of(page, 10, Sort.by(sorts));
+		return  PageRequest.of(page, quantity, Sort.by(sorts));
 	}
-	public Page<Approval> ApprovalList(Departments department , String status , int page) {
-		Pageable pageable = getPageable(page);
+	public Page<Approval> ApprovalList(Departments department , String status , int page , int quantity) {
+		Pageable pageable = getPageable(page , quantity);
 		return this.approvalRepository.findByDepartmentAndStatus(department, status, pageable);
 	}
 	
-	public Page<Approval> ApprovalfindbyUser(Users user , int page) {
-		Pageable pageable = getPageable(page);
+	public Page<Approval> ApprovalfindbyUser(Users user , int page , int quantity) {
+		Pageable pageable = getPageable(page , quantity);
 		return this.approvalRepository.findByUser(user , pageable);
 	}
 	
@@ -60,11 +54,12 @@ public class ApprovalService {
 		return _approval.get();
 	}
 	
-	public Page<Approval> findByLike(String search , Departments department , String status , int page) {
-		Pageable pageable = getPageable(page);
-		return this.approvalRepository.findByDepartmentAndStatusAndTitleLike(department, status, search, pageable);
+	public Page<Approval> findByLike(String search , Departments department , String status , int page , int quantity) {
+		String _search = "%"+search+"%";
+		Pageable pageable = getPageable(page , quantity);
+		return this.approvalRepository.findByDepartmentAndStatusAndTitleLike(department, status, _search, pageable);
 	}
-	public void deleteById(Integer id) {
-		this.approvalRepository.deleteById(id);
+	public void deleteById(Approval approval) {
+		this.approvalRepository.delete(approval);
 	}
 }

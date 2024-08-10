@@ -40,7 +40,7 @@ public class NoticesController {
 	@GetMapping("/list")
 	public String noticeList(Model model
 			,@RequestParam(value ="page",defaultValue="0") int page, SearchListForm searchListForm) {
-		Page<Notices> noticesList = this.noticesService.noticesList(page);
+		Page<Notices> noticesList = this.noticesService.noticesList(page,10);
 		model.addAttribute("paging",noticesList);
 		
 		return "notices_list";

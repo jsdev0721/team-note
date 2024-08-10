@@ -12,15 +12,27 @@
 			</div>
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item" role="presentation">
-					<a th:href="@{/approval/list?status=queue}" class="nav-link active" data-bs-toggle="tab" role="tab" aria-selected="true">결재 대기</a>
+					<a th:href="@{?status=queue}" class="nav-link active" data-bs-toggle="tab" role="tab" aria-selected="true">결재 대기</a>
 				</li>
 				<li class="nav-item" role="presentation">
-				    <a th:href="@{/approval/list?status=process}" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 중</a>
+				    <a th:href="@{?status=process}" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 중</a>
 				</li>
 				<li class="nav-item" role="presentation">
-				    <a th:href="@{/approval/list?status=complete}" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 완료</a>
+				    <a th:href="@{?status=complete}" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 완료</a>
 				</li>
 			</ul>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>제목</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="approval : ${approvalList}">
+						<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<!-- 결재 -->
 	
@@ -30,6 +42,18 @@
 					<h3>공지사항</h3>
 					<a th:href="@{/notices/list}"><img src="/images/plus_site.png"></a>
 				</div>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>제목</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="notice : ${noticeList}">
+							<td><a th:href="@{|/notices/detail/${notice.noticeId}|}" th:text="${notice.title}"></a></td>
+						</tr>
+					</tbody>
+				</table>
 			</div> <!-- notice end -->
 			<div id="welfaremall">
 				<div class="txt d-flex justify-content-between">
@@ -42,6 +66,18 @@
 					<h3>서식게시판</h3>
 					<a th:href="@{/forms/list}"><img src="/images/plus_site.png"></a>
 				</div>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>제목</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="form : ${formList}">
+							<td><a th:href="@{|/forms/detail/${form.formId}|}" th:text="${form.title}"></a></td>
+						</tr>
+					</tbody>
+				</table>
 			</div> <!-- form end -->
 		</div>
 		

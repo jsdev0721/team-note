@@ -39,17 +39,21 @@ public class ApprovalController {
 	private final DepartmentService departmentService;
 	private final UserDetailsService userDetailsService;
 	
-	public Page<Approval> getPageable(int page , List<Approval> approvalList){
-		return this.approvalService.getPage(0, approvalList);
-	}
-
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
 	public String approvalList(Model model , @RequestParam(value = "status" , defaultValue = "queue") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal) {
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
-		Page<Approval> approvalList = this.approvalService.ApprovalList(department, status , page);
+		Page<Approval> approvalList = this.approvalService.ApprovalList(department, status , page , 10);
 		model.addAttribute("approvalList", approvalList);
+		return "approvalList";
+	}
+	@PostMapping("/list")
+	public String serch(Model model , @RequestParam(value = "status") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal , @RequestParam(value = "search")String search) {
+		Users user = this.userService.getUser(principal.getName());
+		Departments department = user.getPosition().getDepartment();
+		Page<Approval> approvalList =  this.approvalService.findByLike(search , department , status , page , 10);
+		model.addAttribute("approvalList" , approvalList);
 		return "approvalList";
 	}
 	@PreAuthorize("isAuthenticated()")
@@ -67,11 +71,12 @@ public class ApprovalController {
 			Approval _approval = new Approval();
 			Users user = this.userService.getUser(principal.getName());
 			_approval.setUser(user);
-			if(approvalForm.getDepartmentName().equals("General")) {
-				_approval.setDepartment(user.getPosition().getDepartment());
+			if(!approvalForm.getDepartmentName().equals("General")) {
+				Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
+				_approval.setDepartment(department);
 			}
 			else {
-				Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
+				Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
 				_approval.setDepartment(department);
 			}
 			_approval.setTitle(approvalForm.getTitle());
@@ -124,15 +129,7 @@ public class ApprovalController {
 		return "redirect:/approval/list";
 	}
 	
-	@PostMapping("/list")
-	public String serch(Model model , @RequestParam(value = "status") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal , @RequestParam(value = "search")String search) {
-		String _search = "%"+search+"%";
-		Users user = this.userService.getUser(principal.getName());
-		Departments department = user.getPosition().getDepartment();
-		Page<Approval> approvalList =  this.approvalService.findByLike(_search , department , status , page);
-		model.addAttribute("approvalList" , approvalList);
-		return "approvalList";
-	}
+
 	@GetMapping("/edit/{id}")
 	public String edit(ApprovalForm approvalForm , @PathVariable("id")Integer id , Model model) {
 		Approval approval = this.approvalService.findById(id);
@@ -140,7 +137,7 @@ public class ApprovalController {
 		return "approvalEdit";
 	}
 	@PostMapping("/edit/{id}")
-	public String edit(Model model , @PathVariable("id")Integer id , @Valid ApprovalForm approvalForm , BindingResult bindingResult) {
+	public String edit(Model model , @PathVariable("id")Integer id , @Valid ApprovalForm approvalForm , BindingResult bindingResult , Principal principal) {
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("approval", this.approvalService.findById(id));
 			return "approvalEdit";
@@ -155,14 +152,19 @@ public class ApprovalController {
 			Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
 			approval.setDepartment(department);
 		}
-		this.approvalService.save(approval);		
+		else {
+			Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
+			approval.setDepartment(department);
+		}
+		this.approvalService.save(approval);
 		return String.format("redirect:/approval/detail/%s", id);
 	}
+	
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id")Integer id) {
 		Approval approval = this.approvalService.findById(id);
 		List<Files> fileList = approval.getFileList();
-		this.approvalService.deleteById(id);
+		this.approvalService.deleteById(approval);
 		if(!fileList.isEmpty()) {
 			for(Files file : fileList) {
 				this.fileService.delete(file);

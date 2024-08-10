@@ -23,10 +23,12 @@ public class NoticesService {
 
 	private final NoticesRepository noticesRepository;
 	
-	public Page<Notices> noticesList(int page) {
-		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
-		Pageable pageable = PageRequest.of(page, 10,Sort.by(sorts));
-		
+	public Pageable getPageable(int page , int quantity) {
+		List<Sort.Order> sorts = new ArrayList<>();
+		return PageRequest.of(page, quantity, Sort.by(sorts));
+	}
+	public Page<Notices> noticesList(int page , int quantity) {
+		Pageable pageable = getPageable(page, quantity);
 		return this.noticesRepository.findAll(pageable);
 	}
 	public Page<Notices> noticesSearchList(int page, String searchkeyword) {
