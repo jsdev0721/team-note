@@ -23,7 +23,7 @@ public class LeaveService {
 		leave.setReason(reason);
 		leave.setStartDate(startDate);
 		leave.setEndDate(endDate);
-		if(!files.isEmpty()) {
+		if(files != null) {
 			leave.setAttachment(files);
 		}
 		leave.setStatus("queue");

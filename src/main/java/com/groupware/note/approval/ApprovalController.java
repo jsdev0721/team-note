@@ -117,8 +117,9 @@ public class ApprovalController {
 			_approval.setContent(leaveForm.getReason());
 			_approval.setUserSign(new String[3]);
 			List<Files> files = new ArrayList<>();
-			if(leaveForm.getAttachment() != null) {
-				_approval.setFileList(this.fileService.uploadFile(leaveForm.getAttachment()));
+			if(!leaveForm.getAttachment().isEmpty()) {
+				files = this.fileService.uploadFile(leaveForm.getAttachment());
+				_approval.setFileList(files);
 			}
 			this.leaveService.create(users, leaveForm.getTitle(), leaveForm.getReason(), leaveForm.getStartDate(), leaveForm.getEndDate(), files);
 			this.approvalService.save(_approval);
