@@ -81,6 +81,7 @@ public class ApprovalController {
 			}
 			_approval.setTitle(approvalForm.getTitle());
 			_approval.setContent(approvalForm.getContent());
+			_approval.setUserSign(new String[3]);
 			if(!approvalForm.getMultipartFiles().isEmpty()) {
 				_approval.setFileList(this.fileService.uploadFile(approvalForm.getMultipartFiles()));
 			}
@@ -117,9 +118,6 @@ public class ApprovalController {
 		}
 		Users user = this.userService.getUser(principal.getName());
 		UserDetails userDetail = this.userDetailsService.findByUser(user);
-		if(approval.getUserSign()==null) {
-			approval.setUserSign(signArray);
-		}
 		String[] userSign = approval.getUserSign();
 		for(int i=0 ; i<=userSign.length ; i++) {
 			if(userSign[i]!=null) {
