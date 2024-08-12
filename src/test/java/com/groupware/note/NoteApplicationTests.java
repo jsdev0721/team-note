@@ -1,6 +1,5 @@
 package com.groupware.note;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,6 @@ import com.groupware.note.form.FormService;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.position.PositionRepository;
 import com.groupware.note.position.Positions;
-import com.groupware.note.user.UserDetails;
 import com.groupware.note.user.UserDetailsRepository;
 import com.groupware.note.user.UserDetailsService;
 import com.groupware.note.user.UserService;
@@ -85,6 +83,7 @@ class NoteApplicationTests {
 		Files _file = new Files();
 		_file.setOriginFileName("user.png");
 		_file.setStoreFileName("user.png");
+		
 		this.fileRepository.save(_file);
 		//아이디 비밀번호 temp
 		//로그인은 신규 가입으로 진행할 것

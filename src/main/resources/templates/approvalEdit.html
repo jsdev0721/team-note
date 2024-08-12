@@ -14,6 +14,10 @@
 					<h5 class="card-title"><textarea th:text="${approval.content}" name="content"></textarea></h5>
 					<label for="formFileMultiple" class="form-label">파일업로드</label>
                     <input class="form-control" type="file" id="formFileMultiple" name="multipartFiles" multiple>
+					<div th:each="file : ${fileList}">
+						<span th:text="${file.originFileName}"></span>
+						<a class="btn btn-danger" th:href="@{|/approval/deleteFile/${approval.approvalId}/${file.fileId}|}">x</a>
+					</div>
 					<input class="btn btn-success" type="submit" value="등록하기" />
 				</div>
 			</div>

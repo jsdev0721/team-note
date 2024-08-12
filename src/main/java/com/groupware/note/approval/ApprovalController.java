@@ -125,22 +125,28 @@ public class ApprovalController {
 	@GetMapping("/update/{id}")
 	public String changeStatus(@PathVariable("id")Integer id , @RequestParam(value = "status")String status , Principal principal) {
 		Approval approval = this.approvalService.findById(id);
+		String[] signArray = new String[3];
 		approval.setStatus(status);
 		if(status.equals("queue")) {
-			approval.getUserSign().clear();
+			approval.setUserSign(signArray);
 			return "redirect:/approval/list";
 		}
 		Users user = this.userService.getUser(principal.getName());
 		UserDetails userDetail = this.userDetailsService.findByUser(user);
 		if(approval.getUserSign()==null) {
-			List<String> _userSign = new ArrayList<>();
-			_userSign.add(userDetail.getName());
-			approval.setUserSign(_userSign);
+			approval.setUserSign(signArray);
 		}
-		else {
-			approval.getUserSign().add(userDetail.getName());			
+		String[] userSign = approval.getUserSign();
+		for(int i=0 ; i<=userSign.length ; i++) {
+			if(userSign[i]!=null) {
+				signArray[i]=userSign[i];
+			}
+			else {
+				signArray[i]=userDetail.getName();
+				break;
+			}
 		}
-		
+		approval.setUserSign(signArray);
 		this.approvalService.save(approval);
 		return "redirect:/approval/list";
 	}
@@ -150,6 +156,7 @@ public class ApprovalController {
 	public String edit(ApprovalForm approvalForm , @PathVariable("id")Integer id , Model model) {
 		Approval approval = this.approvalService.findById(id);
 		model.addAttribute("approval", approval);
+		model.addAttribute("fileList", approval.getFileList());
 		return "approvalEdit";
 	}
 	@PostMapping("/edit/{id}")
@@ -161,9 +168,12 @@ public class ApprovalController {
 		Approval approval = this.approvalService.findById(id);
 		approval.setTitle(approvalForm.getTitle());
 		approval.setContent(approvalForm.getContent());
-		if(!approvalForm.getMultipartFiles().isEmpty()) {
-			approval.setFileList(this.fileService.uploadFile(approvalForm.getMultipartFiles()));
-		}
+			List<Files> fileList = this.fileService.uploadFile(approvalForm.getMultipartFiles());
+			if(fileList!=null) {
+				for(Files file : fileList) {
+					approval.getFileList().add(file);
+				}
+			}
 		if(!approvalForm.getDepartmentName().equals("General")) {
 			Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
 			approval.setDepartment(department);
@@ -187,5 +197,15 @@ public class ApprovalController {
 			}
 		}
 		return "redirect:/approval/list";
+	}
+	
+	@GetMapping("/deleteFile/{approvalId}/{fileId}")
+	public String fileDelete(@PathVariable("approvalId")Integer id , @PathVariable("fileId")Integer fileId) {
+		Approval approval = this.approvalService.findById(id);
+		List<Files> fileList = approval.getFileList();
+		Files file = this.fileService.findByFiles(fileId);
+		fileList.remove(file);
+		this.fileService.delete(file);
+		return String.format("redirect:/approval/edit/%s", id);
 	}
 }
