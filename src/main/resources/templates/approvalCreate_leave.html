@@ -3,16 +3,16 @@
 		<script>
 			function link() {
 				var select = document.getElementById("department").value;
-				if(select === 'HR') {
-					location.href = "/approval/create/HR";
+				if(select === 'General' || select === 'Accounting') {
+					location.href = "/approval/create";
 				}
 			}
 		</script>
 		<title>결재</title>
 	</head>
 	<div layout:fragment="content" class="container">
-		<form th:action="@{/approval/create}" method="post" enctype="multipart/form-data">
-			<div class="card" th:object="${approvalForm}">
+		<form th:action="@{/approval/create/HR}" method="post" enctype="multipart/form-data">
+			<div class="card" th:object="${leaveForm}">
 				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
 				<select id="department" class="form-select" aria-label="Default select example" th:field="*{departmentName}" onchange="link()">
 				  <option selected value="">부서를 선택하세요.</option>
@@ -22,7 +22,14 @@
 				</select>
 				<h5 class="card-header"><input type="text" th:field="*{title}" placeholder="제목을 입력해 주세요" style="font-size: 16px;"/></h5>
 				<div class="card-body">
-					<h5 class="card-title"><textarea th:field="*{content}" placeholder="내용을 입력해 주세요" style="font-size: 16px;"></textarea></h5>
+					<h5 class="card-title"><textarea th:field="*{reason}" placeholder="사유를 입력해 주세요" style="font-size: 16px;"></textarea></h5>
+					
+					<label for="startDate" class="form-label">휴가 시작 날짜</label>
+					<input type="date" id="startDate" name="startDate" class="form-control">
+					
+					<label for="endDate" class="form-label">휴가 종료 날짜</label>
+					<input type="date" id="endDate" name="endDate" class="form-control">
+					
 					<label for="formFileMultiple" class="form-label">파일업로드</label>
                     <input class="form-control" type="file" id="formFileMultiple" name="multipartFiles" multiple>
 					<input class="btn btn-success" type="submit" value="등록하기" />

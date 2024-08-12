@@ -15,6 +15,12 @@ import lombok.Setter;
 @Setter
 public class LeaveForm {
 	
+	@NotEmpty
+	private String departmentName;
+	
+	@NotEmpty(message = "제목을 입력해 주세요.")
+	private String title;
+	
 	@NotEmpty(message = "휴가 시작 날짜를 입력해 주세요.")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate startDate;
