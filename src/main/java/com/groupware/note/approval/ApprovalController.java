@@ -22,6 +22,7 @@ import com.groupware.note.department.Departments;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.leave.LeaveForm;
+import com.groupware.note.leave.LeaveService;
 import com.groupware.note.user.UserDetails;
 import com.groupware.note.user.UserDetailsService;
 import com.groupware.note.user.UserService;
@@ -34,11 +35,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/approval")
 public class ApprovalController {
+	
 	private final ApprovalService approvalService;
 	private final UserService userService;
 	private final FileService fileService;
 	private final DepartmentService departmentService;
 	private final UserDetailsService userDetailsService;
+	private final LeaveService leaveService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
@@ -104,8 +107,25 @@ public class ApprovalController {
 		if(bindingResult.hasErrors()) {
 			return "approvalCreate_leave";
 		}
-		
-		return "";
+		try {
+			Approval _approval = new Approval();
+			Users users = this.userService.getUser(principal.getName());
+			_approval.setUser(users);
+			Departments department = this.departmentService.findBydepartmentName(leaveForm.getDepartmentName());
+			_approval.setDepartment(department);
+			_approval.setTitle(leaveForm.getTitle());
+			_approval.setContent(leaveForm.getReason());
+			_approval.setUserSign(new String[3]);
+			List<Files> files = new ArrayList<>();
+			if(leaveForm.getAttachment() != null) {
+				_approval.setFileList(this.fileService.uploadFile(leaveForm.getAttachment()));
+			}
+			this.leaveService.create(users, leaveForm.getTitle(), leaveForm.getReason(), leaveForm.getStartDate(), leaveForm.getEndDate(), files);
+			this.approvalService.save(_approval);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/approval/list";
 	}
 	
 	@GetMapping("/detail/{id}")
