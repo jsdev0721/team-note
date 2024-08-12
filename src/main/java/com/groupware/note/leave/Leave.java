@@ -29,6 +29,8 @@ public class Leave {
 	@JoinColumn(name = "user_id")
 	private Users user;
 	
+	private String title;
+	
 	private LocalDate startDate;
 	
 	private LocalDate endDate;

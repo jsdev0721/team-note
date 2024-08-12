@@ -21,6 +21,7 @@ import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
+import com.groupware.note.leave.LeaveForm;
 import com.groupware.note.user.UserDetails;
 import com.groupware.note.user.UserDetailsService;
 import com.groupware.note.user.UserService;
@@ -56,6 +57,7 @@ public class ApprovalController {
 		model.addAttribute("approvalList" , approvalList);
 		return "approvalList";
 	}
+	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/create")
 	public String approvalCreate(ApprovalForm approvalForm) {
@@ -89,6 +91,20 @@ public class ApprovalController {
 			e.printStackTrace();
 		}
 		return "redirect:/approval/list";
+	}
+	
+	@GetMapping("/create/HR")
+	public String approvalCreateLeave(LeaveForm leaveForm) { //휴가폼
+		return "approvalCreate_leave";
+	}
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/create/HR")
+	public String approvalCreateLeave(@Valid LeaveForm leaveForm, BindingResult bindingResult, Principal principal) {
+		if(bindingResult.hasErrors()) {
+			return "approvalCreate_leave";
+		}
+		
+		return "";
 	}
 	
 	@GetMapping("/detail/{id}")
