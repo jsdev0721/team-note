@@ -1,9 +1,11 @@
-package com.groupware.note.calender;
+package com.groupware.note.calendar;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.groupware.note.user.Users;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +18,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-public class Calender {
+public class Calendar {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +26,14 @@ public class Calender {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private Users user;
 	
 	private String title;
-	private String description;
-	private LocalDateTime startTime;
-	private LocalDateTime endTime;
+	private LocalDateTime start;
+	
+	@Column(name = "end_time")
+	private LocalDateTime end;
+	private String color;
 	
 }
