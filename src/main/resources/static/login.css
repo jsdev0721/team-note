@@ -1,5 +1,7 @@
 a{text-decoration: none;color: #000;font-size: 14px;}
 
+.regist{text-decoration: underline;color: rgb(32, 62, 110) !important;}
+
 form{margin-top: 50px !important;padding: 30px;border: 1px solid rgb(32, 62, 110);border-radius: 10px;width: 500px;margin: 0 auto;}
 input{border: 1px solid rgb(32, 62, 110) !important;}
 
