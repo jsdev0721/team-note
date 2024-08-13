@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.groupware.note.DataNotFoundException;
 import com.groupware.note.position.PositionService;
+import com.groupware.note.position.Positions;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +48,18 @@ public class UserService {
 		}else {
 			return new Users();
 		}
+	}
+	
+	public Users getUser(Integer userId) {
+		Optional<Users> users = this.userRepository.findById(userId);
+		if(users.isPresent()) {
+			return users.get();
+		}else {
+			throw new DataNotFoundException("데이터가 존재하지 않습니다.");
+		}
+	
+	
+	
 	}
 
 }
