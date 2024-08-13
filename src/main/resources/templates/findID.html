@@ -8,11 +8,10 @@
 		<title>아이디 찾기</title>
 	</head>
 	<body class="container">
-		<img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;">
+		<a th:href="@{/}"><img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;"></a>
 		<form th:action="@{/user/find/id}" method="post" class="was-validated">
 			
 			<input type="text" id="email" name="email" class="form-control" placeholder="이메일을 입력해 주세요" required>
-			
 			
 			<button type="submit" class="btn btn-success mt-3">아이디 찾기</button>
 		</form>
