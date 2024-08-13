@@ -54,9 +54,62 @@
 			var calendar = new FullCalendar.Calendar(calendarEl, {
 				initialView: 'dayGridMonth',
 				locale: 'ko',
-				events: '',
+				events: '/calendar/get',
+				customButtons: {
+					myCustomButton: {
+						text: '일정추가',
+						click : function(){
+							$("#exampleModal").modal("show");
+						}
+					}
+				},
+				headerToolbar: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'myCustomButton'
+				},
 				dateClick: function(info){}
 				});
+				calendar.render();
+				//모달창 이벤트
+				$("#saveChanges").on("click", function () {
+				      var eventData = {
+				        title: $("#title").val(),
+				        start: $("#start").val(),
+				        end: $("#end").val(),
+				        color: $("#color").val(),
+				      };
+				      //빈값입력시 오류
+				      if (eventData.title == "" || eventData.start == "" || eventData.end == "") {
+				        alert("입력하지 않은 값이 있습니다.");
+				        //끝나는 날짜가 시작하는 날짜보다 값이 크면 안됨
+				      } else if ($("#start").val() > $("#end").val()) {
+				        alert("시간을 잘못입력 하셨습니다.");
+				      } else {
+						$.ajax({
+						    type: "POST",
+						    url: "/calendar/save",
+						    data: eventData,
+						    success: function(response) {
+						        calendar.addEvent(eventData);
+						        $("#exampleModal").modal("hide");
+						        $("#title").val("");
+						        $("#start").val("");
+						        $("#end").val("");
+						        $("#color").val("");
+						    },
+						    error: function(xhr, status, error) {
+						        console.log("Status: " + status);
+						        console.log("Error: " + error);
+						        console.log("Response: " + xhr.responseText);
+						        alert(xhr.responseText);
+						    }
+						});
+
+				        // 이벤트 추가
+				      }
+				});
+				
 				calendar.render();
 			});
 		</script>
@@ -198,5 +251,38 @@
 			</div>
 		</div>
 		<!-- modal popup -->
+		
+		<!-- 캘린더 modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+		        <div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">일정 추가하기</h5>
+		            	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		         	</div>
+		          	<div class="modal-body">
+		            	일정이름 : <input type="text" id="title" name="title" /><br />
+		            	시작시간 : <input type="datetime-local" id="start" /><br />
+		            	종료시간 : <input type="datetime-local" id="end" /><br />
+		            	배경색상 :
+		            	<select id="color">
+		              		<option value="red">빨강색</option>
+		              		<option value="orange">주황색</option>
+		              		<option value="yellow">노랑색</option>
+		              		<option value="green">초록색</option>
+		              		<option value="blue">파랑색</option>
+		              		<option value="indigo">남색</option>
+		              		<option value="purple">보라색</option>
+		            	</select>
+		          	</div>
+		          	<div class="modal-footer">
+		            	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		            	<button type="button" class="btn btn-primary" id="saveChanges">추가</button>
+		          	</div>
+		        </div>
+			</div>
+		</div>
+		<!-- 캘린더 modal -->
+			
 	</body>
 </html>
