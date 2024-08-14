@@ -109,7 +109,6 @@ public class NoticesController {
 			
 			return "notices_update";
 		}
-	
 		Notices notices2 = this.noticesService.getNotice(noticeId);
 		List<Files> files = new ArrayList<>();
 		files = this.fileService.uploadFile(noticeForm.getMultiPartFile());
@@ -121,8 +120,16 @@ public class NoticesController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/delete/{noticeId}")
 	public String delete(@PathVariable("noticeId") Integer noticeId) {
-		this.noticesService.deleteNotices(noticeId);
-		
+		Notices notices =this.noticesService.getNotice(noticeId);
+		List<Files> files = notices.getFileList();
+		if(!files.isEmpty()) {
+			for(Files file : files) {
+		this.noticesService.deleteNotices(notices);
+		System.out.println("게시물 지워우어ㅜㅇ워워우어ㅜ어우");
+		this.fileService.delete(file);
+		System.out.println("파일 지워어워워워워워워워워워");
+			}
+		}
 		return "redirect:/notices/list";
 	}
 	

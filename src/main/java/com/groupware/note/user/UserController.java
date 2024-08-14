@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.groupware.note.attendance.Attendance;
 import com.groupware.note.attendance.AttendanceService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
