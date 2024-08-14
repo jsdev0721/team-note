@@ -16,17 +16,17 @@ public class LeaveService {
 	
 	private final LeaveRepository leaveRepository;
 	
-	public void create(Users users, String title, String reason, LocalDate startDate, LocalDate endDate, List<Files> files) {
+	public void create(Users users, String title, String reason, LocalDate startDate, LocalDate endDate, String status, List<Files> files) {
 		Leave leave = new Leave();
 		leave.setUser(users);
 		leave.setTitle(title);
 		leave.setReason(reason);
 		leave.setStartDate(startDate);
 		leave.setEndDate(endDate);
-		if(files != null) {
+		leave.setStatus(status);
+		if(!files.isEmpty()) {
 			leave.setAttachment(files);
 		}
-		leave.setStatus("queue");
 		this.leaveRepository.save(leave);
 	}
 

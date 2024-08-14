@@ -1,7 +1,7 @@
 form{width: 70%;margin: 0 auto;margin-top: 30px !important;}
 form > div{display: flex;}
 
-form > div label{width: 20%;margin-right: 10px;background-color: rgb(113, 147, 198);border-radius: 5px;padding: 5px;color: #eee;
+form > div label{width: 20%;margin-right: 10px;background-color: rgb(131, 160, 205);border-radius: 5px;padding: 5px;color: #eee;
 	border: 1px solid rgb(32, 62, 110) !important;
 }
 .input{width: 80%;}
@@ -13,5 +13,5 @@ strong{color: rgb(189, 0, 0);}
 
 .txt .close{color: rgb(32, 62, 110);}
 
-.btn{width: 100%;background-color: rgb(32, 62, 110);color: #fff;height: 50px;margin-top: 30px;}
+.btn{width: 100%;background-color: rgb(32, 62, 110);color: #fff;height: 50px;margin-top: 20px;}
 .btn:hover{background-color: rgb(32, 62, 110);color: #fff;}

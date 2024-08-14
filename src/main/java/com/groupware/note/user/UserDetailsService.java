@@ -1,13 +1,18 @@
 package com.groupware.note.user;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
-import com.groupware.note.files.FileRepository;
-import com.groupware.note.files.FileService;
+import com.groupware.note.DataNotFoundException;
+import com.groupware.note.department.DepartmentRepository;
+import com.groupware.note.department.Departments;
 import com.groupware.note.files.Files;
+import com.groupware.note.position.PositionRepository;
+import com.groupware.note.position.Positions;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class UserDetailsService {
 	
 	private final UserDetailsRepository userDetailsRepository;
+	private final UserRepository userRepository;
 	
 	public void create(Users users, String name, LocalDate brithdate, String email, Files files) {
 		UserDetails userDetails = new UserDetails();
@@ -29,6 +35,15 @@ public class UserDetailsService {
 	
 	public UserDetails findByUser(Users users) {
 		Optional<UserDetails> optional = this.userDetailsRepository.findById(users.getUserId());
+		if(optional.isPresent()) {
+			return optional.get();
+		}else {
+			return new UserDetails();
+		}
+	}
+	
+	public UserDetails findByName(String name) {
+		Optional<UserDetails> optional = this.userDetailsRepository.findByName(name);
 		if(optional.isPresent()) {
 			return optional.get();
 		}else {
@@ -52,6 +67,21 @@ public class UserDetailsService {
 			user.setPhoto(photo);
 			this.userDetailsRepository.save(user);
 		}
+	}public List<UserDetails> userfindByAll() {
+		return this.userDetailsRepository.findAll();
 	}
+	public UserDetails getUser(Integer userId) {
+		Optional<UserDetails> getUser = this.userDetailsRepository.findById(userId);
+		if(getUser.isPresent()) { 
+			return getUser.get();
+		}else { throw new DataNotFoundException("데이터를 찾을 수 없습니다");}
+		
+	
+		
+		
+		
+		
+	}
+	
 
 }

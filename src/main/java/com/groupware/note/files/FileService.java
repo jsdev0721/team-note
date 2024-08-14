@@ -58,9 +58,6 @@ public class FileService {
 		String fileType = extendsFile(originFileName);
 		return directory+storeFileName+"."+fileType;
 	}
-	public String getPhotoPath(String originFileName , String storeFileName) {
-		return directory+storeFileName;
-	}
 
 	//upload 메소드 -> List<Files> 으로 return
 	public List<Files> uploadFile(List<MultipartFile> multipartFiles) {
