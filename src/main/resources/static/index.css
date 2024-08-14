@@ -17,4 +17,14 @@ a{text-decoration: none;color: #000 !important;}
 #notice{height: 250px;}
 #publicForm{height: 250px;}
 
+/* calendar */
 .calendar{position: absolute;right: 0;top: 50%;}
+.fc-day-sun a{
+    color: red !important;
+}
+.fc-day-sat a{
+    color: blue !important;
+}
+.offcanvas-end {
+	transition: transform 0.3s ease-in-out ;
+}
