@@ -165,10 +165,10 @@ public class UserController {
 		return "HR_list";
 		
 	}
-	@GetMapping("/detail/{userId}")
+	@GetMapping("/detail/{userId}")//detail에 대한 고유값
 	public String getUser(Model model,@PathVariable("userId") Integer userId) {
 		Users users = this.userService.getUser(userId);
-		Positions positions = this.positionService.findById(userId);
+		Positions positions = users.getPosition();
 		UserDetails userDetails = this.userDetailsService.getUser(userId);
 		List<Attendance> attendance = this.attendanceService.findById(userId);
 		model.addAttribute("users", users);
