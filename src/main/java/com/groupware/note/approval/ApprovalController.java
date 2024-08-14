@@ -156,9 +156,12 @@ public class ApprovalController {
 		Users user = this.userService.getUser(principal.getName());
 		UserDetails userDetail = this.userDetailsService.findByUser(user);
 		String[] userSign = approval.getUserSign();
-		for(int i=0 ; i<=userSign.length ; i++) {
+		for(int i=0 ; i<userSign.length ; i++) {
 			if(userSign[i]!=null) {
 				signArray[i]=userSign[i];
+			}
+			if(status.equals("complete")) {
+				signArray[i]=userDetail.getName();
 			}
 			else {
 				signArray[i]=userDetail.getName();

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.DataNotFoundException;
+import com.groupware.note.user.UserDetails;
 
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -130,7 +131,7 @@ public class FileService {
 	
 	//사진 보이게 하는거
 	public ResponseEntity<Resource> photoView(Files file) throws MalformedURLException{
-		String photoPath = getPhotoPath(file.getOriginFileName() , file.getStoreFileName());
+		String photoPath = getFilePath(file.getOriginFileName() , file.getStoreFileName());
 		UrlResource resource = new UrlResource("file:" + photoPath);
 		return ResponseEntity
 				.ok()
@@ -150,6 +151,17 @@ public class FileService {
 		File file = new File(filePath);
 		if(file.delete()) {
 			this.fileRepository.delete(_file);
+		}else {
+			return;
 		}
+	}
+	public boolean fileExists(UserDetails userDetail) {
+		Files file = userDetail.getPhoto();
+		String filePath = getFilePath(file.getOriginFileName(), file.getStoreFileName());
+		File _file = new File(filePath);
+		if(_file.exists()) {
+			return true;
+		}
+		return false;
 	}
 }
