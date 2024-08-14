@@ -57,9 +57,6 @@ public class FileService {
 		String fileType = extendsFile(originFileName);
 		return directory+storeFileName+"."+fileType;
 	}
-	public String getPhotoPath(String originFileName , String storeFileName) {
-		return directory+storeFileName;
-	}
 
 	//upload 메소드 -> List<Files> 으로 return
 	public List<Files> uploadFile(List<MultipartFile> multipartFiles) {
@@ -130,7 +127,7 @@ public class FileService {
 	
 	//사진 보이게 하는거
 	public ResponseEntity<Resource> photoView(Files file) throws MalformedURLException{
-		String photoPath = getPhotoPath(file.getOriginFileName() , file.getStoreFileName());
+		String photoPath = getFilePath(file.getOriginFileName() , file.getStoreFileName());
 		UrlResource resource = new UrlResource("file:" + photoPath);
 		return ResponseEntity
 				.ok()
