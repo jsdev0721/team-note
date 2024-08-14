@@ -39,20 +39,26 @@
 		<!-- fullcalendar 언어 CDN -->
 		<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
 		<!--캘린더-->
-		<style>
-			.offcanvas-end {
-				transition: transform 0.3s ease-in-out ;
-			}
-			#calendar a{
-				color: inherit;
-				text-decoration: none;
-			}
-		</style>
 		<script>
+			
 			document.addEventListener('DOMContentLoaded', function() {
 			var calendarEl = document.getElementById('calendar');
 			var calendar = new FullCalendar.Calendar(calendarEl, {
+				googleCalendarApiKey: "AIzaSyAgQkdHc7pSj2TBb3j0DnV3OfU-UNqsmt0",
+				eventSources:[{
+					googleCalendarId : 'ko.south_korea#holiday@group.v.calendar.google.com',
+					backgroundColor: 'red',
+				}],
+			
 				initialView: 'dayGridMonth',
+				dayCellClassNames: function(arg) {
+					if (arg.date.getDay() === 6) {
+						return ['fc-day-sat'];
+				    	}
+				    if (arg.date.getDay() === 0) {
+				        return ['fc-day-sun'];
+				       	}
+				    },
 				locale: 'ko',
 				events: '/calendar/get',
 				customButtons: {
@@ -70,7 +76,7 @@
 				},
 				dateClick: function(info){}
 				});
-				calendar.render();
+				
 				//모달창 이벤트
 				$("#saveChanges").on("click", function () {
 				      var eventData = {

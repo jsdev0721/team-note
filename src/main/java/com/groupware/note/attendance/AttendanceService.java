@@ -7,11 +7,13 @@ import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.groupware.note.DataNotFoundException;
 import com.groupware.note.user.UserRepository;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
@@ -103,6 +105,7 @@ public class AttendanceService {
 	    return attendanceRepository.findByUserIdAndCheckInDate(userId, startOfDay, endOfDay);
 	
 	}
+	
 	
 	
 

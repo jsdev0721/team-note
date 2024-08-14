@@ -1,0 +1,42 @@
+<html layout:decorate="~{layout}">
+	<div layout:fragment="content" class="container">
+		<h4>유저 상세보기</h4>
+		<tbody>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>name</th>
+						<th>position</th>
+						<th>department</th>
+						<th>photo</th>
+						<th>birthdate</th>
+						<th>email</th>
+						<th>leave</th>
+						<th>poionts</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+						<td th:text="${userDetails.name}"></td>
+						<td th:text="${users.position.positionName}"></td>
+						<td th:text="${positions.department.departmentName}"></td>
+						<td th:text="${userDetails.photo}"></td>
+						<td th:text="${userDetails.birthdate}"></td>
+						<td th:text="${userDetails.email}"></td>
+						<td th:text="${userDetails.leave}"></td>						
+						<td th:text="${userDetails.points}"></td>
+					</tr>
+				</tbody>
+			</table>
+						<a th:href="@{|/user/update/${userDetails.userId}|}" class="btn btn-success my-3">수정</a>
+						<a th:href="@{|/user/delete/${userDetails.userId}|}" class="btn btn-success my-3">삭제</a>
+						<br>
+						<th><근태기록></th>
+						<tr th:each="attendances : ${attendance}"></tr>
+						
+						
+						
+		</tbody>
+		
+	</div>
+</html>

@@ -35,7 +35,11 @@ public class NoteController {
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
 		model.addAttribute("approvalList", this.approvalService.ApprovalList(department, status, page , 10));
-		return "index";
+		if(!user.getStatus().equals("출근")) {
+			return "attendanceButton";
+		}else {			
+			return "index";
+		}
 	}
 
 	

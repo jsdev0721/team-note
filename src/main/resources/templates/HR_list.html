@@ -1,0 +1,30 @@
+<html layout:decorate="~{layout}">
+	<div layout:fragment="content" class="container">
+		<h4>인사 페이지</h4>
+		<tbody>
+			<table class="table">
+				<thead>
+					<tr>	
+						<th>name</th>
+						<th>birthdate</th>
+						<th>email</th>
+						<!--<th>photo</th>
+						<th>leave</th>
+						<th>poionts</th>-->
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="users : ${userList}">
+						<td>
+							<a th:href="@{|/user/detail/${users.userId}|}" th:text="${users.name}"></a>
+						</td>
+						<td th:text="${users.birthdate}"></td>
+						<td th:text="${users.email}"></td>
+					</tr>
+				</tbody>
+			</table>
+			</tr>
+		</tbody>
+	</div>
+</html>
