@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +45,12 @@ public class CalendarController {
 	public List<Calendar> calendarList(Principal principal){
 		Users user = this.userService.getUser(principal.getName());
 		return this.calendarService.calendarList(user);
+	}
+	
+	@DeleteMapping("/delete")
+	@ResponseBody
+	public void calendarDelete(@RequestParam("id") Integer id) {
+		this.calendarService.deleteCalendar(this.calendarService.getCalendar(id));
 	}
 	
 }
