@@ -13,7 +13,7 @@
 	</head>
 	<body class="container">
 		<a th:href="@{/}"><img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;"></a>
-		<form th:action="@{/user/regist}" th:object="${userCreateForm}" method="post">
+		<form th:action="@{/user/regist}" th:object="${userCreateForm}" method="post" enctype=multipart/form-data>
 			<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 			
 			<div>				

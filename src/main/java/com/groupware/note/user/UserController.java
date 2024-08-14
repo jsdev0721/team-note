@@ -1,5 +1,6 @@
 package com.groupware.note.user;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.security.Principal;
 
@@ -130,6 +131,12 @@ public class UserController {
 	public String photoUpdate(@RequestParam(value = "multipartFiles") MultipartFile multipartFile, Principal principal) {
 		try {
 			Users users = this.userService.getUser(principal.getName());
+			UserDetails userDetails = this.userDetailsService.findByUser(users);
+			if(this.fileService.fileExists(userDetails)) {
+				Files _file = userDetails.getPhoto();
+				this.fileService.delete(_file);
+				
+			}
 			Files files = this.fileService.uploadPhoto(multipartFile);
 			this.userDetailsService.uploadPhoto(users, files);
 		} catch (Exception e) {
