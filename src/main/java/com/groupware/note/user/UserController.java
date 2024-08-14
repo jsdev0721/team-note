@@ -73,7 +73,7 @@ public class UserController {
 		try { //중복검사
 			Files files = this.fileService.findByFiles(1);
 			Users users = this.userService.create(userCreateForm.getUsername(), userCreateForm.getPassword());
-			this.userDetailsService.create(users, userCreateForm.getName(), userCreateForm.getBirthdate(), userCreateForm.getEmail(), files);
+			this.userDetailsService.create(users, userCreateForm.getName(), userCreateForm.getBirthdate(), userCreateForm.getEmail(), files, 15);
 		} catch (DataIntegrityViolationException e) { //SiteUser에서 주었던 unique 제약조건 위반시 해당 에러클래스가 처리함 
 			e.printStackTrace();
 			bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");

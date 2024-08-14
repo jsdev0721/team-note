@@ -36,7 +36,7 @@ public class UserDetails {
 	@ManyToOne
 	private Files photo;
 	
-	private long leave;
+	private Integer leave;
 	
 	private long points;
 }

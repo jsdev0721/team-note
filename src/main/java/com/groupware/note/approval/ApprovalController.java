@@ -1,6 +1,7 @@
 package com.groupware.note.approval;
 
 import java.security.Principal;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -166,8 +167,10 @@ public class ApprovalController {
 		}
 		approval.setUserSign(signArray);
 		if(status.equals("complete")) {
-			String name = userSign[0];
-			Users users = this.userDetailsService.findByName(name).getUser();
+			UserDetails userDetails = this.userDetailsService.findByUser(approval.getUser());
+			Users users = userDetails.getUser();
+			Period leaveDate = Period.between(approval.getStartDate(), approval.getEndDate());
+			this.userDetailsService.minusLeave(userDetails, leaveDate.getDays());
 			this.leaveService.create(users, approval.getTitle(), approval.getContent(), approval.getStartDate(), approval.getEndDate(), status, approval.getFileList());
 		}
 		this.approvalService.save(approval);
