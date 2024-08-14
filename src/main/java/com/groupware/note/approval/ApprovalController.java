@@ -115,13 +115,12 @@ public class ApprovalController {
 			_approval.setDepartment(department);
 			_approval.setTitle(leaveForm.getTitle());
 			_approval.setContent(leaveForm.getReason());
+			_approval.setStartDate(leaveForm.getStartDate());
+			_approval.setEndDate(leaveForm.getEndDate());
 			_approval.setUserSign(new String[3]);
-			List<Files> files = new ArrayList<>();
 			if(!leaveForm.getAttachment().isEmpty()) {
-				files = this.fileService.uploadFile(leaveForm.getAttachment());
-				_approval.setFileList(files);
+				_approval.setFileList(this.fileService.uploadFile(leaveForm.getAttachment()));
 			}
-			this.leaveService.create(users, leaveForm.getTitle(), leaveForm.getReason(), leaveForm.getStartDate(), leaveForm.getEndDate(), files);
 			this.approvalService.save(_approval);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -166,6 +165,11 @@ public class ApprovalController {
 			}
 		}
 		approval.setUserSign(signArray);
+		if(status.equals("complete")) {
+			String name = userSign[0];
+			Users users = this.userDetailsService.findByName(name).getUser();
+			this.leaveService.create(users, approval.getTitle(), approval.getContent(), approval.getStartDate(), approval.getEndDate(), status, approval.getFileList());
+		}
 		this.approvalService.save(approval);
 		return "redirect:/approval/list";
 	}

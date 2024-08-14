@@ -42,6 +42,15 @@ public class UserDetailsService {
 		}
 	}
 	
+	public UserDetails findByName(String name) {
+		Optional<UserDetails> optional = this.userDetailsRepository.findByName(name);
+		if(optional.isPresent()) {
+			return optional.get();
+		}else {
+			return new UserDetails();
+		}
+	}
+	
 	public UserDetails findID(String email) {
 		Optional<UserDetails> userDetails = this.userDetailsRepository.findByEmail(email);
 		if(userDetails.isPresent()) {

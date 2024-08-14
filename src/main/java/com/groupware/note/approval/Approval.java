@@ -1,5 +1,6 @@
 package com.groupware.note.approval;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,6 +37,10 @@ public class Approval {
 	private String title;
 	
 	private String content;
+	
+	private LocalDate startDate;
+	
+	private LocalDate endDate;
 
 	private LocalDateTime updateTime; //0729 추가생성
 	
