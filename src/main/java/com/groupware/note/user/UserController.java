@@ -2,6 +2,7 @@ package com.groupware.note.user;
 
 import java.net.MalformedURLException;
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.groupware.note.attendance.AttendanceService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
+import com.groupware.note.position.PositionService;
+import com.groupware.note.position.Positions;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +35,11 @@ public class UserController {
 	private final UserService userService;
 	private final UserDetailsService userDetailsService;
 	private final FileService fileService;
+	private final PositionService positionService;
+	private final AttendanceService attendanceService;
+
+
+	
 	
 	@GetMapping("/login")
 	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
@@ -146,6 +155,37 @@ public class UserController {
 	public ResponseEntity<Resource> photo(@PathVariable("id") Integer id) throws MalformedURLException{
 		Files file = this.fileService.findByFiles(id);
 		return this.fileService.photoView(file);
+	}
+	@GetMapping("/list")
+	public String userList(Model model) {
+		List<UserDetails> userList = this.userDetailsService.userfindByAll();
+		model.addAttribute("userList",userList);
+		
+		return "HR_list";
+		
+	}
+	@GetMapping("/detail/{userId}")
+	public String getUser(Model model,@PathVariable("userId") Integer userId) {
+		Users users = this.userService.getUser(userId);
+		Positions positions = this.positionService.findById(userId);
+		//List<Attendance> attendance = this.attendanceService.findById(userId);
+		UserDetails userDetails = this.userDetailsService.getUser(userId);
+		model.addAttribute("users", users);
+		model.addAttribute("positions",positions);
+		//model.addAttribute("attendance", attendance);
+		System.out.println("불러와");
+		model.addAttribute("userDetails",userDetails);
+		
+		return "HR_detail";
+	}
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/update/{userId}")
+	public String userUpdate(Model model,@PathVariable("userId") Integer userId) {
+		//UserDetails userupdate = this.userDetailsService
+		//model.addAttribute("userupdate",userupdate);
+		
+		return "HR_update";
+		
 	}
 
 }
