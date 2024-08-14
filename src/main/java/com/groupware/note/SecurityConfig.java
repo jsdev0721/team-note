@@ -23,7 +23,8 @@ public class SecurityConfig {
 		.authorizeHttpRequests((authorizeHttpRequest) -> authorizeHttpRequest
 				.requestMatchers("/**").permitAll())
 		.csrf((csrf) -> csrf
-				.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
+				.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
+				.ignoringRequestMatchers(new AntPathRequestMatcher("/calendar/**")))
 		.headers((headers)-> headers
 				.addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
 		.formLogin((formLogin) -> formLogin

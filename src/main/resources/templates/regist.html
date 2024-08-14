@@ -12,17 +12,19 @@
 		<title>회원가입</title>
 	</head>
 	<body class="container">
-		<img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;">
+		<a th:href="@{/}"><img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;"></a>
 		<form th:action="@{/user/regist}" th:object="${userCreateForm}" method="post">
 			<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 			
 			<div>				
-				<label for="password" class="form-label">아이디</label>
-				<input type="text" id="username" th:field="*{username}" class="form-control" placeholder="아이디를 입력해 주세요">
+				<label for="username"><strong>* </strong>아이디</label>
+				<div class="input">
+					<input type="text" id="username" th:field="*{username}" class="form-control" placeholder="아이디를 입력해 주세요">
+				</div>
 			</div>
 			
-			<div class="mt-2">				
-				<label for="password" class="form-label">비밀번호</label>
+			<div class="mt-4">				
+				<label for="password"><strong>* </strong>비밀번호</label>
 				<div class="input password" style="position: relative;">
 					<input type="password" id="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력해 주세요">
 					<div class="eyes" style="position: absolute;right: 10px;top: 50%;transform: translateY(-50%);cursor: pointer;">
@@ -32,7 +34,7 @@
 			</div>
 
 			<div class="mt-2">				
-				<label for="password" class="form-label">비밀번호 확인</label>
+				<label for="passwordCheck"><strong>* </strong>비밀번호 확인</label>
 				<div class="input passwordCheck" style="position: relative;">					
 					<input type="password" id="passwordCheck" th:field="*{passwordCheck}" class="form-control" placeholder="비밀번호를 다시 입력해 주세요">
 					<div class="eyesCheck" style="position: absolute;right: 10px;top: 50%;transform: translateY(-50%);cursor: pointer;">
@@ -41,22 +43,36 @@
 				</div>
 			</div>
 			
-			<div class="mt-2">				
-				<label for="password" class="form-label">이름</label>
-				<input type="text" id="name" th:field="*{name}" class="form-control" placeholder="이름을 입력해 주세요">
-			</div>
-			
-			<div class="mt-2">				
-				<label for="password" class="form-label">생년월일</label>
-				<input type="date" id="birthdate" th:field="*{birthdate}" class="form-control" placeholder="생년월일을 입력해 주세요">
-			</div>
-			
-			<div class="mt-2">				
-				<label for="password" class="form-label">이메일</label>
-				<input type="text" id="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력해 주세요">
-			</div>
+			<div class="mt-4">				
+				<label for="name"><strong>* </strong>이름</label>
+				<div class="input">
+					<input type="text" id="name" th:field="*{name}" class="form-control" placeholder="이름을 입력해 주세요">
+				</div>
 				
-			<button type="submit" class="btn btn-success mt-4">회원가입</button>
+			</div>
+			
+			<div class="mt-4">				
+				<label for="birthdate"><strong>* </strong>생년월일</label>
+				<div class="input">
+					<input type="date" id="birthdate" th:field="*{birthdate}" class="form-control" placeholder="생년월일을 입력해 주세요">
+				</div>
+				
+			</div>
+			
+			<div class="mt-4">				
+				<label for="email"><strong>* </strong>이메일</label>
+				<div class="input">
+					<input type="text" id="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력해 주세요">
+				</div>
+				
+			</div>
+			
+			<div class="txt">
+				<p>모든 항목은 <strong>*필수 입력</strong> 입니다.</p>
+				<a th:href="@{/user/login}" class="close">나가기</a>
+			</div>
+			
+			<button type="submit" class="btn">회원가입</button>
 		</form>
 	</body>
 </html>

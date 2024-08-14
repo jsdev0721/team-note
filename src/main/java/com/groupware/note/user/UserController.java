@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -99,15 +100,38 @@ public class UserController {
 	}
 	
 	@GetMapping("/find/pw")
-	public String findPW() {
+	public String findPW(UserPasswordForm userPasswordForm) {
 		return "findPW";
 	}
 	
 	@PostMapping("/find/pw")
-	public String findPW(Model model, @RequestParam(value = "username") String username) {
+	public String findPW(Model model, @RequestParam(value = "username") String username, UserPasswordForm userPasswordForm) {
 		Users users = this.userService.findPW(username);
+		Boolean check = this.userService.checkPW(username);
+		model.addAttribute("check", check);
 		model.addAttribute("users", users);
 		return "findPW";
+	}
+	
+	@PostMapping("/change/pw")
+	public String changePW(@Valid UserPasswordForm userPasswordForm, BindingResult bindingResult, Model model) {
+		if(bindingResult.hasErrors()) {
+			Users users = this.userService.findPW(userPasswordForm.getUsername());
+			Boolean check = true;
+			model.addAttribute("check", check);
+			model.addAttribute("users", users);
+			return "findPW";
+		}
+		if(!userPasswordForm.getPassword().equals(userPasswordForm.getPasswordCheck())) {
+			bindingResult.rejectValue("passwordCheck", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
+			Users users = this.userService.findPW(userPasswordForm.getUsername());
+			Boolean check = true;
+			model.addAttribute("check", check);
+			model.addAttribute("users", users);
+			return "findPW";
+		}
+		this.userService.changePW(userPasswordForm.getUsername(), userPasswordForm.getPassword());
+		return "redirect:/user/login";
 	}
 	
 	@PreAuthorize("isAuthenticated()")

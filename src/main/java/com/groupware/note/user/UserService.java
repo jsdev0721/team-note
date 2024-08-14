@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.groupware.note.DataNotFoundException;
 import com.groupware.note.position.PositionService;
@@ -50,6 +51,7 @@ public class UserService {
 		}
 	}
 	
+
 	public Users getUser(Integer userId) {
 		Optional<Users> users = this.userRepository.findById(userId);
 		if(users.isPresent()) {
@@ -57,9 +59,30 @@ public class UserService {
 		}else {
 			throw new DataNotFoundException("데이터가 존재하지 않습니다.");
 		}
+	}
 	
 	
 	
+
+	public boolean checkPW(String username) {
+		Optional<Users> users = this.userRepository.findByUsername(username);
+		if(!ObjectUtils.isEmpty(users)) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public void changePW(String username, String password) {
+		Optional<Users> _users = this.userRepository.findByUsername(username);
+		if(_users.isPresent()) {
+			Users users = _users.get();
+			users.setPassword(passwordEncoder.encode(password));
+			this.userRepository.save(users);
+		}else {
+			throw new DataNotFoundException("사용자를 찾을 수 없습니다.");
+		}
+
 	}
 
 }
