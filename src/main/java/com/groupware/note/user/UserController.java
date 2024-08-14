@@ -165,13 +165,13 @@ public class UserController {
 	public String getUser(Model model,@PathVariable("userId") Integer userId) {
 		Users users = this.userService.getUser(userId);
 		Positions positions = this.positionService.findById(userId);
-		//List<Attendance> attendance = this.attendanceService.findById(userId);
 		UserDetails userDetails = this.userDetailsService.getUser(userId);
+		List<Attendance> attendance = this.attendanceService.findById(userId);
 		model.addAttribute("users", users);
 		model.addAttribute("positions",positions);
-		//model.addAttribute("attendance", attendance);
-		System.out.println("불러와");
 		model.addAttribute("userDetails",userDetails);
+		model.addAttribute("attendance", attendance);
+		System.out.println("불러와 주우우웅우우우세야야야양야ㅑㅇ");
 		
 		return "HR_detail";
 	}
