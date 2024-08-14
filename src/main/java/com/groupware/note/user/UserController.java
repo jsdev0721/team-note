@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import com.groupware.note.attendance.Attendance;
 import com.groupware.note.attendance.AttendanceService;
+
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.position.PositionService;
@@ -37,10 +39,6 @@ public class UserController {
 	private final UserDetailsService userDetailsService;
 	private final FileService fileService;
 	private final PositionService positionService;
-	private final AttendanceService attendanceService;
-
-
-	
 	
 	@GetMapping("/login")
 	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
@@ -157,6 +155,7 @@ public class UserController {
 		Files file = this.fileService.findByFiles(id);
 		return this.fileService.photoView(file);
 	}
+	
 	@GetMapping("/list")
 	public String userList(Model model) {
 		List<UserDetails> userList = this.userDetailsService.userfindByAll();
