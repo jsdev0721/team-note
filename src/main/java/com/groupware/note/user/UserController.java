@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
-import com.groupware.note.leave.LeaveForm;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +35,12 @@ public class UserController {
 	@GetMapping("/login")
 	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
 		if(principal != null) {
-			return "redirect:/";
+			Users user = this.userService.getUser(principal.getName());
+			if(!user.getStatus().equals("출근")) {
+				return "attendanceButton";
+			}else {				
+				return "redirect:/";
+			}
 		}else {			
 			return "login";
 		}
