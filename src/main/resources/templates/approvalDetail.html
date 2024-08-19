@@ -23,24 +23,24 @@
 					<br/>
 				</div>
 				<br/>
-				<div class="card-body" th:if="${!commentList.empty}">
+				<div class="card-body" th:if="${!commentList.isEmpty()}">
 					<h7> 반려 사유 </h7>
 					<div th:each="comments : ${commentList}" th:text="${comments.comment}"></div>
 				</div>
 				<div class="btn-group" role="group" aria-label="Basic mixed styles example">
-					<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-danger" th:href="@{|/approval/update/${id}?status=process|}">제출</a></th:block>
+					<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-primary" th:href="@{|/approval/update/${id}?status=process|}">제출</a></th:block>
 
 					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAuthority('ROLE_DEPUTY')"><a type="button" class="btn btn-outline-primary"th:href="@{|/approval/update/${id}?status=process|}">진행</a></th:block>
 					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
 
 					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#ModalProcess">보류</button></th:block>
-					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#ModalQueue">반려</button></th:block>
+					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalQueue">반려</button></th:block>
 				</div>
 			</div>
 		</div>
 		<div class="btn-group" role="group" aria-label="Basic mixed styles example">
 			<a type="button" class="btn btn-outline-primary" th:href="@{/approval/list}" >목록</a>
-			<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-primary" th:href="@{|/approval/edit/${approval.approvalId}|}">수정</a></th:block>
+			<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')} or ${!commentList.isEmpty()}"><a type="button" class="btn btn-outline-primary" th:href="@{|/approval/edit/${approval.approvalId}|}">수정</a></th:block>
 			<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-danger" th:href="@{|/approval/delete/${approval.approvalId}|}">삭제</a></th:block>
 		</div>
 		<div class="modal fade" id="ModalProcess" tabindex="-1" aria-labelledby="ModalProcess" aria-hidden="true">

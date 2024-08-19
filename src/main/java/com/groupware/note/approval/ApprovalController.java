@@ -156,10 +156,6 @@ public class ApprovalController {
 		Approval approval = this.approvalService.findById(id);
 		String[] signArray = new String[3];
 		approval.setStatus(status);
-		if(status.equals("queue")) {
-			approval.setUserSign(signArray);
-			return "redirect:/approval/list";
-		}
 		Users user = this.userService.getUser(principal.getName());
 		UserDetails userDetail = this.userDetailsService.findByUser(user);
 		String[] userSign = approval.getUserSign();
@@ -176,8 +172,13 @@ public class ApprovalController {
 			}
 		}
 		approval.setUserSign(signArray);
+		if(!approval.getCommentList().isEmpty()) {
+			for(Comments comment : approval.getCommentList()) {
+				this.commentService.delete(comment);
+			}
+			approval.setCommentList(null);			
+		}
 
-		
 		if(approval.getDepartment().equals("HR")&&status.equals("complete")) {
 			UserDetails userDetails = this.userDetailsService.findByUser(approval.getUser());
 			Users users = userDetails.getUser();
@@ -248,6 +249,10 @@ public class ApprovalController {
 	@PostMapping("/revoke/{id}")
 	public String revoke(@PathVariable("id") Integer id , Comments comment , @RequestParam(value = "status")String status) {
 		Approval _approval = this.approvalService.findById(id);
+		if(status.equals("queue")) {
+			String[] signArray = new String[3];
+			_approval.setUserSign(signArray);
+		}
 		_approval.setStatus(status);
 		Approval approval = this.approvalService.save(_approval);
 		comment.setApproval(approval);
