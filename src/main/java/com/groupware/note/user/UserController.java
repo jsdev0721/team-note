@@ -39,6 +39,7 @@ public class UserController {
 	private final UserDetailsService userDetailsService;
 	private final FileService fileService;
 	private final PositionService positionService;
+	private final AttendanceService attendanceService;
 	
 	@GetMapping("/login")
 	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
