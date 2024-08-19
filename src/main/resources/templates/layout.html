@@ -203,7 +203,9 @@
 			<div class="offcanvas offcanvas-top" data-bs-backdrop="false" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
 			  	<div class="offcanvas-body d-flex flex-column">
 					<div class="info" style="flex: 0.5;">
-						<img th:src="@{|/user/photo/${file.fileId}|}" style="width: 60px;">
+						<div th:if="${file!=null}"><img th:src="@{|/user/photo/${file.fileId}|}" style="width: 60px;"></div>
+						<div th:unless="${file!=null}"><img src="/images/user.png" style="width: 60px;"></div>
+						
 						<form th:action="@{/user/photo}" method="post" enctype="multipart/form-data"><!-- 사진 업로드 시작 -->
 							<i class="bi bi-camera" onclick="photoUpdate()"></i>
 							<div class="imgUpdate" style="display: none;">

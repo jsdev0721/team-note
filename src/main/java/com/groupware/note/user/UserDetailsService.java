@@ -18,13 +18,12 @@ public class UserDetailsService {
 	
 	private final UserDetailsRepository userDetailsRepository;
 	
-	public void create(Users users, String name, LocalDate brithdate, String email, Files files, Integer leave) {
+	public void create(Users users, String name, LocalDate brithdate, String email, Integer leave) {
 		UserDetails userDetails = new UserDetails();
 		userDetails.setUser(users);
 		userDetails.setName(name);
 		userDetails.setBirthdate(brithdate);
 		userDetails.setEmail(email);
-		userDetails.setPhoto(files);
 		userDetails.setLeave(leave);
 		this.userDetailsRepository.save(userDetails);
 	}

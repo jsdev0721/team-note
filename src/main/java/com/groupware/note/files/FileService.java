@@ -154,6 +154,9 @@ public class FileService {
 	}
 	public boolean fileExists(UserDetails userDetail) {
 		Files file = userDetail.getPhoto();
+		if(file==null) {
+			return false;
+		}
 		String filePath = getFilePath(file.getOriginFileName(), file.getStoreFileName());
 		File _file = new File(filePath);
 		if(_file.exists()) {

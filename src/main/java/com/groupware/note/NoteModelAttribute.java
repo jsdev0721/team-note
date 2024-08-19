@@ -28,8 +28,13 @@ public class NoteModelAttribute {
 		if(principal != null) {
 			Users users = this.userService.getUser(principal.getName());
 			UserDetails userDetails = this.userDetailsService.findByUser(users);
-			Files file = this.fileService.findByFiles(userDetails.getPhoto().getFileId());
-			model.addAttribute("file", file);			// 컨트롤러의 메소드마다 해당 모델을 넣어준다. 
+			if(this.fileService.fileExists(userDetails)) {
+				Files file = this.fileService.findByFiles(userDetails.getPhoto().getFileId());
+				model.addAttribute("file", file);			// 컨트롤러의 메소드마다 해당 모델을 넣어준다. 
+			}
+			else {
+				model.addAttribute("file", null);
+			}
 		}
 	}
 	
