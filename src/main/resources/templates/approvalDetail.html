@@ -16,28 +16,70 @@
 					</table>
 				</div>
 				<h5 class="card-title" th:text="${approval.content}"></h5>
+				
 				<div class="card-text"  th:each="file : ${fileList}" th:if="${!fileList.isEmpty()}">
 					<label for="form" class="form-label">다운로드</label>
                		<a class="form-control btn btn-primary" id="form"th:text="${file.originFileName}" th:href="@{|/approval/download/${file.fileId}|}"></a>
 					<br/>
 				</div>
+				<br/>
+				<div class="card-body" th:if="${!commentList.isEmpty()}">
+					<h7> 반려 사유 </h7>
+					<div th:each="comments : ${commentList}" th:text="${comments.comment}"></div>
+				</div>
 				<div class="btn-group" role="group" aria-label="Basic mixed styles example">
-					<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-danger" th:href="@{|/approval/update/${id}?status=process|}">제출</a></th:block>
+					<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-primary" th:href="@{|/approval/update/${id}?status=process|}">제출</a></th:block>
 
 					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAuthority('ROLE_DEPUTY')"><a type="button" class="btn btn-outline-primary"th:href="@{|/approval/update/${id}?status=process|}">진행</a></th:block>
 					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
 
-					<th:block sec:authorize="hasAuthority('ROLE_DEPUTY')"><a type="button" class="btn btn-outline-primary"th:href="@{|/approval/update/${id}?status=process|}">진행</a></th:block>
-					<th:block sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
-
-					<th:block th:if="${!approval.status.equals('complete')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-warning"th:href="@{|/approval/update/${id}?status=process|}">보류</a></th:block>
+					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#ModalProcess">보류</button></th:block>
+					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalQueue">반려</button></th:block>
 				</div>
 			</div>
 		</div>
 		<div class="btn-group" role="group" aria-label="Basic mixed styles example">
 			<a type="button" class="btn btn-outline-primary" th:href="@{/approval/list}" >목록</a>
-			<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-primary" th:href="@{|/approval/edit/${approval.approvalId}|}">수정</a></th:block>
+			<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')} or ${!commentList.isEmpty()}"><a type="button" class="btn btn-outline-primary" th:href="@{|/approval/edit/${approval.approvalId}|}">수정</a></th:block>
 			<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-danger" th:href="@{|/approval/delete/${approval.approvalId}|}">삭제</a></th:block>
+		</div>
+		<div class="modal fade" id="ModalProcess" tabindex="-1" aria-labelledby="ModalProcess" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="moal-title">사유</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<form th:action="@{|/approval/revoke/${id}?status=process|}" method="post" th:object="${comments}">
+						<div class="modal-body">
+							<textarea th:field="*{comment}"></textarea>						
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Save Change</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="ModalQueue" tabindex="-1" aria-labelledby="ModalQueue" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="moal-title">사유</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<form th:action="@{|/approval/revoke/${id}?status=queue|}" method="post" th:object="${comments}">
+						<div class="modal-body">
+							<textarea th:field="*{comment}"></textarea>						
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Save Change</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
 </html>

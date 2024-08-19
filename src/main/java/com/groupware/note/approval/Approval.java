@@ -8,6 +8,7 @@ import com.groupware.note.department.Departments;
 import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -52,4 +53,7 @@ public class Approval {
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Files> fileList;
+	
+	@OneToMany(mappedBy = "approval" , cascade = CascadeType.REMOVE)
+	private List<Comments> commentList;
 }
