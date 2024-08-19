@@ -3,6 +3,7 @@ package com.groupware.note.user;
 import java.net.MalformedURLException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -38,7 +39,6 @@ public class UserController {
 	private final UserService userService;
 	private final UserDetailsService userDetailsService;
 	private final FileService fileService;
-	private final PositionService positionService;
 	private final AttendanceService attendanceService;
 	
 	@GetMapping("/login")
@@ -158,7 +158,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/list")
-	public String userList(Model model) {
+	public String userList(Model model,SearchListForm searchListForm) {
 		List<UserDetails> userList = this.userDetailsService.userfindByAll();
 		model.addAttribute("userList",userList);
 		
@@ -182,11 +182,20 @@ public class UserController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/update/{userId}")
 	public String userUpdate(Model model,@PathVariable("userId") Integer userId) {
-		//UserDetails userupdate = this.userDetailsService
-		//model.addAttribute("userupdate",userupdate);
+		UserDetails userDetails = this.userDetailsService.getUser(userId);
+		model.addAttribute("userDetails", userDetails);
 		
 		return "HR_update";
 		
+	}
+	@PostMapping("/list")
+	public String userSearchList(Model model,@Valid SearchListForm searchListForm) {
+		List<UserDetails> userList = this.userDetailsService.searchList(searchListForm.getSearchKeyword());
+		System.out.println(searchListForm.getSearchKeyword());
+		model.addAttribute("userList",userList);
+		System.out.println("검색을 합니다");
+		
+		return "HR_list";
 	}
 
 }
