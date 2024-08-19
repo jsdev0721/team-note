@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.DataNotFoundException;
+import com.groupware.note.files.FileRepository;
+import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class NoticesService {
 
 	private final NoticesRepository noticesRepository;
+	private final FileRepository fileRepository;
 	
 	public Pageable getPageable(int page , int quantity) {
 		List<Sort.Order> sorts = new ArrayList<>();
@@ -65,9 +68,12 @@ public class NoticesService {
 		notices.setCreateDate(LocalDateTime.now());
 		this.noticesRepository.save(notices);
 	}
-	public void deleteNotices(Integer noticesId) {
-		this.noticesRepository.deleteById(noticesId);
+	public void deleteNotices(Notices notices) {
+		  this.noticesRepository.delete(notices);
+		//return this.noticesRepository.deleteById(noticesId);
 	}
+	
+	
 		
 }
 	

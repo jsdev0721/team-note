@@ -32,7 +32,10 @@ public class UserDetailsService {
 	@Scheduled(cron = "0 0 1 1 1 ?")
 	public void updateLeave() { //매년 1월 1일에 업데이트
 		List<UserDetails> userDetails = this.userDetailsRepository.findAll();
-		
+		for(UserDetails user : userDetails) {
+			user.setLeave(15);
+			this.userDetailsRepository.save(user);
+		}
 	}
 	
 	public void minusLeave(UserDetails userDetails, Integer leaveDate) {

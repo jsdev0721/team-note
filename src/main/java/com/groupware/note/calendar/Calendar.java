@@ -22,7 +22,8 @@ public class Calendar {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer calendarId;
+	@JoinColumn(name = "calendar_id")
+	private Integer id;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")

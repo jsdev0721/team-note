@@ -105,7 +105,13 @@ public class AttendanceService {
 	    return attendanceRepository.findByUserIdAndCheckInDate(userId, startOfDay, endOfDay);
 	
 	}
-	
+	public List<Attendance> findById(Integer userId){//인사에서 근태기록 불러옴 0814 박은영
+		List<Attendance> attendances =this.attendanceRepository.findByUserId(userId);
+		if(!attendances.isEmpty()) {
+			return attendances;
+		}else {throw new DataNotFoundException("데이터가 없습니다");}
+		
+	}
 	
 	
 

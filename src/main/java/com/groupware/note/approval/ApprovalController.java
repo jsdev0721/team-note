@@ -108,9 +108,15 @@ public class ApprovalController {
 		if(bindingResult.hasErrors()) {
 			return "approvalCreate_leave";
 		}
+		Users users = this.userService.getUser(principal.getName());
+		UserDetails userDetails = this.userDetailsService.findByUser(users);
+		Period leaveDate = Period.between(leaveForm.getStartDate(), leaveForm.getEndDate());
+		if(0 > (userDetails.getLeave() - (leaveDate.getDays()+1))) {
+			bindingResult.reject("HRcreateFailed", "남은 휴가 일수가 선택한 휴가 일수보다 짧습니다.");
+			return "approvalCreate_leave";
+		}
 		try {
 			Approval _approval = new Approval();
-			Users users = this.userService.getUser(principal.getName());
 			_approval.setUser(users);
 			Departments department = this.departmentService.findBydepartmentName(leaveForm.getDepartmentName());
 			_approval.setDepartment(department);
@@ -170,6 +176,7 @@ public class ApprovalController {
 			}
 		}
 		approval.setUserSign(signArray);
+
 		
 		if(approval.getDepartment().equals("HR")&&status.equals("complete")) {
 			UserDetails userDetails = this.userDetailsService.findByUser(approval.getUser());

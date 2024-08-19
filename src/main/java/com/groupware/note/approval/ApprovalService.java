@@ -61,5 +61,6 @@ public class ApprovalService {
 	}
 	public void deleteById(Approval approval) {
 		this.approvalRepository.delete(approval);
+		
 	}
 }

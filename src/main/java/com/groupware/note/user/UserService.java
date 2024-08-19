@@ -40,6 +40,7 @@ public class UserService {
 		}else {
 			throw new DataNotFoundException("데이터가 존재하지 않습니다.");
 		}
+		
 	}
 	
 	public Users findPW(String username) {
@@ -60,10 +61,6 @@ public class UserService {
 			throw new DataNotFoundException("데이터가 존재하지 않습니다.");
 		}
 	}
-	
-	
-	
-
 	public boolean checkPW(String username) {
 		Optional<Users> users = this.userRepository.findByUsername(username);
 		if(!ObjectUtils.isEmpty(users)) {
@@ -72,7 +69,6 @@ public class UserService {
 			return false;
 		}
 	}
-	
 	public void changePW(String username, String password) {
 		Optional<Users> _users = this.userRepository.findByUsername(username);
 		if(_users.isPresent()) {

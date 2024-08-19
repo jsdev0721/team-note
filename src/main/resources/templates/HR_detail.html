@@ -1,5 +1,6 @@
 <html layout:decorate="~{layout}">
 	<div layout:fragment="content" class="container">
+		<br>
 		<h4>유저 상세보기</h4>
 		<tbody>
 			<table class="table">
@@ -31,12 +32,27 @@
 						<a th:href="@{|/user/update/${userDetails.userId}|}" class="btn btn-success my-3">수정</a>
 						<a th:href="@{|/user/delete/${userDetails.userId}|}" class="btn btn-success my-3">삭제</a>
 						<br>
-						<th><근태기록></th>
-						<tr th:each="attendances : ${attendance}"></tr>
-						
-						
-						
+			<table class="table">
+				<thead>
+				<tr>
+					<th>출근 시간</th>
+					<th>퇴근 시간</th>
+					<th>업무 시간</th>
+					<th>초과 시간</th>
+					<th>지각 사유</th>
+				</tr>
+				</thead>
+				<h3>근태기록</h3>
+				<tbody>
+						<tr th:each="attendances : ${attendance}">
+						      <td th:text="${#temporals.format(attendances.checkInTime, 'yyyy.MM.dd HH:mm')}"></td>
+							  <td th:text="${#temporals.format(attendances.checkOutTime, 'yyyy.MM.dd HH:mm')}"></td>
+							  <td th:text="${#temporals.format(attendances.workTime, 'yyyy.MM.dd HH:mm')}"></td>
+							  <td th:text="${#temporals.format(attendances.overTime, 'yyyy.MM.dd HH:mm')}"></td>
+							  <td th:text="${attendances.reason}"></td> 
+						</tr>
+				</tbody>
+			</table>						
 		</tbody>
-		
 	</div>
 </html>
