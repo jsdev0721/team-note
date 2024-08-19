@@ -2,7 +2,6 @@ package com.groupware.note.approval;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +18,7 @@ public class Comments {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer commentId;
 	private String comment;
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne
 	private Approval approval;
 	private LocalDateTime updateTime;
 }
