@@ -28,6 +28,7 @@ public class NoticesService {
 	
 	public Pageable getPageable(int page , int quantity) {
 		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("createDate"));
 		return PageRequest.of(page, quantity, Sort.by(sorts));
 	}
 	public Page<Notices> noticesList(int page , int quantity) {

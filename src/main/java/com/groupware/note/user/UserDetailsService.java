@@ -18,13 +18,12 @@ public class UserDetailsService {
 	
 	private final UserDetailsRepository userDetailsRepository;
 	
-	public void create(Users users, String name, LocalDate brithdate, String email, Files files, Integer leave) {
+	public void create(Users users, String name, LocalDate brithdate, String email, Integer leave) {
 		UserDetails userDetails = new UserDetails();
 		userDetails.setUser(users);
 		userDetails.setName(name);
 		userDetails.setBirthdate(brithdate);
 		userDetails.setEmail(email);
-		userDetails.setPhoto(files);
 		userDetails.setLeave(leave);
 		this.userDetailsRepository.save(userDetails);
 	}
@@ -40,8 +39,8 @@ public class UserDetailsService {
 	
 	public void minusLeave(UserDetails userDetails, Integer leaveDate) {
 		UserDetails user = userDetails;
-		Integer leave = user.getLeave() - (leaveDate+1);
-		user.setLeave(leave);
+//		Integer leave = user.getLeave() - (leaveDate+1);
+//		user.setLeave(leave);
 		this.userDetailsRepository.save(user);
 	}
 	
@@ -87,14 +86,9 @@ public class UserDetailsService {
 		Optional<UserDetails> getUser = this.userDetailsRepository.findById(userId);
 		if(getUser.isPresent()) { 
 			return getUser.get();
-		}else { throw new DataNotFoundException("데이터를 찾을 수 없습니다");}
-		
-	
-		
-		
-		
-		
+		}else {throw new DataNotFoundException("데이터를 찾을 수 없습니다");}
 	}
-	
-
+	public List<UserDetails> searchList(String name){
+		return this.userDetailsRepository.findByNameLike("%"+name+"%");	 
+	}
 }

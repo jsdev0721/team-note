@@ -3,6 +3,7 @@ package com.groupware.note.user;
 import java.net.MalformedURLException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -38,7 +39,6 @@ public class UserController {
 	private final UserService userService;
 	private final UserDetailsService userDetailsService;
 	private final FileService fileService;
-	private final PositionService positionService;
 	private final AttendanceService attendanceService;
 	
 	@GetMapping("/login")
@@ -71,9 +71,8 @@ public class UserController {
 			return "regist";
 		}
 		try { //중복검사
-			Files files = this.fileService.findByFiles(1);
 			Users users = this.userService.create(userCreateForm.getUsername(), userCreateForm.getPassword());
-			this.userDetailsService.create(users, userCreateForm.getName(), userCreateForm.getBirthdate(), userCreateForm.getEmail(), files, 15);
+			this.userDetailsService.create(users, userCreateForm.getName(), userCreateForm.getBirthdate(), userCreateForm.getEmail(),  15);
 		} catch (DataIntegrityViolationException e) { //SiteUser에서 주었던 unique 제약조건 위반시 해당 에러클래스가 처리함 
 			e.printStackTrace();
 			bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
@@ -158,7 +157,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/list")
-	public String userList(Model model) {
+	public String userList(Model model,SearchListForm searchListForm) {
 		List<UserDetails> userList = this.userDetailsService.userfindByAll();
 		model.addAttribute("userList",userList);
 		
@@ -182,11 +181,20 @@ public class UserController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/update/{userId}")
 	public String userUpdate(Model model,@PathVariable("userId") Integer userId) {
-		//UserDetails userupdate = this.userDetailsService
-		//model.addAttribute("userupdate",userupdate);
+		UserDetails userDetails = this.userDetailsService.getUser(userId);
+		model.addAttribute("userDetails", userDetails);
 		
 		return "HR_update";
 		
+	}
+	@PostMapping("/list")
+	public String userSearchList(Model model,@Valid SearchListForm searchListForm) {
+		List<UserDetails> userList = this.userDetailsService.searchList(searchListForm.getSearchKeyword());
+		System.out.println(searchListForm.getSearchKeyword());
+		model.addAttribute("userList",userList);
+		System.out.println("검색을 합니다");
+		
+		return "HR_list";
 	}
 
 }
