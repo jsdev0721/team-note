@@ -52,4 +52,7 @@ public class Approval {
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Files> fileList;
+	
+	@OneToMany(mappedBy = "approval")
+	private List<Comments> commentList;
 }

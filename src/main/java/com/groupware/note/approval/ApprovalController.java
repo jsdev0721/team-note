@@ -2,7 +2,6 @@ package com.groupware.note.approval;
 
 import java.security.Principal;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.core.io.Resource;
@@ -43,6 +42,7 @@ public class ApprovalController {
 	private final DepartmentService departmentService;
 	private final UserDetailsService userDetailsService;
 	private final LeaveService leaveService;
+	private final CommentService commentService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
@@ -130,10 +130,11 @@ public class ApprovalController {
 	}
 	
 	@GetMapping("/detail/{id}")
-	public String approvalDetail(Model model , @PathVariable("id")Integer id , Principal principal) {
+	public String approvalDetail(Model model , @PathVariable("id")Integer id , Principal principal , Comments comments) {
 		Approval approval = this.approvalService.findById(id);
 		model.addAttribute("approval", approval);
 		model.addAttribute("fileList", approval.getFileList());
+		model.addAttribute("commentList", approval.getCommentList());
 		model.addAttribute("userInfo", this.userService.getUser(principal.getName()));
 		return "approvalDetail";
 	}
@@ -169,7 +170,8 @@ public class ApprovalController {
 			}
 		}
 		approval.setUserSign(signArray);
-		if(status.equals("complete")) {
+		
+		if(approval.getDepartment().equals("HR")&&status.equals("complete")) {
 			UserDetails userDetails = this.userDetailsService.findByUser(approval.getUser());
 			Users users = userDetails.getUser();
 			Period leaveDate = Period.between(approval.getStartDate(), approval.getEndDate());
@@ -179,7 +181,6 @@ public class ApprovalController {
 		this.approvalService.save(approval);
 		return "redirect:/approval/list";
 	}
-	
 
 	@GetMapping("/edit/{id}")
 	public String edit(ApprovalForm approvalForm , @PathVariable("id")Integer id , Model model) {
@@ -236,5 +237,14 @@ public class ApprovalController {
 		fileList.remove(file);
 		this.fileService.delete(file);
 		return String.format("redirect:/approval/edit/%s", id);
+	}
+	@PostMapping("/revoke/{id}")
+	public String revoke(@PathVariable("id") Integer id , Comments comment , @RequestParam(value = "status")String status) {
+		Approval _approval = this.approvalService.findById(id);
+		_approval.setStatus(status);
+		Approval approval = this.approvalService.save(_approval);
+		comment.setApproval(approval);
+		this.commentService.save(comment);
+		return "redirect:/approval/list";
 	}
 }
