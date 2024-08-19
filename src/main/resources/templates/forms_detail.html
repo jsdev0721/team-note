@@ -15,6 +15,8 @@
 					th:href="@{|/forms/download/${file.fileId}|}"></a>	
 			<br>
 			</div>
+			<a th:href="@{|/forms/update/${forms.formId}|}" class="btn btn-success my-3">글 수정</a>
+			<a th:href="@{|/forms/delete/${forms.formId}|}" class="btn btn-success my-3">글 삭제</a>
 		</div>
 	</div>	
 </html>

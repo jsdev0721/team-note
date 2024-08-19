@@ -23,15 +23,17 @@ public class FormService {
 	
 	private final FormRepository formRepository;
 	
+	
 	public Pageable getPageable(int page , int quantity) {
 		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("createDate"));
 		return PageRequest.of(page, quantity, Sort.by(sorts));
 	}
 	public Page<Forms> formsList(int page , int quantity) {
 		Pageable pageable = getPageable(page, quantity);
 		return this.formRepository.findAll(pageable);
 	}
-	public Page<Forms> SearchList(int page,String searchKeyword) {
+	public Page<Forms> searchList(int page,String searchKeyword) {
 		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
 		Pageable pageable = PageRequest.of(page, 10,Sort.by(sorts));
 		
@@ -41,12 +43,11 @@ public class FormService {
 		Optional<Forms> form = this.formRepository.findById(formId);
 		if(form.isPresent()) {
 			 return form.get();
-		}else {
-			throw new DataNotFoundException("데이터가 없습니다");
-		}
+		}else {throw new DataNotFoundException("데이터가 없습니다");}
 		 
 	}
 	public void create(String title, String content,Users user,List<Files> files) {
+		
 		Forms form = new Forms();
 		form.setTitle(title);
 		form.setContent(content);
@@ -54,6 +55,19 @@ public class FormService {
 		form.setUser(user);
 		form.setCreateDate(LocalDateTime.now());
 		this.formRepository.save(form);
+		
+	}
+	public void update(Forms forms,String title, String content,Users user,List<Files> files) {
+		
+		forms.setTitle(title);
+		forms.setContent(content);
+		forms.setUser(user);
+		forms.setFileList(files);
+		forms.setCreateDate(LocalDateTime.now());
+		this.formRepository.save(forms);
+	}
+	public void delete(Forms forms) {
+		 this.formRepository.delete(forms);
 		
 	}
 

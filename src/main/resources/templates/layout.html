@@ -75,6 +75,9 @@
 					right: 'myCustomButton dayGridMonth,timeGridWeek,timeGridDay,listWeek'
 				},
 				eventClick: function (info){
+					
+					info.jsEvent.preventDefault();
+					
 					if(confirm("'"+ info.event.title +"' 일정을 삭제하시겠습니까 ?")){
 						var eventData = {
 							id: info.event.id,
