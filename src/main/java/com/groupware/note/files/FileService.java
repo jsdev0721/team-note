@@ -26,7 +26,6 @@ import com.groupware.note.DataNotFoundException;
 import com.groupware.note.user.UserDetails;
 
 import lombok.RequiredArgsConstructor;
-import net.coobird.thumbnailator.Thumbnailator;
 
 @Service
 @RequiredArgsConstructor
