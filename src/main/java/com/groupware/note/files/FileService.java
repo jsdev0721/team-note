@@ -42,7 +42,7 @@ public class FileService {
 	}
 	//jpg , jpeg , bmp , gif , png 타입일 경우 true return
 	public boolean validFileExtension(String fileExtension) {
-		String[] extension = {"jpg","jpeg","bmp","gif","png"};
+		String[] extension = {"jpg","jpeg","bmp","gif","png", "webp"};
 		if(Arrays.stream(extension).anyMatch(value -> value.equals(fileExtension))) {
 			return true;
 		}
