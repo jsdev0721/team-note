@@ -7,7 +7,29 @@
 		<script th:src="@{/bootstrap.min.js}"></script>
 		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
 		<script>
-			
+			function codeCheck() {
+				var number = document.getElementById("number").value;
+				var mailCode = document.getElementById("mailCode").value;
+				if(number === mailCode) {
+					alert("이메일 인증이 완료되었습니다.")
+					document.getElementById("button").disabled = true;
+					$("#id_box").css("display","block");
+					$.ajax({
+						type: "GET",
+						url: "/email/findEmail",
+						success: function(data){
+							$("#username").attr("value",data);
+						}
+					});
+				}else {
+					var confirmFlag = confirm("이메일 인증에 실패하였습니다.\n\n이메일 인증 코드를 다시 받으시겠습니까?")
+					if(confirmFlag){
+						location.href = "/email/mailSend";
+					}else {
+						location.href = "/user/login";
+					}
+				}
+			}
 		</script>
 		<title>아이디 찾기</title>
 	</head>
@@ -15,12 +37,19 @@
 		<a th:href="@{/}"><img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;"></a>
 		<form th:action="@{/email/mailSend}" method="post" class="was-validated" th:if="${#bools.isFalse(status)}">
 			<input type="text" id="email" name="email" class="form-control" placeholder="이메일을 입력해 주세요" required>
-			<button type="submit" class="btn btn-success mt-3">인증 번호 받기</button>
+			<button type="submit" class="btn btn-success mt-3">인증 코드 받기</button>
 		</form>
 		
-		<form th:action="@{/email/mailCheck}" method="post" class="was-validated" th:if="${#bools.isTrue(status)}">
-			<input type="text" id="number" name="number" class="form-control" placeholder="인증 번호를 입력해 주세요" required>
-			<button type="submit" class="btn btn-success mt-3">인증하기</button>
-		</form>
+		<div class="was-validated" th:if="${#bools.isTrue(status)}" id="mailCodeCheck">
+			<input type="hidden" id="mailCode" th:value="${mailCode}">
+			<input type="text" id="number" name="number" class="form-control" placeholder="인증 코드를 입력해 주세요" required>
+			<button type="button" id="button" class="btn btn-success mt-3" onclick="codeCheck()">인증하기</button>
+			
+		</div>
+		
+		<div class="mt-3" style="display: none;" id="id_box"><!-- 아이디 -->
+			<label for="username" class="form-label">아이디</label>
+			<input type="text" id="username" name="username" value="" class="form-control">
+		</div>
 	</body>
 </html>
