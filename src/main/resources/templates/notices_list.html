@@ -52,7 +52,7 @@
 	
 	<form th:action="@{/notices/list}" method="post" >
 		<input type="text" name="searchkeyword" class="form-control" placeholder="검색어를 입력하세요" />
-		<input type="submit" value="검색" />
+		<input type="submit" value="검색" class="btn btn-success my-3"/>
 	</form>
 	<a th:href="@{/notices/create}" class="btn btn-success my-3">글쓰기</a>
 	

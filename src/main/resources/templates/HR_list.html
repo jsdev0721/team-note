@@ -24,6 +24,10 @@
 					</tr>
 				</tbody>
 			</table>
+			<form th:action="@{/user/list}" method="post" >
+					<input type="text" name="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" />
+					<input type="submit" value="검색" class="btn btn-success my-3" />
+			</form>
 			</tr>
 		</tbody>
 	</div>

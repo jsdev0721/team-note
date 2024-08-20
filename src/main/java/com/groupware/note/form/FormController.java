@@ -1,10 +1,10 @@
 package com.groupware.note.form;
 
 import java.security.Principal;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.core.io.Resource;
+
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
-import com.groupware.note.notice.SearchListForm;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
-
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,8 +44,8 @@ public class FormController {
 	}
 	@PostMapping("/list")
 	public String formsSerchList(Model model
-							,@RequestParam(value="page", defaultValue="0")int page,@Valid SearchListForm searchListForm){
-		Page<Forms> formsList = this.formService.SearchList(page, searchListForm.getSearchkeyword());
+							,@RequestParam(value="page", defaultValue="0")int page, @Valid SearchListForm searchListForm){
+		Page<Forms> formsList = this.formService.searchList(page, searchListForm.getSearchKeyword());
 		model.addAttribute("paging", formsList);
 		
 		return "forms_list";
@@ -85,6 +83,37 @@ public class FormController {
 		
 		return "redirect:/forms/list";
 		
+	}
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/update/{formId}")
+	public String update(Model model,@PathVariable("formId") Integer formId
+			,FormsForm formsForm,Principal principal) {
+		Forms forms = this.formService.getForm(formId);
+		model.addAttribute("forms",forms);
+		
+		return "forms_update";
+	}
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/update/{formId}")
+	public String update(@PathVariable("formId") Integer formId
+			,@Valid FormsForm formsForm,BindingResult bindingResult,Principal principal) {
+		if(bindingResult.hasErrors()) {
+			return "forms_update";
+		}
+		Forms forms = this.formService.getForm(formId);
+		List<Files> files = this.fileService.uploadFile(formsForm.getMultiPartFile());
+		Users users = this.userService.getUser(principal.getName());
+		this.formService.update(forms, formsForm.getTitle(), formsForm.getContent(), users, files);
+		
+		return "redirect:/forms/list";
+	}
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/delete/{formId}")
+	public String delete(@PathVariable("formId") Integer formId) {
+		Forms forms = this.formService.getForm(formId);
+		this.formService.delete(forms);
+		
+		return "redirect:/forms/list";
 	}
 	
 

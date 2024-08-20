@@ -47,8 +47,8 @@
 						<tr th:each="attendances : ${attendance}">
 						      <td th:text="${#temporals.format(attendances.checkInTime, 'yyyy.MM.dd HH:mm')}"></td>
 							  <td th:text="${#temporals.format(attendances.checkOutTime, 'yyyy.MM.dd HH:mm')}"></td>
-							  <td th:text="${#temporals.format(attendances.workTime, 'yyyy.MM.dd HH:mm')}"></td>
-							  <td th:text="${#temporals.format(attendances.overTime, 'yyyy.MM.dd HH:mm')}"></td>
+							  <td th:text="${#temporals.format(attendances.workTime, 'HH:mm')}"></td>
+							  <td th:text="${#temporals.format(attendances.overTime, 'HH:mm')}"></td>
 							  <td th:text="${attendances.reason}"></td> 
 						</tr>
 				</tbody>

@@ -15,4 +15,7 @@ public class CommentService {
 		comments.setUpdateTime(LocalDateTime.now());
 		return this.commentRepository.save(comments);
 	}
+	public void delete(Comments comments) {
+		this.commentRepository.delete(comments);
+	}
 }
