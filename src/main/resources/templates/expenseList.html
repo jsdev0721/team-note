@@ -1,0 +1,27 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container">
+
+<table class = "table">
+	<thead class="table-dark">
+		<tr>
+			<th>번호</th>
+			<th>날짜</th>
+			<th>이름</th>
+			<th>금액</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<tr th:each = "expense, loop : ${expenseList}">
+			<td th:text="${loop.index}"></td>
+			<td th:text="${#temporals.format(expense.useDate, 'yy-MM-dd')}"></td>
+			<td th:text="${question.writer.name}"></td>
+			<td th:text="${#numbers.formatCurrency(expense.amount)}"></td>
+		</tr>
+	</tbody>
+</table>	
+		
+		
+		
+</div>
+</html>
