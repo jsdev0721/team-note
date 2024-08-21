@@ -50,7 +50,7 @@ public class ExpenseDataController {
 			InputStream is = null;
 		for(MultipartFile multipartFile : exForm.getMultipartFiles()) {
 			if(fService.validFileExtension(fService.extendsFile(multipartFile.getOriginalFilename()))) {
-				photoReceipt = fService.uploadPhoto(multipartFile);
+				photoReceipt = fService.uploadFile(multipartFile);
 			} else if(fService.extendsFile(multipartFile.getOriginalFilename()).equals("xlsx")) {
 				is = multipartFile.getInputStream();
 			} else {

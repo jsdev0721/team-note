@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
@@ -76,10 +77,16 @@ public class FormController {
 			
 		return "forms_form";
 		}
-		List<Files> files = new ArrayList<>();
-		files = this.fileService.uploadFile(formsForm.getMultiPartFile());
+		List<Files> fileList = new ArrayList<>();
+		if(formsForm.getMultiPartFile()!=null&&!formsForm.getMultiPartFile().isEmpty()) {
+			for(MultipartFile multipartFile : formsForm.getMultiPartFile()) {
+				Files file = new Files();
+				file = this.fileService.uploadFile(multipartFile);
+				fileList.add(file);
+			}
+		}
 		Users users = this.userService.getUser(principal.getName());
-		this.formService.create(formsForm.getTitle(), formsForm.getContent(),users,files);
+		this.formService.create(formsForm.getTitle(), formsForm.getContent(),users,fileList);
 		
 		return "redirect:/forms/list";
 		
@@ -101,9 +108,17 @@ public class FormController {
 			return "forms_update";
 		}
 		Forms forms = this.formService.getForm(formId);
-		List<Files> files = this.fileService.uploadFile(formsForm.getMultiPartFile());
+		
+		List<Files> fileList = new ArrayList<>();
+		if(formsForm.getMultiPartFile()!=null&&!formsForm.getMultiPartFile().isEmpty()) {
+			for(MultipartFile multipartFile : formsForm.getMultiPartFile()) {
+				Files file = new Files();
+				file = this.fileService.uploadFile(multipartFile);
+				fileList.add(file);
+			}
+		}
 		Users users = this.userService.getUser(principal.getName());
-		this.formService.update(forms, formsForm.getTitle(), formsForm.getContent(), users, files);
+		this.formService.update(forms, formsForm.getTitle(), formsForm.getContent(), users, fileList);
 		
 		return "redirect:/forms/list";
 	}

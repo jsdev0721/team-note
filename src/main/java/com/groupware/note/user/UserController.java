@@ -3,7 +3,6 @@ package com.groupware.note.user;
 import java.net.MalformedURLException;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,13 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import com.groupware.note.attendance.Attendance;
 import com.groupware.note.attendance.AttendanceService;
-
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
-import com.groupware.note.position.PositionService;
 import com.groupware.note.position.Positions;
 
 import jakarta.validation.Valid;
@@ -132,7 +128,7 @@ public class UserController {
 	public String photoUpdate(@RequestParam(value = "multipartFiles") MultipartFile multipartFile, Principal principal) {
 		try {
 			Users users = this.userService.getUser(principal.getName());
-			Files files = this.fileService.uploadPhoto(multipartFile);
+			Files files = this.fileService.uploadFile(multipartFile);
 			this.userDetailsService.uploadPhoto(users, files);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,15 +1,12 @@
 package com.groupware.note.files;
 
 import java.io.File;
-
 import java.net.MalformedURLException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -58,53 +55,32 @@ public class FileService {
 		return directory+storeFileName+"."+fileType;
 	}
 
-	//upload 메소드 -> List<Files> 으로 return
-	public List<Files> uploadFile(List<MultipartFile> multipartFiles) {
-		List<Files> files = new ArrayList<>();
+	//upload 메소드 -> Files 으로 return
+	public Files uploadFile(MultipartFile multipartFiles) {
+		Files file = new Files();
 		try {
-			for(MultipartFile multipartFile : multipartFiles) {
-				if(multipartFile.isEmpty()) {
-					return null;
-				}
-				String originFileName = multipartFile.getOriginalFilename();
-				String storeFileName = UUID.randomUUID().toString();
-				while(!this.fileRepository.findByStoreFileName(storeFileName).isEmpty()) {
-					storeFileName = UUID.randomUUID().toString();
-				}
-				String filePath = setFilePath(originFileName , storeFileName);
-				Files _file = new Files();
-				_file.setOriginFileName(originFileName);
-				_file.setStoreFileName(storeFileName);
-				multipartFile.transferTo(new File(filePath));
-				files.add(this.fileRepository.save(_file));				
+			if(multipartFiles==null||multipartFiles.isEmpty()) {
+				return null;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new DataNotFoundException("");
-		}
-		return files;
-	}
-	
-	public Files uploadPhoto(MultipartFile multipartFile) {
-		Files photo = new Files();
-		try {
-			String originFileName = multipartFile.getOriginalFilename();
+			String originFileName = multipartFiles.getOriginalFilename();
 			String storeFileName = UUID.randomUUID().toString();
 			while(!this.fileRepository.findByStoreFileName(storeFileName).isEmpty()) {
 				storeFileName = UUID.randomUUID().toString();
 			}
-			String filePath = setFilePath(originFileName, storeFileName);
-			multipartFile.transferTo(new File(filePath));
-			photo.setOriginFileName(originFileName);
-			photo.setStoreFileName(storeFileName);
-			this.fileRepository.save(photo);
+			String filePath = setFilePath(originFileName , storeFileName);
+			Files _file = new Files();
+			_file.setOriginFileName(originFileName);
+			_file.setStoreFileName(storeFileName);
+			multipartFiles.transferTo(new File(filePath));
+			file = this.fileRepository.save(_file);				
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DataNotFoundException("");
 		}
-		return photo;
+		return file;
 	}
-	
+
 	//download 메소드 -> ResponseEntity 으로 return
 	public ResponseEntity<Resource> downloadFile(Files file) {
 		String filePath = getFilePath(file.getOriginFileName() , file.getStoreFileName());

@@ -2,6 +2,7 @@ package com.groupware.note.approval;
 
 import java.security.Principal;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.core.io.Resource;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
@@ -91,8 +93,14 @@ public class ApprovalController {
 			_approval.setTitle(approvalForm.getTitle());
 			_approval.setContent(approvalForm.getContent());
 			_approval.setUserSign(new String[3]);
-			if(!approvalForm.getMultipartFiles().isEmpty()) {
-				_approval.setFileList(this.fileService.uploadFile(approvalForm.getMultipartFiles()));
+			if(approvalForm.getMultipartFiles()!=null&&!approvalForm.getMultipartFiles().isEmpty()) {
+				List<Files> fileList = new ArrayList<>();
+				for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
+					Files file = new Files();
+					file = this.fileService.uploadFile(multipartFile);
+					fileList.add(file);
+				}
+				_approval.setFileList(fileList);
 			}
 			Approval approval = this.approvalService.save(_approval);
 		} catch (Exception e) {
@@ -129,8 +137,14 @@ public class ApprovalController {
 			_approval.setStartDate(leaveForm.getStartDate());
 			_approval.setEndDate(leaveForm.getEndDate());
 			_approval.setUserSign(new String[3]);
-			if(!leaveForm.getAttachment().isEmpty()) {
-				_approval.setFileList(this.fileService.uploadFile(leaveForm.getAttachment()));
+			if(leaveForm.getAttachment()!=null&&!leaveForm.getAttachment().isEmpty()) {
+				List<Files> fileList = new ArrayList<>();
+				for(MultipartFile multipartFile : leaveForm.getAttachment()) {
+					Files file = new Files();
+					file = this.fileService.uploadFile(multipartFile);
+					fileList.add(file);
+				}
+				_approval.setFileList(fileList);
 			}
 			this.approvalService.save(_approval);
 		} catch (Exception e) {
@@ -211,10 +225,12 @@ public class ApprovalController {
 		Approval approval = this.approvalService.findById(id);
 		approval.setTitle(approvalForm.getTitle());
 		approval.setContent(approvalForm.getContent());
-		List<Files> fileList = this.fileService.uploadFile(approvalForm.getMultipartFiles());
-		if(fileList!=null) {
-			for(Files file : fileList) {
-				approval.getFileList().add(file);
+		if(approvalForm.getMultipartFiles()!=null&&!approvalForm.getMultipartFiles().isEmpty()) {
+			List<Files> fileList = approval.getFileList();
+			for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
+				Files file = new Files();
+				file = this.fileService.uploadFile(multipartFile);
+				fileList.add(file);
 			}
 		}
 		this.approvalService.save(approval);

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
@@ -82,10 +83,16 @@ public class NoticesController {
 			return "notices_form";
 		}
 		
-		List<Files> files = new ArrayList<>();
-		files = this.fileService.uploadFile(noticeForm.getMultiPartFile());
+		List<Files> fileList = new ArrayList<>();
+		if(noticeForm.getMultiPartFile()!=null&&!noticeForm.getMultiPartFile().isEmpty()) {
+			for(MultipartFile multipartFile : noticeForm.getMultiPartFile()) {
+				Files file = new Files();
+				file = this.fileService.uploadFile(multipartFile);
+				fileList.add(file);
+			}
+		}
 		Users users = this.userService.getUser(principal.getName());
-		this.noticesService.create(noticeForm.getTitle(), noticeForm.getContent(), users,files);
+		this.noticesService.create(noticeForm.getTitle(), noticeForm.getContent(), users,fileList);
 		
 		return "redirect:/notices/list";
 	}
@@ -110,10 +117,16 @@ public class NoticesController {
 			return "notices_update";
 		}
 		Notices notices2 = this.noticesService.getNotice(noticeId);
-		List<Files> files = new ArrayList<>();
-		files = this.fileService.uploadFile(noticeForm.getMultiPartFile());
+		List<Files> fileList = new ArrayList<>();
+		if(noticeForm.getMultiPartFile()!=null&&!noticeForm.getMultiPartFile().isEmpty()) {
+			for(MultipartFile multipartFile : noticeForm.getMultiPartFile()) {
+				Files file = new Files();
+				file = this.fileService.uploadFile(multipartFile);
+				fileList.add(file);
+			}
+		}
 		Users users = this.userService.getUser(principal.getName());
-		this.noticesService.updateNotice(notices , noticeForm.getTitle(), noticeForm.getContent(),users,files);
+		this.noticesService.updateNotice(notices , noticeForm.getTitle(), noticeForm.getContent(),users,fileList);
 		
 		return "redirect:/notices/list";
 	}
