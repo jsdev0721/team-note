@@ -3,12 +3,7 @@
 		<form th:action="@{|/approval/edit/${approval.approvalId}|}" method="post" enctype="multipart/form-data">
 			<div class="card" th:object="${approvalForm}">
 				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
-				<select class="form-select" aria-label="Default select example" th:field="*{departmentName}">
-				  <option selected value="">부서를 선택하세요.</option>
-				  <option value="General">일반</option>
-				  <option value="HR">휴가</option>
-				  <option value="Accounting">비용처리</option>
-				</select>
+				<input type="hidden" th:field="*{departmentName}" th:value="${approvalForm.departmentName}" />
 				<h5 class="card-header"><input type="text" th:value="${approval.title}" name="title" /></h5>
 				<div class="card-body">
 					<h5 class="card-title"><textarea th:text="${approval.content}" name="content"></textarea></h5>

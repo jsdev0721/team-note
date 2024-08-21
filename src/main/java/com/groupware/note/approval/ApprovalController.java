@@ -65,6 +65,7 @@ public class ApprovalController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/create")
 	public String approvalCreate(ApprovalForm approvalForm) {
+		approvalForm.setDepartmentName("General");
 		return "approvalCreate";
 	}
 	@PreAuthorize("isAuthenticated()")
@@ -79,10 +80,12 @@ public class ApprovalController {
 			_approval.setUser(user);
 			if(!approvalForm.getDepartmentName().equals("General")) {
 				Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
+				System.out.println("---------------------------------------------------------"+department.getDepartmentName());
 				_approval.setDepartment(department);
 			}
 			else {
 				Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
+				System.out.println("---------------------------------------------------------"+department.getDepartmentName());
 				_approval.setDepartment(department);
 			}
 			_approval.setTitle(approvalForm.getTitle());
@@ -100,6 +103,7 @@ public class ApprovalController {
 	
 	@GetMapping("/create/HR")
 	public String approvalCreateLeave(LeaveForm leaveForm) { //휴가폼
+		leaveForm.setDepartmentName("HR");
 		return "approvalCreate_leave";
 	}
 	@PreAuthorize("isAuthenticated()")
@@ -195,6 +199,7 @@ public class ApprovalController {
 		Approval approval = this.approvalService.findById(id);
 		model.addAttribute("approval", approval);
 		model.addAttribute("fileList", approval.getFileList());
+		approvalForm.setDepartmentName(approval.getDepartment().getDepartmentName());
 		return "approvalEdit";
 	}
 	@PostMapping("/edit/{id}")
@@ -206,19 +211,11 @@ public class ApprovalController {
 		Approval approval = this.approvalService.findById(id);
 		approval.setTitle(approvalForm.getTitle());
 		approval.setContent(approvalForm.getContent());
-			List<Files> fileList = this.fileService.uploadFile(approvalForm.getMultipartFiles());
-			if(fileList!=null) {
-				for(Files file : fileList) {
-					approval.getFileList().add(file);
-				}
+		List<Files> fileList = this.fileService.uploadFile(approvalForm.getMultipartFiles());
+		if(fileList!=null) {
+			for(Files file : fileList) {
+				approval.getFileList().add(file);
 			}
-		if(!approvalForm.getDepartmentName().equals("General")) {
-			Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
-			approval.setDepartment(department);
-		}
-		else {
-			Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
-			approval.setDepartment(department);
 		}
 		this.approvalService.save(approval);
 		return String.format("redirect:/approval/detail/%s", id);
