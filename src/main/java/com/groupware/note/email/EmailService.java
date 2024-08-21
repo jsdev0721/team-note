@@ -1,6 +1,5 @@
-package com.groupware.note.user;
+package com.groupware.note.email;
 
-import org.apache.poi.util.SystemOutLogger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -27,17 +26,15 @@ public class EmailService {
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             message.setFrom(senderEmail);
-            System.out.println("senderEmail: " + senderEmail);
             message.setRecipients(MimeMessage.RecipientType.TO, mail);
-            System.out.println("mail: " + mail);
-            message.setSubject("이메일 인증 번호");
+            message.setSubject("[NoTE] 이메일 인증코드");
             String body = "";
-            body += "<h3>" + "요청하신 인증 번호입니다." + "</h3>";
-            body += "<h1>" + number + "</h1>";
-            body += "<h4>" + "이용 중이신 애플리케이션으로 돌아가 인증을 완료해 주십시오." + "</h4>";
-            body += "<h3>" + "감사합니다." + "</h3>";
+            body += "<p>" + "안녕하세요, NoTE입니다." + "</p>";
+            body += "<p>" + "이메일 주소 인증을 위해 요청하신 6자리 코드는 다음과 같습니다." + "</p>";
+            body += "<p>" + "인증 코드 : " + "<strong>" + number + "</strong>" + "</p>";
+            body += "<p>" + "이용 중이신 애플리케이션으로 돌아가 인증을 완료해 주십시오." + "</p>";
+            body += "<p>" + "감사합니다." + "</p>";
             message.setText(body,"UTF-8", "html");
-            System.out.println("인증 메일 문자 입력 완료");
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -48,7 +45,6 @@ public class EmailService {
     	System.out.println("service=====================");
         MimeMessage message = CreateMail(mail);
         javaMailSender.send(message);
-        System.out.println("인증 문자 전송");
         return number;
     }
 

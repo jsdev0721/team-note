@@ -92,15 +92,6 @@ public class UserController {
 		return "findID";
 	}
 	
-	@PostMapping("/find/id")
-	public String findID(Model model, @RequestParam("email") String email) {
-		System.out.println("email"+email);
-		UserDetails userDetails = this.userDetailsService.findID(email);
-		Users users = userDetails.getUser();
-		model.addAttribute("users", users);
-		return "findID";
-	}
-	
 	@GetMapping("/find/pw")
 	public String findPW(UserPasswordForm userPasswordForm) {
 		return "findPW";
