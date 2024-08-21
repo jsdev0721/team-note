@@ -2,7 +2,7 @@
 	<head>
 		<script>
 			function link() {
-				var select = document.getElementById("department").value;
+				var select = document.getElementById('department').value;
 				if(select === 'General' || select === 'Accounting') {
 					location.href = "/approval/create";
 				}
@@ -14,11 +14,16 @@
 		<form th:action="@{/approval/create/HR}" method="post" enctype="multipart/form-data">
 			<div class="card" th:object="${leaveForm}">
 				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
-				<select id="department" class="form-select" aria-label="Default select example" th:field="*{departmentName}" onchange="link()">
-				  <option selected value="HR">휴가</option>
-				  <option value="General">일반</option>
-				  <option value="Accounting">비용처리</option>
-				</select>
+				
+				
+				<div class="form-check">
+					<label class="form-check-label"><input class="form-check-input" type="radio" th:field="*{departmentName}" id="department"  value="General" oninput="link()"/>일반</label>
+				</div>
+				<div class="form-check">
+					<label class="form-check-label"><input class="form-check-input" type="radio" th:field="*{departmentName}"value="HR">휴가</label>
+				</div>
+				
+			
 				<h5 class="card-header"><input type="text" th:field="*{title}" placeholder="제목을 입력해 주세요" style="font-size: 16px;"/></h5>
 				<div class="card-body">
 					<h5 class="card-title"><textarea th:field="*{reason}" placeholder="사유를 입력해 주세요" style="font-size: 16px;"></textarea></h5>
