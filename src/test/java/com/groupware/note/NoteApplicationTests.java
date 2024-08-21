@@ -80,42 +80,43 @@ class NoteApplicationTests {
 				positionsRepository.save(pos);
 			}
 		}
-		Files _file = new Files();
-		_file.setOriginFileName("user.png");
-		_file.setStoreFileName("user.png");
 		
-		this.fileRepository.save(_file);
-		//아이디 비밀번호 temp
-		//로그인은 신규 가입으로 진행할 것
-		this.userService.create("temp", "temp");
-
-			Users user = this.userService.getUser("temp");
-			Files file = this.fileService.findByFiles(1);
-//			this.userDetailsService.create(user, "temp", LocalDate.now(), "temp@temp", file);
-		//결재게시판 데이터 TEST용
-		for(int i=1 ; i<=50 ; i++) {
-			Approval approval = new Approval();
-			String content = String.valueOf(i);
-			String title = String.valueOf(i);
-			approval.setUpdateTime(LocalDateTime.now());
-			approval.setContent(content);
-			approval.setTitle(title);
-			approval.setStatus("queue");
-			approval.setDepartment(user.getPosition().getDepartment());
-			approval.setUser(user);
-			this.approvalService.save(approval);
-		}
-		//공지사항게시판 데이터 TEST용
-		for(int i=1 ; i<=50 ; i++) {
-			String title = String.valueOf(i);
-			String content = String.valueOf(i);
-			this.noticesService.create(title, content, user, null);
-		}
-		//서식게시판 데이터 TEST용
-		for(int i=1 ; i<=50 ; i++) {
-			String title = String.valueOf(i);
-			String content = String.valueOf(i);
-			this.formService.create(title, content, user, null);
-		}
+//		Files _file = new Files();
+//		_file.setOriginFileName("user.png");
+//		_file.setStoreFileName("user.png");
+//		
+//		this.fileRepository.save(_file);
+//		//아이디 비밀번호 temp
+//		//로그인은 신규 가입으로 진행할 것
+//		this.userService.create("temp", "temp");
+//
+//			Users user = this.userService.getUser("temp");
+//			Files file = this.fileService.findByFiles(1);
+////			this.userDetailsService.create(user, "temp", LocalDate.now(), "temp@temp", file);
+//		//결재게시판 데이터 TEST용
+//		for(int i=1 ; i<=50 ; i++) {
+//			Approval approval = new Approval();
+//			String content = String.valueOf(i);
+//			String title = String.valueOf(i);
+//			approval.setUpdateTime(LocalDateTime.now());
+//			approval.setContent(content);
+//			approval.setTitle(title);
+//			approval.setStatus("queue");
+//			approval.setDepartment(user.getPosition().getDepartment());
+//			approval.setUser(user);
+//			this.approvalService.save(approval);
+//		}
+//		//공지사항게시판 데이터 TEST용
+//		for(int i=1 ; i<=50 ; i++) {
+//			String title = String.valueOf(i);
+//			String content = String.valueOf(i);
+//			this.noticesService.create(title, content, user, null);
+//		}
+//		//서식게시판 데이터 TEST용
+//		for(int i=1 ; i<=50 ; i++) {
+//			String title = String.valueOf(i);
+//			String content = String.valueOf(i);
+//			this.formService.create(title, content, user, null);
+//		}
 	}
 }

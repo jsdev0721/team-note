@@ -8,20 +8,49 @@
 			<th>날짜</th>
 			<th>이름</th>
 			<th>금액</th>
+			
 		</tr>
 	</thead>
-	
 	<tbody>
-		<tr th:each = "expense, loop : ${expenseList}">
-			<td th:text="${loop.index}"></td>
+		
+		<tr th:each = "expense,loop : ${expenseList}">
+			<td th:text="${loop.index + 1}"></td>
 			<td th:text="${#temporals.format(expense.useDate, 'yy-MM-dd')}"></td>
-			<td th:text="${question.writer.name}"></td>
+			<td th:text="${expense.writer}"></td>
 			<td th:text="${#numbers.formatCurrency(expense.amount)}"></td>
 		</tr>
 	</tbody>
 </table>	
 		
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dataUploadModal">데이터 업로드</button>
+<h2> </h2>
+<!-- dataUploadModal_start-->
+<div class="modal fade" id="dataUploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">데이터 업로드</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+	  <form th:action="@{/expense/upload}" method="post" enctype="multipart/form-data">
+      <div class="modal-body">
 		
+			<input class="form-control" type="file" id="formFileMultiple" name="multipartFiles" multiple>
+			<br>
+			<small>사진 파일과 엑셀 파일을 각각 하나씩 등록해주세요</small>
 		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="submit" class="btn btn-primary">등록</button>
+      </div>
+	  </form>
+    </div>
+  </div>
+</div>	
+<!-- dataUploadModal_end-->
+<!--receiptModal-->
+
+
 </div>
 </html>

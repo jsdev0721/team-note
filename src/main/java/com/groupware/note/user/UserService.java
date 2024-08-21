@@ -1,5 +1,6 @@
 package com.groupware.note.user;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -79,6 +80,10 @@ public class UserService {
 			throw new DataNotFoundException("사용자를 찾을 수 없습니다.");
 		}
 
+	}
+	//메신저에서 사용
+	public List<Users> getAllUsers(){
+		return this.userRepository.findAll();
 	}
 
 }
