@@ -1,5 +1,6 @@
 package com.groupware.note.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.groupware.note.position.Positions;
 
 import jakarta.persistence.Column;
@@ -30,6 +31,8 @@ public class Users {
 	
 	@ManyToOne
 	@JoinColumn(name = "position_id")
+	@JsonIgnore
 	private Positions position;
 	
+	private String name;
 }

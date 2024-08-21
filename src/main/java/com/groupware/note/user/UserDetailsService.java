@@ -88,6 +88,7 @@ public class UserDetailsService {
 			return getUser.get();
 		}else {throw new DataNotFoundException("데이터를 찾을 수 없습니다");}
 	}
+	
 	public List<UserDetails> searchList(String name){
 		return this.userDetailsRepository.findByNameLike("%"+name+"%");	 
 	}

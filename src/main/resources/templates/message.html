@@ -32,19 +32,24 @@
 				            });
 				        });
 				    }
+					
 					let selectedUsername = null; // 유저목록에서 선택한 유저
-				    function openMessageRoom(username) { // 유저목록에서 유저를 클릭하면 시작
+				    function openMessageRoom(username, name) { // 유저목록에서 유저를 클릭하면 시작
+						test_id.innerHTML = name;
 						selectedUsername = username;
 				        document.getElementById('messageRoom').classList.remove('d-none');
+			
 						fetch(`/message/messages/${selectedUsername}`) // Controller로 보내기
 						    .then(response => response.json())
 						    .then(messages => {
 						        let messagesDiv = document.getElementById('messages');
 						        messagesDiv.innerHTML = ''; // 기존 메시지 초기화
 						        messages.forEach(message => {
-						            showMessage(message);
+						            showMessage(message, name);
 						        });
 						    });
+						
+							
 				    }
 				    function sendMessage() { // 전송을 누르면, 대화내용 정보를 Controller로 보냄
 				        let content = document.getElementById('messageInput').value;
@@ -53,25 +58,30 @@
 				            'chatRoom': { 'user2': { 'username': selectedUsername } }
 				        }));
 				    }
-				    function showMessage(message) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬
+				    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬
 				        let messages = document.getElementById('messages');
 				        let messageElement = document.createElement('div');
-						console.log(message.sender.username);
+						var d = new Date(); 
+						
+						console.log(d);
 						let alignmentClass = (message.sender.username === selectedUsername) ? 'left-align' : 'right-align';
 						messageElement.classList.add(alignmentClass);
-						messageElement.innerText = '[' + message.sender.username + ']\n ' + message.content;
+						messageElement.innerText = '[' + message.sender.username + ']\n ' + message.content + '\n' +
+						((d.getMonth() + 1) > 9 ? (d.getMonth() + 1).toString() : "0" + (d.getMonth() + 1)) + "-" + (d.getDate() > 9 ? d.getDate().toString() : "0" + d.getDate().toString());
 				        messages.appendChild(messageElement);
 				    }
+					
+					
 				    window.onload = connect;
 				</script>
 	</head>
 	
 	<body>
 		
-			<div class="container my-3">
+			<div class="container my-3" style = "width: 600px;">
 			    <div class="row justify-content-center">
-			        <div class="col-2">
-			            <h4>유저목록</h4>
+			        <div class="col-2" style = "width: 200px;">
+			            <h4>메신저</h4>
 			            <hr>
 			            <table class="table table-striped">
 			                <thead class="table-primary">
@@ -81,17 +91,18 @@
 			                    </tr>
 			                </thead>
 			                <tbody>
-			                    <tr th:each="user, loop : ${userList}">
-			                        <td th:text="${loop.index}"></td>
-			                        <td><a href="#" th:text="${user.username}" th:onclick="openMessageRoom([[${user.username}]])"></a></td>
+			                    <tr th:each="user, loop : ${nameList}">
+			                        <td th:text="${loop.index} + 1"></td>
+			                        <td><a href="#" th:text="${user.name}" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a></td>
 			                    </tr>
 			                </tbody>
 			            </table>
 			        </div>
-			        <div class="col-3">
-			            <h4>대화방</h4>
-			            <hr>
+			        <div class="col-3" style = "width: 400px;">
+
 			            <div id="messageRoom" class="d-none">
+							<h4><div id="test"></div></h4>
+							<hr>
 			                <div id="messages" style="height: 350px; overflow-y: auto"></div>
 							<div class="row justify-content-center my-3">
 								<div class="col-9">
@@ -102,9 +113,14 @@
 								</div>
 							</div>
 			            </div>
+
+						
 			        </div>
 			    </div>
 			</div>
-		
 	</body>
+	<script>
+		var test_id = document.getElementById("test");
+		test_id.innerHTML = '대화';
+	</script>
 </html>
