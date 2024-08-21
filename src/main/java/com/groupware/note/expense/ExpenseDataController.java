@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,28 +29,32 @@ public class ExpenseDataController {
 
 	
 	@GetMapping("/list")
-	public String expenseList(Model model) {
+	public String expenselist(Model model) {
 		List<Expense> list = edService.list();
 		model.addAttribute("expenseList", list);
 		return "expenseList";
 	}
 	
-	@GetMapping("/Upload")
+	@GetMapping("/upload")
 	public String upLoad(ExpenseForm exForm) {
 		return "expenseUpload";
 	}
 
 	@PostMapping("/upload")
-	public String upLoadExpense(@Valid ExpenseForm exForm) throws IOException{
+	public String upLoadExpense(@Valid ExpenseForm exForm, BindingResult bindingResult) throws IOException{
+		if(bindingResult.hasErrors()) {
+			return "expenseList";
+		}
 		
 		Files photoReceipt = null;
 			InputStream is = null;
 		for(MultipartFile multipartFile : exForm.getMultipartFiles()) {
-			if(fService.validFileExtension(fService.extendsFile(multipartFile.getName()))) {
+			if(fService.validFileExtension(fService.extendsFile(multipartFile.getOriginalFilename()))) {
 				photoReceipt = fService.uploadPhoto(multipartFile);
-			} else if(fService.extendsFile(multipartFile.getName()).equals("xlsx")) {
+			} else if(fService.extendsFile(multipartFile.getOriginalFilename()).equals("xlsx")) {
 				is = multipartFile.getInputStream();
 			} else {
+//				bindingResult.rejectValue(null, null, null); 이거 써서 해결해보기
 				throw new IOException("파일을 다시 확인해주세요");
 			}
 				
@@ -68,14 +73,6 @@ public class ExpenseDataController {
 		edService.uploadExpenseData(worksheet, photoReceipt);
 		
 		
-		return "expenseList";
+		return "redirect:/expense/list";
   }
 }
-
-
-
-//String _extension1 = FilenameUtils.getExtension(exForm.getExcelfile().getOriginalFilename());
-//
-//if (!_extension1.equals("xlsx")) {
-//	throw new IOException("엑셀파일(xlsx)만 업로드 해주세요.");
-//}

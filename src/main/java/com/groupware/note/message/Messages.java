@@ -16,24 +16,20 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-public class MessageContents {
-	
+public class Messages {
+//message
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer messageId;
+	private Long id;
 	
 	@ManyToOne
 	@JoinColumn(name = "room_id")
-	private MessageRooms room;
+	private ChatRooms chatRoom;
 	
 	@ManyToOne
-	@JoinColumn(name = "sender_id")
 	private Users sender;
 	
 	private String content;
 	
-	private String attachment;
-	
-	private LocalDateTime sendDate;
-	
+	private LocalDateTime sendTime;
 }
