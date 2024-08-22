@@ -1,4 +1,8 @@
 <html layout:decorate="~{layout}">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/approvalList.css}">
+		<title>결재 내역</title>
+	</head>
 	<div layout:fragment="content" class="container">
 		
 		<div class="card text-center">
@@ -9,35 +13,40 @@
 			    <li class="page-item"><a class="page-link" th:href="@{?status=complete}">COMPLETE</a></li>
 			  </ul>
 			</nav>
-		</div>
+		</div><!-- tab end -->
+		<div class="searchAndCreate">
+			<div class="search">
+				<form th:action="@{/approval/list}" method="post">
+					<select name="status">
+						<option value="queue">QUEUE</option>
+						<option value="process">PROCESS</option>
+						<option value="complete">COMPLETE</option>
+					</select>
+					<input type="text" name="search" />
+					<input type="submit" value="검색" />
+				</form>
+			</div><!-- search end -->
+			<a th:href="@{/approval/create}" class="create">
+				<img src="/images/pencil.png" alt="새글 생성">
+			</a>
+		</div><!-- search, create end -->
 		<table class="table table-scriped-columns table-hover align-middle">
 			<thead>
 				<tr>
 					<th>제목</th>
 				</tr>
 			</thead>
-		<tbody>
-			<tr th:each="approval : ${approvalList}">
-				<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
-			</tr>
-		</tbody>
-		</table>
-		<div>
-			<form th:action="@{/approval/list}" method="post">
-				<select name="status">
-					<option value="queue">QUEUE</option>
-					<option value="process">PROCESS</option>
-					<option value="complete">COMPLETE</option>
-				</select>
-				<input type="text" name="search" />
-				<input type="submit" value="검색" />
-			</form>
-		</div>
+			<tbody>
+				<tr th:each="approval : ${approvalList}">
+					<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
+				</tr>
+			</tbody>
+		</table><!-- 결재 리스트 end -->
 		<div th:if="${!approvalList.isEmpty()}">
 			<ul class="pagination justify-content-center">
 				<li class="page-item" th:classappend="${!approvalList.hasPrevious}?'disabled'">
 					<a class="page-link" th:href="@{|?page=${approvalList.number-1}|}">
-						<span>이전</span>
+						<span>&#60;</span>
 					</a>
 				</li>
 				<li th:each="page : ${#numbers.sequence(0, approvalList.totalPages-1)}" th:if="${page >= approvalList.number -3 and page<= approvalList.number +3}" th:classappend="${page==approvalList.number} ? 'active'" class="page-item">
@@ -45,14 +54,10 @@
 				</li>
 				<li class="page-item" th:classappend="${!approvalList.hasNext} ? 'disabled'">
 					<a class="page-link" th:href="@{|?page=${approvalList.number+1}|}">
-						<span>다음</span>
+						<span>&#62;</span>
 					</a>
 				</li>
 			</ul>
-		</div>
-		
-		<div>
-			<a th:href="@{/approval/create}">새글 생성</a>
-		</div>
+		</div><!-- paging end -->
 	</div>
 </html>

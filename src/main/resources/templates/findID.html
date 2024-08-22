@@ -3,28 +3,110 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="_csrf_header" th:content="${_csrf.headerName}">
+		<meta name="_csrf" th:content="${_csrf.token}">
 		<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 		<script th:src="@{/bootstrap.min.js}"></script>
 		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
 		<script>
+			var time = 180; //이메일 코드 유효 시간 3분
+			var btn = document.getElementById('button');
+			var setTime = null;
+			function limit() {
+				if(time > 0) {
+					time = time - 1;
+					var min = parseInt(time / 60);
+					var sec = time % 60;
+					min = checkTime(min);
+					sec = checkTime(sec);
+					document.getElementById('limit').innerHTML = min + ":" + sec;
+					setTime = setTimeout(limit, 1000);
+				}else {
+					clearTimeout(setTime);
+					time = 180;
+					var timeLimit = confirm("이메일 인증 코드 유효시간이 초과되었습니다.\n\n이메일 인증 코드를 다시 받으시겠습니까?");
+					if(timeLimit) {
+						$.ajax({
+							type: "POST",
+							url: "/email/mailSend",
+							beforeSend: function(xhr){
+						        xhr.setRequestHeader(header, token);
+						    },
+							crossDomain: true,
+							data: {"email" : $("#email").val()},
+							success: function(data){
+								alert("이메일 코드가 다시 발송되었습니다.\n이메일 코드를 확인하신 후 이메일 인증을 완료해 주세요.");
+								limit();
+								$("#mailCode").attr("value",data);
+							}
+						});
+					}else {
+						location.href = "/user/login";
+					}
+				}
+			}
+			function checkTime(i) {
+			    if (i < 10) {i = "0" + i}; 
+			    return i;
+			}
+			
+			var header = $("meta[name='_csrf_header']").attr('content');
+			var token = $("meta[name='_csrf']").attr('content');
+			function mailSend() {
+				$("#mailCodeCheck").css("display","block");
+				$("#mailSend").css("display","none");
+				$.ajax({
+					type: "POST",
+					url: "/email/mailSend",
+					beforeSend: function(xhr){
+				        xhr.setRequestHeader(header, token);
+				    },
+					crossDomain: true,
+					data: {"email" : $("#email").val()},
+					success: function(data){
+						alert("이메일 코드가 입력하신 이메일 주소로 발송되었습니다.\n이메일 코드를 확인하신 후 이메일 인증을 완료해 주세요.");
+						limit();
+						$("#mailCode").attr("value",data);
+					}
+				});
+			}
+			
 			function codeCheck() {
 				var number = document.getElementById("number").value;
 				var mailCode = document.getElementById("mailCode").value;
 				if(number === mailCode) {
 					alert("이메일 인증이 완료되었습니다.")
 					document.getElementById("button").disabled = true;
+					clearTimeout(setTime);
+					time = 180;
 					$("#id_box").css("display","block");
 					$.ajax({
 						type: "GET",
 						url: "/email/findEmail",
+						data: {"email" : $("#email").val()},
 						success: function(data){
 							$("#username").attr("value",data);
 						}
 					});
 				}else {
 					var confirmFlag = confirm("이메일 인증에 실패하였습니다.\n\n이메일 인증 코드를 다시 받으시겠습니까?")
+					clearTimeout(setTime);
+					time = 180;
 					if(confirmFlag){
-						location.href = "/email/mailSend";
+						$.ajax({
+							type: "POST",
+							url: "/email/mailSend",
+							beforeSend: function(xhr){
+						        xhr.setRequestHeader(header, token);
+						    },
+							crossDomain: true,
+							data: {"email" : $("#email").val()},
+							success: function(data){
+								alert("이메일 코드가 다시 발송되었습니다.\n이메일 코드를 확인하신 후 이메일 인증을 완료해 주세요.");
+								limit();
+								$("#mailCode").attr("value",data);
+							}
+						});
 					}else {
 						location.href = "/user/login";
 					}
@@ -35,13 +117,16 @@
 	</head>
 	<body class="container">
 		<a th:href="@{/}"><img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;"></a>
-		<form th:action="@{/email/mailSend}" method="post" class="was-validated" th:if="${#bools.isFalse(status)}">
-			<input type="text" id="email" name="email" class="form-control" placeholder="이메일을 입력해 주세요" required>
-			<button type="submit" class="btn btn-success mt-3">인증 코드 받기</button>
-		</form>
 		
-		<div class="was-validated" th:if="${#bools.isTrue(status)}" id="mailCodeCheck">
-			<input type="hidden" id="mailCode" th:value="${mailCode}">
+		<div class="was-validated" id="mailSend">
+			<input type="text" id="email" name="email" class="form-control" placeholder="이메일을 입력해 주세요" required>
+			<button type="button" id="sendBtn" class="btn btn-success mt-3" onclick="mailSend()">인증 코드 받기</button>
+		</div>
+		
+		<p id="limit"></p>
+		
+		<input type="text" id="mailCode" value="" style="display: none;">
+		<div class="was-validated" id="mailCodeCheck" style="display: none;">
 			<input type="text" id="number" name="number" class="form-control" placeholder="인증 코드를 입력해 주세요" required>
 			<button type="button" id="button" class="btn btn-success mt-3" onclick="codeCheck()">인증하기</button>
 			

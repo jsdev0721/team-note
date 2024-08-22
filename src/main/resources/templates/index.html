@@ -63,12 +63,21 @@
 						</tr>
 					</tbody>
 				</table>
-				<a th:href="@{/expense/list}">회계</a>
 			</div> <!-- form end -->
+		</div><!-- right end -->
+		
+		<!--메세지-->
+		<div>
+			<a href="#" class="chat icon-wrap">
+				<img src="/images/chat.png" alt="채팅 아이콘" class="icon">
+			</a>
 		</div>
+		<!--메세지-->
 		
 		<!--캘린더(임시) 메인페이지 꾸밀때 날려도 됩니다. 나중에 거기에 맞춰서 고칠예정-->
-		<button class="btn btn-success calendar" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">캘린더버튼</button>
+		<a href="#" class="calendar icon-wrap" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+			<img src="/images/calendar_icons.png" alt="캘린더 아이콘" class="icon">
+		</a>
 		<div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
 			<div class="offcanvas-header">
 				<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">캘린더</h5>
@@ -79,16 +88,22 @@
 			</div>
 		</div>
 		<!--캘린더(임시) 메인페이지 꾸밀때 날려도 됩니다. 나중에 거기에 맞춰서 고칠예정-->
-		<!--메세지-->
-		<div>
-			
-		</div>
-		<!--메세지-->
+		
 		<!-- 인사 -->
 		<div>
-			
+			<a href="#" class="hr icon-wrap">
+				<img src="/images/hr.png" alt="인사 아이콘" class="icon">
+			</a>
 		</div>
 		<!-- 인사 -->
+		
+		<!-- 회계 -->
+		<div>
+			<a th:href="@{/expense/list}" class="accounting icon-wrap">
+				<img src="/images/accounting.png" alt="회계 아이콘" class="icon">
+			</a>
+		</div>
+		<!-- 회계 -->
 		
 	</div>
 </html>
