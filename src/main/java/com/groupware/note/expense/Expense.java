@@ -27,7 +27,10 @@ public class Expense {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long expenseDataId;
-	private String writer;
+	
+	@ManyToOne
+	private UserDetails writer;
+	
 	private String expenseType;
 	private double amount;
 	private LocalDateTime useDate;
