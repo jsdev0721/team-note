@@ -15,11 +15,21 @@ li{list-style: none;}
 
 .logout{display: block;float: right;height: 70px;line-height: 70px;font-weight: 600;}
 
+/* 마이페이지 */
 .myPage:after{display: inline-block;content: "|";color: #ccc;margin-left: 10px;}
 .myPage{height: 60px;float: right;display: block;padding-top: 10px;margin-right: 10px;}
 .myPage img{height: 100%;}
+.my{box-shadow: 0 0 10px rgba(0,0,0,0.8);}
 
-.offcanvas-top{width: 350px;top: 65px !important;left: auto !important;right: 10px !important;border: 1px solid #000 !important;height: 250px !important;}
+.low{display: flex;border-top: 1px solid rgb(32, 62, 110);}
+.low .attendance{flex: 1;border-right: 1px dashed rgb(32, 62, 110);}
+.low a{display: block;height: 60px;line-height: 60px;text-align: center;color: rgb(32, 62, 110);font-weight: 600;}
+.low a:hover{text-decoration: underline;}
+
+.low .leave{flex: 1;}
+/* 마이페이지 */
+
+.offcanvas-top{width: 350px;top: 65px !important;left: auto !important;right: 10px !important;height: 250px !important;}
 .offcanvas-body{padding: 0 !important;}
 
 .menu:after{display: inline-block;content: "|";color: #ccc;}

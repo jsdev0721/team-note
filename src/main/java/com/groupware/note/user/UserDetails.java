@@ -33,7 +33,7 @@ public class UserDetails {
 	
 	private String email;
 	
-	@ManyToOne
+	@OneToOne
 	private Files photo;
 	
 	private Integer leave;

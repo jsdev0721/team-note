@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.groupware.note.DataNotFoundException;
+import com.groupware.note.files.Files;
 import com.groupware.note.position.PositionService;
 import com.groupware.note.position.Positions;
 
@@ -53,7 +54,6 @@ public class UserService {
 		}
 	}
 	
-
 	public Users getUser(Integer userId) {
 		Optional<Users> users = this.userRepository.findById(userId);
 		if(users.isPresent()) {

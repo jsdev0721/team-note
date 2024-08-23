@@ -203,7 +203,7 @@
 			
 			<!-- 마이페이지 -->
 			<a href="#" class="myPage" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"><img src="/images/person.png"></a>
-			<div class="offcanvas offcanvas-top" data-bs-backdrop="false" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+			<div class="offcanvas offcanvas-top my" data-bs-backdrop="false" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
 			  	<div class="offcanvas-body d-flex flex-column">
 					<div class="info" style="flex: 0.5;">
 						<div th:if="${file!=null}"><img th:src="@{|/user/photo/${file.fileId}|}" style="width: 60px;"></div>
@@ -223,7 +223,12 @@
 					</div><!-- 나의 결재 end -->
 					
 					<div class="low" style="flex: 0.25;background-color: #eee;">
-						<a href="#" data-bs-toggle="modal" data-bs-target="#leave">휴가 신청</a>
+						<div class="attendance">
+							<a th:href="@{/attendance/list}">출근 기록</a>
+						</div>
+						<div class="leave">
+							<a th:href="@{/approval/create/HR}">휴가 신청</a>
+						</div>
 					</div><!-- 출근기록 휴가신청 end -->
 			  	</div>
 			</div>
@@ -244,50 +249,20 @@
 			</div>
 		</div>
 		
-		<!-- modal popup -->
-		<div class="modal fade" id="leave" tabindex="-1" aria-hidden="true">
-		  	<div class="modal-dialog">
-		    	<div class="modal-content">
-		      		<div class="modal-body">
-						<div class="count">
-							
-						</div>
-						<div class="content">
-							<form th:action="@{/user/leave}" method="post" enctype="multipart/form-data">
-								
-								<div class="high"><!-- 휴가 날짜, 첨부파일 -->
-									<div class="leaveDate"><!-- 휴가 날짜 입력 -->
-										<input type="date" class="form-control" name="startDate" placeholder="휴가 시작 날짜">
-										<input type="date" class="form-control" name="endDate" placeholder="휴가 종료 날짜">
-									</div>
-									<input type="file" class="form-control" id="formFileMultiple" name="multipartFiles" multiple>
-								</div><!-- high end -->
-								<div class="low"><!-- 휴가 사유(reason) -->
-									<input type="text" class="form-control" name="reason" placeholder="사유 입력">
-								</div><!-- low -->
-								<button type="submit" class="btn btn-primary">신청</button>
-							</form>
-						</div><!-- content end -->
-		      		</div><!-- modal-body end -->
-				</div><!-- modal-content end -->
-			</div>
-		</div>
-		<!-- modal popup -->
-		
 		<!-- 캘린더 modal -->
 		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-sm">
 		        <div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">일정 추가하기</h5>
+						<h5 class="modal-title" id="exampleModalLabel">일정 추가</h5>
 		            	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		         	</div>
 		          	<div class="modal-body">
-		            	일정이름 : <input type="text" id="title" name="title" /><br />
-		            	시작시간 : <input type="datetime-local" id="start" /><br />
-		            	종료시간 : <input type="datetime-local" id="end" /><br />
-		            	배경색상 :
-		            	<select id="color">
+		            	일정이름 <input class="form-control form-control-sm" type="text" id="title" name="title"><br>
+		            	시작시간 <input class="form-control form-control-sm" type="datetime-local" id="start"><br>
+		            	종료시간 <input class="form-control form-control-sm" type="datetime-local" id="end"><br>
+		            	배경색상
+		            	<select id="color" class="form-select form-select-sm">
 		              		<option value="red">빨강색</option>
 		              		<option value="orange">주황색</option>
 		              		<option value="yellow">노랑색</option>
