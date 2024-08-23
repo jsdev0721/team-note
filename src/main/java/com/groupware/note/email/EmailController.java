@@ -20,43 +20,23 @@ public class EmailController {
 	
 	private final EmailService emailService;
 	private final UserDetailsService userDetailsService;
-
-	private String email; //이메일 주소 저장 (인증 실패 후 재시도할 때 사용)
 	
+	@ResponseBody
 	@PostMapping("/mailSend")
-    public String mailSend(@RequestParam(value = "email") String email, Model model) {
-        Boolean status = false;
+    public String mailSend(@RequestParam(value = "email") String email) {
         System.out.println("controller=============");
-        try {
-        	this.email = email;
-            int number = emailService.sendMail(email);
-            status = true;
-            model.addAttribute("status", status);
-            model.addAttribute("mailCode", number);
-        } catch (Exception e) {
-        	e.getMessage();
-        }
-        return "findID";
+//       this.email = email;
+        System.out.println("controller email: " + email);
+        int number = emailService.sendMail(email);
+//        String code = String.valueOf(number);
+        String code = "" + number;
+        System.out.println("controller code:" + code);
+        return code;
     }
-	
-	@GetMapping("/mailSend")
-	public String againMailSend(Model model) { //이메일 인증 실패 후 재시도
-		Boolean status = false;
-        System.out.println("controller=============");
-        try {
-            int number = emailService.sendMail(email);
-            status = true;
-            model.addAttribute("status", status);
-            model.addAttribute("mailCode", number);
-        } catch (Exception e) {
-        	e.getMessage();
-        }
-		return "findID";
-	}
 	
 	@ResponseBody
 	@GetMapping("/findEmail")
-	public String findEmail() {
+	public String findEmail(@RequestParam(value = "email") String email) {
 		UserDetails userDetails = this.userDetailsService.findID(email);
 		String username = userDetails.getUser().getUsername();
 		return username;

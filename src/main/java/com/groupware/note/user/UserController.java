@@ -20,8 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.attendance.Attendance;
 import com.groupware.note.attendance.AttendanceService;
+import com.groupware.note.department.Departments;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
+import com.groupware.note.position.PositionService;
 import com.groupware.note.position.Positions;
 
 import jakarta.validation.Valid;
@@ -36,6 +38,7 @@ public class UserController {
 	private final UserDetailsService userDetailsService;
 	private final FileService fileService;
 	private final AttendanceService attendanceService;
+	private final PositionService positionService;
 	
 	@GetMapping("/login")
 	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
@@ -168,12 +171,21 @@ public class UserController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/update/{userId}")
 	public String userUpdate(Model model,@PathVariable("userId") Integer userId) {
-		UserDetails userDetails = this.userDetailsService.getUser(userId);
-		model.addAttribute("userDetails", userDetails);
+		Users users =this.userService.getUser(userId);
+		model.addAttribute("users",users);
 		
 		return "HR_update";
-		
 	}
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/update/{userId}")
+	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName
+			,@RequestParam(value="departmentId")Departments id) {
+		Positions positions= this.positionService.findByPositionName(positionName, id);
+		this.positionService.updatePosition(userId, positions);
+		
+		return "redirect:/user/list";
+	}
+	
 	@PostMapping("/list")
 	public String userSearchList(Model model,@Valid SearchListForm searchListForm) {
 		List<UserDetails> userList = this.userDetailsService.searchList(searchListForm.getSearchKeyword());

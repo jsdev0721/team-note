@@ -5,14 +5,16 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.groupware.note.DataNotFoundException;
+import com.groupware.note.position.PositionRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class DepartmentService {
-	private final DepartmentRepository departmentRepository;
 	
+	private final DepartmentRepository departmentRepository;
+
 	public Departments findBydepartmentName(String departmentName) {
 		Optional<Departments> _departments = this.departmentRepository.findByDepartmentName(departmentName);
 		if(_departments.isEmpty()) {
@@ -20,5 +22,7 @@ public class DepartmentService {
 		}
 		return _departments.get(); 
 	}
+	
+	
 	
 }

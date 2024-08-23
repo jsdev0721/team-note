@@ -1,0 +1,4 @@
+/* 검색, 새글생성 */
+.searchAndCreate{display: flex;justify-content: space-between;width: 80%;margin: 0 auto;}
+.search{width: 50%;}
+.create img{width: 35px;}

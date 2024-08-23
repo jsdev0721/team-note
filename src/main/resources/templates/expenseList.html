@@ -17,7 +17,13 @@
 			<td th:text="${loop.index + 1}"></td>
 			<td th:text="${#temporals.format(expense.useDate, 'yy-MM-dd')}"></td>
 			<td th:text="${expense.writer}"></td>
-			<td th:text="${#numbers.formatCurrency(expense.amount)}"></td>
+			<td><button class="btn-open" popovertarget="popup1" popovertargetaction="toggle">
+				<div th:text="${'₩' + #numbers.formatInteger(expense.amount, 3, 'COMMA')}" ></div>
+				</button>
+			</td>
+			
+			<div id="popup1" popover><img th:src="@{|/expense/photo/${expense.file.fileId}|}" style="width: 60px;"></div>
+			
 		</tr>
 	</tbody>
 </table>	

@@ -34,7 +34,8 @@ public class ExpenseDataService {
 		      Expense data = new Expense();
 		      Optional<UserDetails> _user = udRepo.findByName(row.getCell(0).getStringCellValue());
 		      if(_user.isPresent()) {
-			      data.setWriter(row.getCell(0).getStringCellValue());
+		    	  UserDetails writer = _user.get();
+			      data.setWriter(writer);
 			      data.setExpenseType(row.getCell(1).getStringCellValue());
 			      data.setAmount(row.getCell(2).getNumericCellValue());
 			      data.setUseDate(row.getCell(3).getLocalDateTimeCellValue());
