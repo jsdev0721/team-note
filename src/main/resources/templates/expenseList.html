@@ -22,7 +22,27 @@
 	.scrolltbody th:last-child { width: 100px; }
 	.scrolltbody td:last-child { width: calc( 100px - 19px );  }
 	</style>
+	<style>
+	    .sc {width: 100%; height: 800px; overflow: auto;  overflow-x: hidden;}
+	</style>
 	
+	<style>
+		.tableWrapper{
+			max-height: 600px;
+			min-height: auto;
+			overflow: auto;
+			overflow-x: hidden;
+		}
+		#expensel{
+			width: 100%;
+			border: 0px;
+		}
+		
+		#expensel th {
+			position: sticky;
+			top: 0px;
+		}
+	</style>
 	
 	<p></p>
 	<form th:action = "@{/expense/list}" method = "post">
@@ -47,7 +67,9 @@
 	</div>
 	<p></p>
 	<!--scrolltbody를 table class에 입력-->
-<table class = "table" style="height: 1000px;">
+	
+	<div class="sc">
+<table id = "expensel" class = "table">
 	<thead class="table-dark">
 		<tr>
 			<th>번호</th>
@@ -78,7 +100,8 @@
 		</tr>
 	</tbody>
 	
-</table>	
+</table>
+</div>	
 <p></p>
 
 
@@ -96,7 +119,7 @@
 		
 			<input class="form-control" type="file" id="formFileMultiple" name="multipartFiles" multiple>
 			<br>
-			<small>사진 파일과 엑셀 파일을 각각 하나씩 등록해주세요 <br> 엑셀: xlsx <br>사진: jpg , jpeg , bmp , gif , png, webp</small>
+			<small>ctrl 버튼으로 사진 파일과 엑셀 파일을 각각 하나씩 등록해주세요 <br> 엑셀: xlsx <br>사진: jpg , jpeg , bmp , gif , png, webp</small>
 			
 
       </div>
