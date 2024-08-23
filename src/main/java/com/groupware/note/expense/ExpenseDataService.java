@@ -2,7 +2,7 @@ package com.groupware.note.expense;
 
 
 
-import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,14 +23,45 @@ public class ExpenseDataService {
 	private final UserDetailsRepository udRepo;
 	
 	public List<Expense> list(){
-		List<Expense> list = eRepository.findAll();
+		List<Expense> list = this.eRepository.findOrderByUseDate();
 		return list;
 	}
 	
-	public void uploadExpenseData( XSSFSheet worksheet, Files file) throws IOException {
+	//위쪽에 검색창 통해 부서/이름 검색	
+	public List<Expense> barSearchedList(String browse, String search ){
+		
+		switch(search) {
+		case "WRITER" :
+			List<Expense> list1 = this.eRepository.findByNameOrderByDate("%" + browse+ "%");
+			return list1;
+		case "DEPARTMENT":
+			List<Expense> list2 = this.eRepository.findByDepOrderByDate("%" + browse+ "%");
+			return list2;
+		}
+		return null;
+	}
+	
+	public List<Expense> nameList(String st){
+		List<Expense> list = this.eRepository.findByEmailOrderByDate(st);
+		return list;
+	}
+	
+	public List<Expense> depList(String st){
+		List<Expense> list = this.eRepository.findByDepOrderByDateandName(st);
+		return list;
+	}
+	
+	public List<Expense> dateList(LocalDateTime dt){
+		List<Expense> list = this.eRepository.findByDateOrderBy(dt);
+		return list;
+	}
+	
+	public void uploadExpenseData( XSSFSheet worksheet, Files file) {
 	    for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
-	    	  
 		      Row row = worksheet.getRow(i);
+		      if(row.getCell(0).getStringCellValue().equals("End")) {
+		    	  break;
+		      }
 		      Expense data = new Expense();
 		      Optional<UserDetails> _user = udRepo.findByName(row.getCell(0).getStringCellValue());
 		      if(_user.isPresent()) {
@@ -42,15 +73,12 @@ public class ExpenseDataService {
 			      data.setDescription(row.getCell(4).getStringCellValue());
 			      data.setFile(file);
 			      this.eRepository.save(data);
-			      System.out.println( i + "체크");
-		      } else {
-		    	  throw new IOException("엑셀 파일 이름 확인");
-		      }
+		      } 
 		      
 		    }
 	}
 	
 	
-	//사진 데이터 업로드, 연동, 다운로드. 이미지1 + 엑셀1 한번에 업로드. 연동. 1개 이미지에 여러개의 영수증이 포함될 수 있음. 화면에 올라간 데이터 띄우고 정렬, 검색기능. 다운로드 가능하게.   
+
 	
 }

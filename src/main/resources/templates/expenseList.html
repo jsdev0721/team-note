@@ -1,35 +1,88 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container">
-
-<table class = "table">
+	
+	<style>
+	.scrolltbody {
+	    display: block;
+	    width: 700px;
+	    border-collapse: collapse;
+	    border: 2px solid #000;
+	}
+	.scrolltbody th { border: 1px solid #000; background: pink; }
+	.scrolltbody td { border: 1px solid #000; border-top: 0; }
+	.scrolltbody tbody {
+	    display: block;
+	    height: 800px;
+	    overflow: auto;
+	}
+	.scrolltbody th:nth-of-type(1), .scrolltbody td:nth-of-type(1) { width: 40px; }
+	.scrolltbody th:nth-of-type(2), .scrolltbody td:nth-of-type(2) { width: 80px; }
+	.scrolltbody th:nth-of-type(3), .scrolltbody td:nth-of-type(3) { width: 100px; }
+	.scrolltbody th:nth-of-type(4), .scrolltbody td:nth-of-type(4) { width: 100px; }
+	.scrolltbody th:last-child { width: 100px; }
+	.scrolltbody td:last-child { width: calc( 100px - 19px );  }
+	</style>
+	
+	
+	<p></p>
+	<form th:action = "@{/expense/list}" method = "post">
+		<div class = "mb-3" align="center">
+			<tr>
+			<td>
+				<select name = "search">
+					<option value = "WRITER">작성자
+					<option value = "DEPARTMENT">부서
+					</option></select>
+			</td>
+			<td><input type = "text" name = "browse"/></td>
+			<td><input type = "submit" value = "검색" /></td>
+			</tr>
+		</div>
+	</form>
+	
+	<div style="text-align: right;">
+	<button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/expense/list}'|">조건 초기화</button>
+		&nbsp;
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dataUploadModal">데이터 업로드</button>
+	</div>
+	<p></p>
+	<!--scrolltbody를 table class에 입력-->
+<table class = "table" style="height: 1000px;">
 	<thead class="table-dark">
 		<tr>
 			<th>번호</th>
 			<th>날짜</th>
+			<th>부서</th>
 			<th>이름</th>
 			<th>금액</th>
 			
 		</tr>
-	</thead>
+	</thead>	
 	<tbody>
 		
-		<tr th:each = "expense,loop : ${expenseList}">
+		<tr th:each = "expense, loop : ${expenseList}">
 			<td th:text="${loop.index + 1}"></td>
-			<td th:text="${#temporals.format(expense.useDate, 'yy-MM-dd')}"></td>
-			<td th:text="${expense.writer}"></td>
-			<td><button class="btn-open" popovertarget="popup1" popovertargetaction="toggle">
+			<td><a th:href="@{|/expense/lists?date=${expense.useDate}|}" th:text="${#temporals.format(expense.useDate, 'yy-MM-dd')}"></a></td>
+			
+			<td><a th:href="@{|/expense/list?st=${expense.writer.user.position.department.departmentName}|}" th:text="${expense.writer.user.position.department.departmentName}"></a></td>
+			
+			<td><a th:href="@{|/expense/list?st=${expense.writer.email}|}" th:text="${expense.writer.name}"></a></td>
+			
+			<td><button class="btn-open" th:popovertarget="@{|popup/${expense.file.fileId}|}" popovertargetaction="toggle">
 				<div th:text="${'₩' + #numbers.formatInteger(expense.amount, 3, 'COMMA')}" ></div>
 				</button>
 			</td>
 			
-			<div id="popup1" popover><img th:src="@{|/expense/photo/${expense.file.fileId}|}" style="width: 60px;"></div>
+			<div th:id="@{|popup/${expense.file.fileId}|}" popover><img th:src="@{|/expense/photo/${expense.file.fileId}|}" style="width: 600px;"></div>
 			
 		</tr>
 	</tbody>
+	
 </table>	
-		
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dataUploadModal">데이터 업로드</button>
-<h2> </h2>
+<p></p>
+
+
+
 <!-- dataUploadModal_start-->
 <div class="modal fade" id="dataUploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -43,8 +96,9 @@
 		
 			<input class="form-control" type="file" id="formFileMultiple" name="multipartFiles" multiple>
 			<br>
-			<small>사진 파일과 엑셀 파일을 각각 하나씩 등록해주세요</small>
-		
+			<small>사진 파일과 엑셀 파일을 각각 하나씩 등록해주세요 <br> 엑셀: xlsx <br>사진: webp, png, jpg</small>
+			
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
