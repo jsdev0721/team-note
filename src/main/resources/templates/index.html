@@ -78,7 +78,9 @@
 		<!--메세지-->
 		
 		<div>
-			<a th:href="@{/message/list}" target="_blank" class="chat icon-wrap">
+			<a href="#" >Link</a>
+			
+			<a href="#" th:onClick="window.open('@{/message/list}','message','width=800, height=600')" class="chat icon-wrap">
 				<img src="/images/chat.png" alt="채팅 아이콘" class="icon">
 			</a>
 		</div>
