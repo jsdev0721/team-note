@@ -1,0 +1,29 @@
+<html layout:decorate="~{layout}">
+	<div layout:fragment="content" class="container my-3">
+		<div class="my-3 border-bottom">
+			<h4>유저정보 수정</h4>
+		</div>
+		<form th:action="@{|/user/update/${users.userId}|}" method="post">
+			<div class="mb-4">
+				<option for="positionName" class="form-label"></option>
+				<h3>부서/직급 변경</h3>
+				<br>
+				<select  class="form-control"name="departmentId">
+					<option value="1">HR</option>
+					<option value="2">accounting</option>
+					<option value="3">Marketing</option>
+					<option value="4">temp</option>
+				</select>
+				<br>
+				<select  class="form-control" name="positionName" th:value="${users.position.positionName}">position>
+					<option value="section chief">section chief</option>
+					<option value="deputy">deputy</option>
+					<option value="worker">worker</option>
+					<option value="intern">intern</option>
+				</select>
+				<br>
+			</div>
+				<input type="submit" class="btn btn-success" value="변경하기">
+		</form>
+	</div>
+</html>

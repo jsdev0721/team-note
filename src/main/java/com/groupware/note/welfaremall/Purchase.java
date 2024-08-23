@@ -1,16 +1,19 @@
 package com.groupware.note.welfaremall;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.groupware.note.department.Departments;
 import com.groupware.note.user.Users;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,9 +34,9 @@ public class Purchase {
 	@JoinColumn(name = "department_id")
 	private Departments department;
 	
-	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private WelfareMall product;
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "cartList_id")
+	private List<WelfareMall> productList;
 	
 	private Integer quantity;
 	

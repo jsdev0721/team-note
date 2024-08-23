@@ -79,11 +79,12 @@ public class AttendanceController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/checkout")
-	public String postCheckOut(Principal principal, @RequestParam("outlatitude") double lat, @RequestParam("outlongitude") double lon) {
+	public String postCheckOut(Principal principal, @RequestParam("outlatitude") double lat, @RequestParam("outlongitude") double lon, Model model) {
 		System.out.println(lat);
 		System.out.println(lon);
-		this.attendanceService.createOut(principal.getName(), lat, lon);
-		return "login";
+		boolean check = this.attendanceService.createOut(principal.getName(), lat, lon);
+		model.addAttribute("check", check);
+		return "redirect:/user/logout";
 	}
 	
 	
