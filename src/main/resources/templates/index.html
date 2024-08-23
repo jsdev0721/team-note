@@ -57,7 +57,7 @@
 			<div id="welfaremall">
 				<div class="txt d-flex justify-content-between">
 					<h3>복지몰</h3>
-					<a href="#"><img src="/images/plus_site.png"></a>
+					<a th:href="@{/welfaremall/list}"><img src="/images/plus_site.png"></a>
 				</div>
 			</div> <!-- welfaremall end -->
 			<div id="publicForm">
@@ -83,7 +83,7 @@
 		</div>
 		<!--메세지-->
 		
-		<!--캘린더(임시) 메인페이지 꾸밀때 날려도 됩니다. 나중에 거기에 맞춰서 고칠예정-->
+		<!--캘린더-->
 		<a href="#" class="calendar icon-wrap" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
 			<img src="/images/calendar_icons.png" alt="캘린더 아이콘" class="icon">
 		</a>
@@ -93,10 +93,12 @@
 				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			</div>
 			<div class="offcanvas-body">
-			<div th:replace="~{calendar :: calendarFragment}"></div>
+				<div class="container">
+					<div id='calendar'></div> <!--캘린더-->
+				</div>
 			</div>
 		</div>
-		<!--캘린더(임시) 메인페이지 꾸밀때 날려도 됩니다. 나중에 거기에 맞춰서 고칠예정-->
+		<!--캘린더-->
 		
 		<!-- 인사 -->
 		<div>

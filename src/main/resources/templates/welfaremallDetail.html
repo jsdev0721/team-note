@@ -1,0 +1,19 @@
+<html layout:decorate="~{layout}">
+	<div layout:fragment="content" class="container">
+		<div class="card">
+			<div class="card-header">
+			<h5 th:text="${welfaremall.productName}"></h5>
+			<h6 th:text="${welfaremall.price}"></h6>				
+			</div>
+			
+			<div class="card-body" th:each="photo : ${welfaremall.photos}" th:if="${!welfaremall.photos.isEmpty()}">
+				<img th:src="@{|/welfaremall/photo/${photo.fileId}|}" class="card-img-middle">
+			</div>
+			<div class="btn-group" role="group" aria-label="Basic mixed styles example">
+				<a type="button" class="btn btn-outline-primary" th:href="@{/welfaremall/list}" >목록</a>
+				<th:block sec:authorize="hasAuthority('ROLE_ACCOUNTING')"><a type="button" class="btn btn-outline-primary" th:href="@{|/welfaremall/edit/${welfaremall.productId}|}">수정</a></th:block>
+				<th:block sec:authorize="hasAuthority('ROLE_ACCOUNTING')"><a type="button" class="btn btn-outline-danger" th:href="@{|/welfaremall/delete/${welfaremall.productId}|}">삭제</a></th:block>
+			</div>
+		</div>
+	</div>
+</html>
