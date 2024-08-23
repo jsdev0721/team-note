@@ -1,6 +1,18 @@
 <html layout:decorate="~{layout}">
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/index.css}">
+		<script>
+			$(function(){
+				var status = $('#status').val();
+				if(status === "queue"){
+					$(".queue").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}else if(status === "process"){
+					$(".process").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}else if(status === "complete"){
+					$(".complete").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}
+			});
+		</script>
 		<title>note</title>
 	</head>
 	<div layout:fragment="content" class="container my-3" id="main">
@@ -10,17 +22,14 @@
 				<h3>결재</h3>
 				<a th:href="@{/approval/list}"><img src="/images/plus_site.png"></a>
 			</div>
-			<ul class="nav nav-tabs" id="myTab" role="tablist">
-				<li class="nav-item" role="presentation">
-					<a th:href="@{?status=queue}" class="nav-link active" data-bs-toggle="tab" role="tab" aria-selected="true">결재 대기</a>
-				</li>
-				<li class="nav-item" role="presentation">
-				    <a th:href="@{?status=process}" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 중</a>
-				</li>
-				<li class="nav-item" role="presentation">
-				    <a th:href="@{?status=complete}" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 완료</a>
-				</li>
-			</ul>
+			<div class="approval-list">
+				<input type="text" style="display: none;" th:value="${status}" id="status">
+				<ul> 
+					<li class="page-item"><a class="page-link queue" th:href="@{?status=queue}">결재 대기</a></li>
+					<li class="page-item"><a class="page-link process" th:href="@{?status=process}">결재 중</a></li>
+					<li class="page-item"><a class="page-link complete" th:href="@{?status=complete}">결재 완료</a></li>
+				</ul>
+			</div>
 			<table class="table table-hover">
 				<tbody>
 					<tr th:each="approval : ${approvalList}">

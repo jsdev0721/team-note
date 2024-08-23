@@ -22,7 +22,6 @@ public class EmailService {
     
     public MimeMessage CreateMail(String mail) {
         createNumber();
-        System.out.println("number: " + number);
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             message.setFrom(senderEmail);
@@ -42,7 +41,6 @@ public class EmailService {
     }
     
     public int sendMail(String mail) {
-    	System.out.println("service=====================");
         MimeMessage message = CreateMail(mail);
         javaMailSender.send(message);
         return number;

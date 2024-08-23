@@ -1,4 +1,19 @@
+/* 진행 상황 */
+.list{width: 400px;margin: 0 auto;margin-top: 40px;}
+.list ul{display: flex;border: 1px solid rgb(32, 62, 110);padding: 0 !important;}
+.list ul li{flex: 1;border-right: 1px solid rgb(32, 62, 110);}
+.list ul li:last-child{border: none;}
+.page-link{display: block;height: 40px;line-height: 40px;text-align: center;}
+
 /* 검색, 새글생성 */
-.searchAndCreate{display: flex;justify-content: space-between;width: 80%;margin: 0 auto;}
-.search{width: 50%;}
-.create img{width: 35px;}
+.searchAndCreate{display: flex;justify-content: space-between;margin-top: 40px !important;margin-bottom: 20px;}
+.search-box{width: 50%;position: relative;}
+
+.search-box select{height: 45px;border: 1px solid rgb(32, 62, 110);border-radius: 5px;font-size: 0.9em;}
+
+.search-txt{height: 45px;width: 80%;outline: none;border: 1px solid rgb(32, 62, 110);border-radius: 5px;padding-left: 5px;}
+.search{border: 0 !important;padding: 0 !important;background-color: rgba(0,0,0,0) !important;position: absolute;right: 40px;top: 5px;}
+.search img{width: 35px;}
+
+.create{border: 1px solid rgb(32, 62, 110);border-radius: 5px;}
+.create img{width: 35px;margin: 5px 15px;}

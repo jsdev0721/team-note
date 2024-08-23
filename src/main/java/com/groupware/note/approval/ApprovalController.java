@@ -53,6 +53,7 @@ public class ApprovalController {
 		Departments department = user.getPosition().getDepartment();
 		Page<Approval> approvalList = this.approvalService.ApprovalList(department, status , page , 10);
 		model.addAttribute("approvalList", approvalList);
+		model.addAttribute("status", status);
 		return "approvalList";
 	}
 	@PostMapping("/list")

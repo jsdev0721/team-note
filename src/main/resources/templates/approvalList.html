@@ -1,29 +1,42 @@
 <html layout:decorate="~{layout}">
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/approvalList.css}">
+		<script>
+			$(function(){
+				var status = $('#status').val();
+				if(status === "queue"){
+					$(".queue").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}else if(status === "process"){
+					$(".process").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}else if(status === "complete"){
+					$(".complete").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}
+			});
+		</script>
 		<title>결재 내역</title>
 	</head>
 	<div layout:fragment="content" class="container">
 		
-		<div class="card text-center">
-			<nav aria-label="Page navigation example">
-			  <ul class="pagination">
-			    <li class="page-item"><a class="page-link" th:href="@{?status=queue}">QUEUE</a></li>
-			    <li class="page-item"><a class="page-link" th:href="@{?status=process}">PROCESS</a></li>
-			    <li class="page-item"><a class="page-link" th:href="@{?status=complete}">COMPLETE</a></li>
-			  </ul>
-			</nav>
+		<div class="list">
+			<input type="text" style="display: none;" th:value="${status}" id="status">
+		  	<ul> 
+		    	<li class="page-item"><a class="page-link queue" th:href="@{?status=queue}">결재 대기</a></li>
+		    	<li class="page-item"><a class="page-link process" th:href="@{?status=process}">결재 중</a></li>
+		    	<li class="page-item"><a class="page-link complete" th:href="@{?status=complete}">결재 완료</a></li>
+		  	</ul>
 		</div><!-- tab end -->
 		<div class="searchAndCreate">
-			<div class="search">
+			<div class="search-box">
 				<form th:action="@{/approval/list}" method="post">
 					<select name="status">
-						<option value="queue">QUEUE</option>
-						<option value="process">PROCESS</option>
-						<option value="complete">COMPLETE</option>
+						<option value="queue">결재 대기</option>
+						<option value="process">결재 중</option>
+						<option value="complete">결재 완료</option>
 					</select>
-					<input type="text" name="search" />
-					<input type="submit" value="검색" />
+					<input type="text" name="search" class="search-txt" placeholder="검색어를 입력해 주세요"/>
+					<button type="submit" class="search">
+						<img src="/images/search.png" alt="검색">
+					</button>
 				</form>
 			</div><!-- search end -->
 			<a th:href="@{/approval/create}" class="create">

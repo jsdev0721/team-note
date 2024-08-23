@@ -24,13 +24,8 @@ public class EmailController {
 	@ResponseBody
 	@PostMapping("/mailSend")
     public String mailSend(@RequestParam(value = "email") String email) {
-        System.out.println("controller=============");
-//       this.email = email;
-        System.out.println("controller email: " + email);
         int number = emailService.sendMail(email);
-//        String code = String.valueOf(number);
         String code = "" + number;
-        System.out.println("controller code:" + code);
         return code;
     }
 	

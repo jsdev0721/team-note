@@ -1,5 +1,6 @@
 a{text-decoration: none;color: #000;}
 body{height: 100vh;display: flex;flex-direction: column;}
+li{list-style: none;}
 .container{flex-grow: 1;}
 
 /* header */
