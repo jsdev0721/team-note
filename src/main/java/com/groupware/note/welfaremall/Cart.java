@@ -35,4 +35,6 @@ public class Cart {
 	private Integer point;
 	
 	private LocalDateTime addDate;
+	
+	private String type;
 }

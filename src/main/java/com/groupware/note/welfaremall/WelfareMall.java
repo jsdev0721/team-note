@@ -30,4 +30,5 @@ public class WelfareMall {
 	
 	private Integer price;
 	
+	private String type;
 }
