@@ -146,7 +146,7 @@
 								const date = new Date();
 								const hour = date.getHours();
 								
-								var check = confirm("퇴근 하시겠습니까?");
+								var check = confirm("퇴근 하시겠습니까?\n24시간이 넘어간 경우, 퇴근 시간이 18:00로 조정 됩니다.");
 								if(check){
 					                // 히든 필드에 위치 데이터 설정
 					                document.getElementById("outlatitude").value = latitude;
