@@ -37,7 +37,7 @@ public class FileService {
 		int fileExtensionIndex = originFileName.lastIndexOf('.');
 		return originFileName.substring(fileExtensionIndex + 1);
 	}
-	//jpg , jpeg , bmp , gif , png 타입일 경우 true return
+	//jpg , jpeg , bmp , gif , png, webp 타입일 경우 true return
 	public boolean validFileExtension(String fileExtension) {
 		String[] extension = {"jpg","jpeg","bmp","gif","png", "webp"};
 		if(Arrays.stream(extension).anyMatch(value -> value.equals(fileExtension))) {
