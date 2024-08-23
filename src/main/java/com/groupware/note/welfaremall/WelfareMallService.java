@@ -21,7 +21,7 @@ public class WelfareMallService {
 	
 	public Pageable getPageable(int page,int quantity) {
 		List<Sort.Order>sorts = new ArrayList<>();
-		sorts.add(Sort.Order.desc("updateTime"));
+		sorts.add(Sort.Order.desc("productId"));
 		return  PageRequest.of(page, quantity, Sort.by(sorts));
 	}
 	public Page<WelfareMall> findAll(String type , int page , int quantity) {

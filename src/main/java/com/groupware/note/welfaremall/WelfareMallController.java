@@ -1,10 +1,13 @@
 package com.groupware.note.welfaremall;
 
+import java.net.MalformedURLException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,12 +40,14 @@ public class WelfareMallController {
 	@GetMapping("/list")
 	public String findAll(Model model , @RequestParam(value = "page" , defaultValue = "0") int page ,@RequestParam(defaultValue = "personal" , value = "type")String type) {
 		model.addAttribute("list", this.welfareMallService.findAll(type , page, 9));
+		model.addAttribute("type", type);
 		return "welfaremallList";
 	}
 	
 	@PostMapping("/list")
 	public String findByProductNameLike(Model model , @RequestParam(value = "page" , defaultValue = "0")int page ,@RequestParam(value = "productName")String productName ,@RequestParam(value = "type") String type) {
 		model.addAttribute("list", this.welfareMallService.findByProductNameLike(productName, type, page, 9));
+		model.addAttribute("type", type);
 		return "welfaremallList";
 	}
 	@GetMapping("/create")
@@ -51,6 +56,9 @@ public class WelfareMallController {
 	}
 	@PostMapping("/create")
 	public String create(@Valid WelfareMallForm welfareMallForm , BindingResult bindingResult , @RequestParam("type")String type) {
+		if(bindingResult.hasErrors()) {
+			return "welfaremallCreate";
+		}
 		WelfareMall welfareMall = new WelfareMall();
 		welfareMall.setProductName(welfareMallForm.getProductName());
 		welfareMall.setDescription(welfareMallForm.getDesciption());
@@ -69,9 +77,21 @@ public class WelfareMallController {
 		return "redirect:/welfaremall/list";
 	}
 	@GetMapping("/detail/{id}")
-	public String detailWelfaremall(Model model , @PathVariable("id")Integer id) {
-		model.addAttribute("welfaremall", this.welfareMallService.findById(id));
-		return "detailWelfaremall";
+	public String detailWelfaremall(Model model , @PathVariable("id")Integer id , Principal principal) {
+		if(principal!=null) {
+			model.addAttribute("userInfo", this.userService.getUser(principal.getName()));
+		}
+		else {
+			model.addAttribute("userInfo", null);
+		}
+		WelfareMall welfareMall = this.welfareMallService.findById(id);
+		model.addAttribute("welfaremall", welfareMall);
+		return "welfaremallDetail";
+	}
+	@GetMapping("/photo/{id}")
+	public ResponseEntity<Resource>viewPhoto(@PathVariable("id")Integer id) throws MalformedURLException{
+		Files file = this.fileService.findByFiles(id);
+		return this.fileService.photoView(file);
 	}
 	@GetMapping("/edit/{id}")
 	public String editWelfaremall(Model model , WelfareMallForm welfareMallForm , @PathVariable("id")Integer id) {
@@ -80,12 +100,12 @@ public class WelfareMallController {
 		welfareMallForm.setDesciption(welfareMall.getDescription());
 		welfareMallForm.setPrice(welfareMall.getPrice());
 		model.addAttribute("fileList", welfareMall.getPhotos());
-		return "editWelfaremall";
+		return "welfaremallDetail";
 	}
 	@PostMapping("/edit/{id}")
 	public String editWelfaremall(@Valid WelfareMallForm welfareMallForm , BindingResult bindingResult ,@PathVariable("id")Integer id) {
 		if(bindingResult.hasErrors()) {
-			return "eidtWelfaremall";
+			return "welfaremallDetail";
 		}
 		WelfareMall welfareMall = this.welfareMallService.findById(id);
 		if(!welfareMallForm.getFileList().isEmpty()) {
