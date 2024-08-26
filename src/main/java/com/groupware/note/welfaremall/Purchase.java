@@ -28,8 +28,7 @@ public class Purchase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer purchaseId;
 	
-	@OneToOne
-	@MapsId
+	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private Users user;
 	

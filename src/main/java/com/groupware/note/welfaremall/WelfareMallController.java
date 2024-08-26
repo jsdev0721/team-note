@@ -146,7 +146,7 @@ public class WelfareMallController {
 				this.fileService.delete(file);
 			}
 		}
-		return "redirect:/welfaremall/viewCart";
+		return "redirect:/welfaremall/list";
 	}
 	@GetMapping("/addCart/{id}")
 	public String addCart(@PathVariable("id")Integer id , Principal principal , @RequestParam("to") String to) {
@@ -271,12 +271,16 @@ public class WelfareMallController {
 			for(Cart cart : cartList) {
 				this.cartService.delete(cart);
 			}
+			long calc = user.getPosition().getDepartment().getPoints()-purchase.getTotalPrice();
+			userDetail.setPoints(calc);
 			purchase.setPurchaseStatus("process");
 			this.purchaseService.save(purchase);			
 		}else if(user.getPosition().getDepartment().getPoints()>purchase.getTotalPrice()&&type.equals("group")) {
 			for(Cart cart : cartList) {
 				this.cartService.delete(cart);
 			}
+			long calc = user.getPosition().getDepartment().getPoints()-purchase.getTotalPrice();
+			user.getPosition().getDepartment().setPoints(calc);
 			purchase.setPurchaseStatus("process");
 			this.purchaseService.save(purchase);
 		}
