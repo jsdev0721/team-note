@@ -21,9 +21,15 @@ import lombok.RequiredArgsConstructor;
 public class ExpenseDataService {
 	private final ExpenseRepository eRepository;
 	private final UserDetailsRepository udRepo;
-	
+	//기본
 	public List<Expense> list(){
 		List<Expense> list = this.eRepository.findOrderByUseDate();
+		return list;
+	}
+	
+	//날짜 설정
+	public List<Expense> dateSetList(LocalDateTime startDate, LocalDateTime endDate ){
+		List<Expense> list = this.eRepository.findBetDate(startDate, endDate);
 		return list;
 	}
 	
@@ -40,22 +46,24 @@ public class ExpenseDataService {
 		}
 		return null;
 	}
-	
+	//이름 클릭시 실행
 	public List<Expense> nameList(String st){
 		List<Expense> list = this.eRepository.findByEmailOrderByDate(st);
 		return list;
 	}
 	
+	//부서 클릭시 실행
 	public List<Expense> depList(String st){
 		List<Expense> list = this.eRepository.findByDepOrderByDateandName(st);
 		return list;
 	}
 	
+	//날짜 클릭시 실행
 	public List<Expense> dateList(LocalDateTime dt){
 		List<Expense> list = this.eRepository.findByDateOrderBy(dt);
 		return list;
 	}
-	
+	//데이터 업로드
 	public void uploadExpenseData( XSSFSheet worksheet, Files file) {
 	    for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
 		      Row row = worksheet.getRow(i);
@@ -73,9 +81,8 @@ public class ExpenseDataService {
 			      data.setDescription(row.getCell(4).getStringCellValue());
 			      data.setFile(file);
 			      this.eRepository.save(data);
-		      } 
-		      
-		    }
+		      }
+	    }
 	}
 	
 	
