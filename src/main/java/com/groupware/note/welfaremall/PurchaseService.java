@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.groupware.note.DataNotFoundException;
 import com.groupware.note.user.Users;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class PurchaseService {
 	public Purchase findByUserAndPurchaseType(Users user , String purchaseType) {
 		Optional<Purchase> _purchase = this.purchaseRepository.findByUserAndPurchaseType(user, purchaseType);
 		if(_purchase.isEmpty()) {
-			throw new DataNotFoundException("");
+			return new Purchase();
 		}
 		return _purchase.get();
 	}

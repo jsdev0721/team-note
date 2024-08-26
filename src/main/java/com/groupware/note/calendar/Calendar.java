@@ -3,6 +3,7 @@ package com.groupware.note.calendar;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.groupware.note.department.Departments;
 import com.groupware.note.user.Users;
 
 import jakarta.persistence.Column;
@@ -36,5 +37,7 @@ public class Calendar {
 	@Column(name = "end_time")
 	private LocalDateTime end;
 	private String color;
+	
+	private String departmentName;
 	
 }

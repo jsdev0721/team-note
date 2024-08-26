@@ -32,6 +32,11 @@ li{list-style: none;}
 
 .low .leave{flex: 1;}
 
+/* 마이페이지 */
+
+.offcanvas-top{width: 350px;top: 65px !important;left: auto !important;right: 10px !important;height: 250px !important;}
+.offcanvas-body{padding: 0 !important;}
+
 .menu:after{display: inline-block;content: "|";color: #ccc;}
 .menu{height: 60px;float: right;display: block;padding-top: 10px;margin-right: 10px;}
 .menu img{height: 100%;}

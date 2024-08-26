@@ -11,8 +11,8 @@
 			</div>
 			<div class="btn-group" role="group" aria-label="Basic mixed styles example">
 				<a type="button" class="btn btn-outline-primary" th:href="@{/welfaremall/list}" >목록</a>
-				<th:block sec:authorize="hasAuthority('ROLE_ACCOUNTING')"><a type="button" class="btn btn-outline-primary" th:href="@{|/welfaremall/edit/${welfaremall.productId}|}">수정</a></th:block>
-				<th:block sec:authorize="hasAuthority('ROLE_ACCOUNTING')"><a type="button" class="btn btn-outline-danger" th:href="@{|/welfaremall/delete/${welfaremall.productId}|}">삭제</a></th:block>
+				<th:block><a type="button" class="btn btn-outline-primary" th:href="@{|/welfaremall/edit/${welfaremall.productId}|}">수정</a></th:block>
+				<th:block ><a type="button" class="btn btn-outline-danger" th:href="@{|/welfaremall/delete/${welfaremall.productId}|}">삭제</a></th:block>
 			</div>
 		</div>
 	</div>
