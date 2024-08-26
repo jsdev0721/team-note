@@ -35,12 +35,6 @@ public class MessageController {
 		nameList.remove(acessUser);
 		model.addAttribute("sessionName", acessUser);
 		model.addAttribute("nameList", nameList);
-//		List<Users> userList = this.uService.getAllUsers();
-//		Users accessUser = this.uService.getUser(principal.getName());
-//		userList.remove(accessUser);
-//		model.addAttribute("userList", userList);
-		
-		
 		return "message";
 	}
 	//대화내용을 saveMessage로 보내 저장한다
