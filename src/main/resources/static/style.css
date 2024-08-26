@@ -25,12 +25,26 @@ li{list-style: none;}
 .offcanvas-top{width: 350px;top: 65px !important;left: auto !important;right: 10px !important;height: 250px !important;z-index: 500;}
 .offcanvas-body{padding: 0 !important;}
 
+.myApproval{border-top: 1px solid rgb(32, 62, 110);}
+.myApproval ul{display: flex;padding: 10px 0;box-sizing: border-box;height: 100%;margin: 0;}
+.myApproval ul li{flex: 1;border-right: 1px solid rgb(32, 62, 110);position: relative;}
+.myApproval ul li:last-child{border: none;}
+
+.myApproval ul li span:first-child{display: block;text-align: center;line-height: 40px;}
+.myApproval ul li .dot{position: absolute;top: 50%;transform: translateY(-50%);right: 10px;}
+.myApproval ul li:nth-child(1) .dot{display: inline-block;width: 25px;height: 25px;border-radius: 50%;background-color: #ccc;}
+.myApproval ul li:nth-child(2) .dot{display: inline-block;width: 25px;height: 25px;border-radius: 50%;background-color: rgb(251, 226, 2);}
+.myApproval ul li:nth-child(3) .dot{display: inline-block;width: 25px;height: 25px;border-radius: 50%;background-color: rgb(66, 219, 66);}
+
 .low{display: flex;border-top: 1px solid rgb(32, 62, 110);}
 .low .attendance{flex: 1;border-right: 1px dashed rgb(32, 62, 110);}
 .low a{display: block;height: 60px;line-height: 60px;text-align: center;color: rgb(32, 62, 110);font-weight: 600;}
 .low a:hover{text-decoration: underline;}
 
-.low .leave{flex: 1;}
+.low .leave{flex: 1;border-right: 1px dashed rgb(32, 62, 110);}
+
+.low .cart{flex: 1;}
+.low .cart img{width: 30px;}
 
 /* 마이페이지 */
 

@@ -62,5 +62,9 @@ public class ApprovalService {
 	public void deleteById(Approval approval) {
 		this.approvalRepository.delete(approval);
 		
-	} 
+	}
+	
+	public List<Approval> findByUser(Users users, String status) {
+		return this.approvalRepository.findByUserAndStatus(users, status);
+	}
 }
