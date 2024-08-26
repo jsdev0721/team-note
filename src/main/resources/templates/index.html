@@ -75,51 +75,48 @@
 			</div> <!-- form end -->
 		</div><!-- right end -->
 		
-		<!--메세지-->
-		
-		<div>
-			<a href="#" th:onClick="window.open('/message/list','message','width=800, height=600')" class="chat icon-wrap">
-				<img src="/images/chat.png" alt="채팅 아이콘" class="icon">
-			</a>
-		</div>
-		
-		
-		
-		
-		<!--메세지-->
-		
-		<!--캘린더-->
-		<a href="#" class="calendar icon-wrap" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-			<img src="/images/calendar_icons.png" alt="캘린더 아이콘" class="icon">
-		</a>
-		<div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-			<div class="offcanvas-header">
-				<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">캘린더</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		<div id="sidebar">
+			<!--메세지-->
+			<div>
+				<a href="#" th:onClick="window.open('/message/list','message','width=800, height=600')" class="chat icon-wrap">
+					<img src="/images/chat.png" alt="채팅 아이콘" class="icon">
+				</a>
 			</div>
-			<div class="offcanvas-body">
-				<div class="container">
-					<div id='calendar'></div> <!--캘린더-->
+			<!--메세지-->
+			
+			<!--캘린더-->
+			<a href="#" class="calendar icon-wrap" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+				<img src="/images/calendar_icons.png" alt="캘린더 아이콘" class="icon">
+			</a>
+			<div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">캘린더</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<div class="container">
+						<div id='calendar'></div> <!--캘린더-->
+					</div>
 				</div>
 			</div>
-		</div>
-		<!--캘린더-->
+			<!--캘린더-->
+			
+			<!-- 인사 -->
+			<div sec:authorize="hasAuthority('ROLE_HR')">
+				<a th:href="@{/user/list}" class="hr icon-wrap">
+					<img src="/images/hr.png" alt="인사 아이콘" class="icon">
+				</a>
+			</div>
+			<!-- 인사 -->
+			
+			<!-- 회계 -->
+			<div sec:authorize="hasAuthority('ROLE_ACCOUNTING')">
+				<a th:href="@{/expense/list}" class="accounting icon-wrap">
+					<img src="/images/accounting.png" alt="회계 아이콘" class="icon">
+				</a>
+			</div>
+			<!-- 회계 -->
+		</div><!-- sidebar end -->
 		
-		<!-- 인사 -->
-		<div>
-			<a href="#" class="hr icon-wrap">
-				<img src="/images/hr.png" alt="인사 아이콘" class="icon">
-			</a>
-		</div>
-		<!-- 인사 -->
-		
-		<!-- 회계 -->
-		<div>
-			<a th:href="@{/expense/list}" class="accounting icon-wrap">
-				<img src="/images/accounting.png" alt="회계 아이콘" class="icon">
-			</a>
-		</div>
-		<!-- 회계 -->
-		
-	</div>
+	</div><!-- container end -->
 </html>

@@ -6,8 +6,6 @@ a{text-decoration: none;color: #000;}
 .txt img{width: 30px;}
 
 .offcanvas-backdrop{background-color: rgba(0,0,0,0) !important;}
-.icon-wrap{border: 1px solid rgb(32, 62, 110);border-bottom-left-radius: 20px;border-top-left-radius: 20px;border-right: none;}
-.icon{width: 60px;margin: 20px 10px;}
 
 /* approval */
 #approval{width: 45%;margin-right: 10%;}
@@ -21,11 +19,12 @@ a{text-decoration: none;color: #000;}
 #notice{height: 250px;}
 #publicForm{height: 250px;}
 
-/* chat */
-.chat{position: absolute;right: 0; top: 150px;}
+/* sidebar */
+#sidebar{position: fixed;right: 0;top: 150px;display: flex;flex-direction: column;}
+.icon-wrap{border: 1px solid rgb(32, 62, 110);border-bottom-left-radius: 20px;border-top-left-radius: 20px;border-right: none;display: block;margin-bottom: 10px;}
+.icon{width: 60px;margin: 20px 10px;}
 
 /* calendar */
-.calendar{position: absolute;right: 0;top: 260px;}
 .fc-day-sun a{
     color: red !important;
 }
@@ -36,9 +35,5 @@ a{text-decoration: none;color: #000;}
 	transition: transform 0.3s ease-in-out ;
 }
 
-/* hr */
-.hr{position: absolute;right: 0; top: 370px;}
-
 /* accounting */
-.accounting{position: absolute;right: 0;top: 480px;}
-.accounting .icon{margin-right: 0;margin-left: 20px;}
+.accounting > .icon{margin: 20px 10px 20px 15px;}
