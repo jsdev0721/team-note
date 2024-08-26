@@ -22,22 +22,24 @@
 				<h3>결재</h3>
 				<a th:href="@{/approval/list}"><img src="/images/plus_site.png"></a>
 			</div>
-			<div class="approval-list">
-				<input type="text" style="display: none;" th:value="${status}" id="status">
+			<input type="text" style="display: none;" th:value="${status}" id="status">
+			<div class="approval-nav">
 				<ul> 
 					<li class="page-item"><a class="page-link queue" th:href="@{?status=queue}">결재 대기</a></li>
 					<li class="page-item"><a class="page-link process" th:href="@{?status=process}">결재 중</a></li>
 					<li class="page-item"><a class="page-link complete" th:href="@{?status=complete}">결재 완료</a></li>
 				</ul>
 			</div>
-			<table class="table table-hover">
-				<tbody>
-					<tr th:each="approval : ${approvalList}">
-						<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+			<div class="list">
+				<table class="table table-hover">
+					<tbody>
+						<tr th:each="approval : ${approvalList}">
+							<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div><!-- approval list end -->
+		</div><!-- approval end -->
 		<!-- 결재 -->
 	
 		<div id="right"> <!-- 오른쪽 배치 (공지, 서식, 복지몰) -->
@@ -46,13 +48,15 @@
 					<h3>공지사항</h3>
 					<a th:href="@{/notices/list}"><img src="/images/plus_site.png"></a>
 				</div>
-				<table class="table table-hover">
-					<tbody>
-						<tr th:each="notice : ${noticeList}">
-							<td><a th:href="@{|/notices/detail/${notice.noticeId}|}" th:text="${notice.title}"></a></td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="list">
+					<table class="table table-hover">
+						<tbody>
+							<tr th:each="notice : ${noticeList}">
+								<td><a th:href="@{|/notices/detail/${notice.noticeId}|}" th:text="${notice.title}"></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div><!-- notice list end -->
 			</div> <!-- notice end -->
 			<div id="welfaremall">
 				<div class="txt d-flex justify-content-between">
@@ -65,13 +69,15 @@
 					<h3>서식게시판</h3>
 					<a th:href="@{/forms/list}"><img src="/images/plus_site.png"></a>
 				</div>
-				<table class="table table-hover">
-					<tbody>
-						<tr th:each="form : ${formList}">
-							<td><a th:href="@{|/forms/detail/${form.formId}|}" th:text="${form.title}"></a></td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="list">
+					<table class="table table-hover">
+						<tbody>
+							<tr th:each="form : ${formList}">
+								<td><a th:href="@{|/forms/detail/${form.formId}|}" th:text="${form.title}"></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div><!-- form list end -->
 			</div> <!-- form end -->
 		</div><!-- right end -->
 		

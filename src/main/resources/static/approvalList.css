@@ -1,4 +1,4 @@
-/* 진행 상황 */
+/* 진행 상황 tab */
 .list{width: 400px;margin: 0 auto;margin-top: 40px;}
 .list ul{display: flex;border: 1px solid rgb(32, 62, 110);padding: 0 !important;}
 .list ul li{flex: 1;border-right: 1px solid rgb(32, 62, 110);}
