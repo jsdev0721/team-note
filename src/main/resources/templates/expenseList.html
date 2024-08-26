@@ -1,4 +1,8 @@
 <html layout:decorate="~{layout}">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/expenseList.css}">
+		<title>회계</title>
+	</head>
 <div layout:fragment="content" class="container">
 	
 
@@ -29,28 +33,30 @@
 	
 	<p></p>
 	
-	<form th:action = "@{/expense/list}" method = "post">
-		<div class = "mb-3" align="center">
-			<tr>
-			<td>
-				<select name = "search">
-					<option value = "WRITER">작성자
-					<option value = "DEPARTMENT">부서
-					</option></select>
-			</td>
-			<td><input type = "text" name = "browse"/></td>
-			<td><input type = "submit" value = "검색" /></td>
-			</tr>
+	<div id="search-form">
+		<form th:action = "@{/expense/list}" method = "post" class="left">
+			<div class = "mb-3" align="center">
+				<tr>
+				<td>
+					<select name = "search">
+						<option value = "WRITER">작성자
+						<option value = "DEPARTMENT">부서
+						</option></select>
+				</td>
+				<td><input type = "text" name = "browse"/></td>
+				<td><input type = "submit" value = "검색" /></td>
+				</tr>
+			</div>
+		</form>
+		
+		<div class="right">
+			<button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/expense/list}'|">조건 초기화</button>
+				&nbsp;
+			<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#dateSetModal">날짜 설정</button>
+				&nbsp;
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dataUploadModal">데이터 업로드</button>
+				&nbsp;&nbsp;
 		</div>
-	</form>
-	
-	<div style="text-align: right;">
-	<button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/expense/list}'|">조건 초기화</button>
-		&nbsp;
-	<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#dateSetModal">날짜 설정</button>
-		&nbsp;
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dataUploadModal">데이터 업로드</button>
-		&nbsp;&nbsp;
 	</div>
 	
 	<p></p>
