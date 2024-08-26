@@ -72,8 +72,7 @@ public class FileService {
 			_file.setOriginFileName(originFileName);
 			_file.setStoreFileName(storeFileName);
 			multipartFiles.transferTo(new File(filePath));
-			file = this.fileRepository.save(_file);				
-		
+			file = this.fileRepository.save(_file);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DataNotFoundException("");

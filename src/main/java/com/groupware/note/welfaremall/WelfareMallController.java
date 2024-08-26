@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
+import com.groupware.note.user.UserDetails;
+import com.groupware.note.user.UserDetailsService;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
 
@@ -36,10 +38,13 @@ public class WelfareMallController {
 	private final FileService fileService;
 	private final UserService userService;
 	private final PurchaseService purchaseService;
+	private final UserDetailsService userDetailsService;
 	
 	@GetMapping("/list")
-	public String findAll(Model model , @RequestParam(value = "page" , defaultValue = "0") int page ,@RequestParam(defaultValue = "personal" , value = "type")String type) {
+	public String findAll(Model model , @RequestParam(value = "page" , defaultValue = "0") int page ,@RequestParam(defaultValue = "personal" , value = "type")String type , Principal principal) {
 		model.addAttribute("list", this.welfareMallService.findAll(type , page, 9));
+		Users user = this.userService.getUser(principal.getName());
+		model.addAttribute("cartList", this.cartService.findByUser(user, type));
 		model.addAttribute("type", type);
 		return "welfaremallList";
 	}
@@ -99,8 +104,9 @@ public class WelfareMallController {
 		welfareMallForm.setProductName(welfareMall.getProductName());
 		welfareMallForm.setDesciption(welfareMall.getDescription());
 		welfareMallForm.setPrice(welfareMall.getPrice());
+		model.addAttribute("welfaremall", welfareMall);
 		model.addAttribute("fileList", welfareMall.getPhotos());
-		return "welfaremallDetail";
+		return "welfaremallEdit";
 	}
 	@PostMapping("/edit/{id}")
 	public String editWelfaremall(@Valid WelfareMallForm welfareMallForm , BindingResult bindingResult ,@PathVariable("id")Integer id) {
@@ -143,58 +149,71 @@ public class WelfareMallController {
 		return "redirect:/welfaremall/list";
 	}
 	@GetMapping("/addCart/{id}")
-	public String addCart(@PathVariable("id")Integer id , Principal principal) {
+	public String addCart(@PathVariable("id")Integer id , Principal principal , @RequestParam("to") String to) {
 		WelfareMall welfareMall = this.welfareMallService.findById(id);
 		Users user = this.userService.getUser(principal.getName());
-		Cart cart = this.cartService.findByProduct(welfareMall);
+		Cart cart = this.cartService.findByProductAndUser(welfareMall, user);
 		if(cart.getProduct()!=null) {
 			cart.setQuantity(cart.getQuantity()+1);
 		}
 		else {
+			cart.setType(welfareMall.getType());
 			cart.setProduct(welfareMall);
 			cart.setUser(user);
 			cart.setPoint(welfareMall.getPrice());
 			cart.setQuantity(1);
 		}
 		this.cartService.save(cart);
-		return "redirect:/welfaremall/list";
+		if(to.equals("list")) {
+			return "redirect:/welfaremall/list";			
+		}
+		return "redirect:/welfaremall/viewCart";
+	}
+	@GetMapping("/deleteCart/{id}")
+	public String deleteCart(@PathVariable("id")Integer id,@RequestParam("to") String to , Principal principal) {
+		Users user = this.userService.getUser(principal.getName());
+		WelfareMall welfareMall = this.welfareMallService.findById(id);
+		Cart cart = this.cartService.findByProductAndUser(welfareMall, user);
+		if(cart.getQuantity()>1) {
+			cart.setQuantity(cart.getQuantity()-1);
+			this.cartService.save(cart);
+		}
+		else {
+			this.cartService.delete(cart);
+		}
+		if(to.equals("list")) {
+			return "redirect:/welfaremall/list";
+		}
+		return "redirect:/welfaremall/viewCart";
 	}
 	@GetMapping("/viewCart")
 	public String viewCart(Model model , Principal principal , @RequestParam(value = "type" , defaultValue = "personal") String type) {
 		Users user = this.userService.getUser(principal.getName());
 		model.addAttribute("cartList", this.cartService.findByUser(user, type));
+		model.addAttribute("type", type);
 		return "cartList";
 	}
 	@PostMapping("/viewCart")
 	public String viewCart(Model model , Principal principal , @RequestParam("productName")String productName , @RequestParam(value = "type" , defaultValue = "personal")String type) {
 		List<Cart> cartList = new ArrayList<>();
+		Users user = this.userService.getUser(principal.getName());
 		for(WelfareMall welfareMall : this.welfareMallService.findByProductNameLike(productName , type)) {
 			Cart cart = new Cart();
-			cart = this.cartService.findByProduct(welfareMall);
-			cartList.add(cart);
+			cart = this.cartService.findByProductAndUser(welfareMall, user);
+			if(cart.getCartId()!=null) {
+				cartList.add(cart);	
+			}
 		}
+		model.addAttribute("run", true);
 		model.addAttribute("cartList", cartList);
 		return "cartList";
 	}
-	@GetMapping("/deleteCart/{id}")
-	public String deleteCart(@PathVariable("id")Integer id) {
-		Cart cart = this.cartService.findById(id);
-		if(cart.getQuantity()>1) {
-			cart.setQuantity(cart.getQuantity()-1);
-		}
-		else {
-			this.cartService.delete(cart);
-		}
-		return "redirect:/welfaremall/viewCart";
-	}
 	@GetMapping("/purchase")
 	public String purchase(Model model , Principal principal , @RequestParam(value = "type" , defaultValue = "personal")String type) {
-		Purchase _purchase = new Purchase();
 		Users user = this.userService.getUser(principal.getName());
+		Purchase _purchase = this.purchaseService.findByUserAndPurchaseType(user, type);
 		List<Cart> cartList = this.cartService.findByUser(user, type);
 		model.addAttribute("cartList", cartList);
-		_purchase.setUser(user);
-		_purchase.setDepartment(user.getPosition().getDepartment());
 		if(cartList!=null&&cartList.isEmpty()) {
 			List<WelfareMall> productList = new ArrayList<>();
 			for(Cart cart : cartList) {
@@ -202,8 +221,23 @@ public class WelfareMallController {
 				welfareMall = cart.getProduct();
 				productList.add(welfareMall);
 			}
+			if(_purchase.getProductList()==productList) {
+				model.addAttribute("purchase", _purchase);
+				model.addAttribute("type", type);
+				UserDetails userDetail = this.userDetailsService.findByUser(user);
+				boolean run = false;
+				if(type.equals("personal")) {
+					run = userDetail.getPoints()>=_purchase.getTotalPrice() ? true : false;
+				}else {
+					run = user.getPosition().getDepartment().getPoints()>=_purchase.getTotalPrice() ? true : false;
+				}
+				model.addAttribute("run", run);
+				return "purchase";
+			}
 			_purchase.setProductList(productList);
 		}
+		_purchase.setUser(user);
+		_purchase.setDepartment(user.getPosition().getDepartment());
 		int sum = 0;
 		int quantity = 0;
 		for(Cart cart : cartList) {
@@ -216,17 +250,40 @@ public class WelfareMallController {
 		_purchase.setPurchaseType(type);
 		Purchase purchase = this.purchaseService.save(_purchase);
 		model.addAttribute("purchase", purchase);
+		model.addAttribute("type", type);
+		UserDetails userDetail = this.userDetailsService.findByUser(user);
+		boolean run = false;
+		if(type.equals("personal")) {
+			run = userDetail.getPoints()>=purchase.getTotalPrice() ? true : false;
+		}else {
+			run = user.getPosition().getDepartment().getPoints()>=purchase.getTotalPrice() ? true : false;
+		}
+		model.addAttribute("run", run);
 		return "purchase";
 	}
 	@PostMapping("/purchase")
 	public String purchase(Principal principal , @RequestParam(value = "type")String type) {
 		Users user = this.userService.getUser(principal.getName());
 		Purchase purchase = this.purchaseService.findByUserAndPurchaseType(user, type);
-		for(Cart cart : this.cartService.findByUser(user, type)) {
-			this.cartService.delete(cart);
+		UserDetails userDetail = this.userDetailsService.findByUser(user);
+		List<Cart> cartList = this.cartService.findByUser(user, type);
+		if(userDetail.getPoints()>=purchase.getTotalPrice()&&type.equals("personal")) {
+			for(Cart cart : cartList) {
+				this.cartService.delete(cart);
+			}
+			long calc = user.getPosition().getDepartment().getPoints()-purchase.getTotalPrice();
+			userDetail.setPoints(calc);
+			purchase.setPurchaseStatus("process");
+			this.purchaseService.save(purchase);			
+		}else if(user.getPosition().getDepartment().getPoints()>purchase.getTotalPrice()&&type.equals("group")) {
+			for(Cart cart : cartList) {
+				this.cartService.delete(cart);
+			}
+			long calc = user.getPosition().getDepartment().getPoints()-purchase.getTotalPrice();
+			user.getPosition().getDepartment().setPoints(calc);
+			purchase.setPurchaseStatus("process");
+			this.purchaseService.save(purchase);
 		}
-		purchase.setPurchaseStatus("process");
-		this.purchaseService.save(purchase);
 		return "redirect:/welfaremall/viewCart";
 	}
 }

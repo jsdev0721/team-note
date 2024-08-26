@@ -1,0 +1,37 @@
+<html layout:decorate="~{layout}">
+	<head>
+		<title>복지몰 수정</title>
+	</head>
+	<div layout:fragment="content" class="container">
+		<form th:action="@{|/welfaremall/edit/${welfaremall.productId}|}" method="post" enctype="multipart/form-data">
+			<div class="card" th:object="${welfareMallForm}">
+				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
+				<div class="form-check">
+					<label class="form-check-label"><input class="form-check-input" type="radio" name="type" value="group"/>GROUP</label>
+				</div>
+				<div class="form-check">
+					<label class="form-check-label"><input class="form-check-input" type="radio" name="type" value="personal" checked/>PERSONAL</label>
+				</div>
+			
+				<div class="card-header"><input type="text" th:field="*{productName}" placeholder="제품명을 입력해 주세요" style="font-size: 16px;"/></div>
+				<div class="card-body">
+					<h5 class="card-text"><textarea th:field="*{desciption}" placeholder="내용을 입력해 주세요" style="font-size: 16px;"></textarea></h5>
+				</div>
+				<div>					
+					<label for="formFileMultiple" class="form-label">파일업로드</label>
+                    <input class="form-control" type="file" id="formFileMultiple" name="fileList" multiple/>
+					<div th:each="file : ${fileList}">
+						<span th:text="${file.originFileName}"></span>
+						<a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/edit/${welfaremall.productId}/${file.fileId}|}">-</a>
+					</div>
+				</div>
+				<div class="card-footer">
+					<p><input type="number" th:field="*{price}" min="100" max="999999999" placeholder="가격을 입력해 주세요" style="font-size: 16px;"/></p>
+				</div>
+				<div>
+					<input class="btn btn-success" type="submit" value="등록하기" />
+				</div>
+			</div>
+		</form>
+	</div>
+</html>

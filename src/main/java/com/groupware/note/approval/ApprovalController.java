@@ -233,6 +233,7 @@ public class ApprovalController {
 				file = this.fileService.uploadFile(multipartFile);
 				fileList.add(file);
 			}
+			approval.setFileList(fileList);
 		}
 		this.approvalService.save(approval);
 		return String.format("redirect:/approval/detail/%s", id);

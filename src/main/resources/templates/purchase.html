@@ -1,0 +1,50 @@
+<html layout:decorate="~{layout}">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/approvalList.css}">
+		<script>
+			$(function(){
+				var type = $('#type').val();
+				if(type === "personal"){
+					$(".personal").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}else if(type === "group"){
+					$(".group").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}
+			});
+		</script>
+		<title>복지몰 리스트</title>
+	</head>
+	<div layout:fragment="content" class="container">
+		
+		<div class="list">
+			<input type="text" style="display: none;" th:value="${type}" id="type">
+		  	<ul> 
+		    	<li class="page-item"><a class="page-link personal" th:href="@{?type=personal}">개인별</a></li>
+		    	<li class="page-item"><a class="page-link group" th:href="@{?type=group}">부서별</a></li>
+		  	</ul>
+		</div>
+		<table class="table table-scriped-columns table-hover align-middle">
+			<thead>
+				<tr>
+					<th>제목</th>
+					<th>가격</th>
+					<th>수량</th>
+					<th>추가날짜</th>
+				</tr>
+			</thead>
+		<tbody>
+			<tr th:each="cart : ${cartList}">
+				<td><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
+				<td th:text="${cart.point}"></td>
+				<td th:text="${cart.quantity}"></td>
+				<td th:text="${#temporals.format(cart.addDate,'MM.dd HH:mm')}"></td>
+			</tr>
+		</tbody>
+	</table><!-- 카트 리스트 end -->
+	<div> 총 결제금액은 [[${purchase.totalPrice}]]원 입니다.</div>
+	<form th:action="@{/welfaremall/purchase}" method="post">
+		<input type="hidden" name="type" th:value="${type}"/>
+		<input th:unless="${run}" type="submit" value="결제하기" disabled/>
+		<input th:if="${run}" type="submit" value="결제하기" />
+	</form>
+	</div>
+</html>
