@@ -76,16 +76,11 @@
 		</div><!-- right end -->
 		
 		<!--메세지-->
-		
 		<div>
 			<a href="#" th:onClick="window.open('/message/list','message','width=800, height=600')" class="chat icon-wrap">
 				<img src="/images/chat.png" alt="채팅 아이콘" class="icon">
 			</a>
 		</div>
-		
-		
-		
-		
 		<!--메세지-->
 		
 		<!--캘린더-->
@@ -106,7 +101,7 @@
 		<!--캘린더-->
 		
 		<!-- 인사 -->
-		<div>
+		<div sec:authorize="hasAuthority('ROLE_HR')">
 			<a href="#" class="hr icon-wrap">
 				<img src="/images/hr.png" alt="인사 아이콘" class="icon">
 			</a>
@@ -114,7 +109,7 @@
 		<!-- 인사 -->
 		
 		<!-- 회계 -->
-		<div>
+		<div sec:authorize="hasAuthority('ROLE_ACCOUNTING')">
 			<a th:href="@{/expense/list}" class="accounting icon-wrap">
 				<img src="/images/accounting.png" alt="회계 아이콘" class="icon">
 			</a>

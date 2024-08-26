@@ -46,16 +46,12 @@ public class UserSecurityService implements UserDetailsService {
 			//SimpleGrantedAuthority => 권한 부여하는 클래스 (해당 클래스의 매개변수로 문자열 값을 하나만 넣을 수 있음)
 		}else if("hr".equals(departmentName)) { //인사
 			authorities.add(new SimpleGrantedAuthority(UserRole.HR.getValue()));
-			System.out.println("aaa"); //권한 부여 확인
 		}else if("accounting".equals(departmentName)) { //회계
 			authorities.add(new SimpleGrantedAuthority(UserRole.ACCOUNTING.getValue()));
-			System.out.println("bbb");
 		}else if("marketing".equals(departmentName)) { //영업
 			authorities.add(new SimpleGrantedAuthority(UserRole.MARKETING.getValue()));
-			System.out.println("ccc");
 		}else { //사용자
 			authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
-			System.out.println("ddd");
 		}
 		if("section chief".equals(position)) {
 			authorities.add(new SimpleGrantedAuthority(UserRole.SECTIONCHEIF.getValue()));
