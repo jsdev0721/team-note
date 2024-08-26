@@ -1,27 +1,7 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container">
 	
-	<style>
-	.scrolltbody {
-	    display: block;
-	    width: 700px;
-	    border-collapse: collapse;
-	    border: 2px solid #000;
-	}
-	.scrolltbody th { border: 1px solid #000; background: pink; }
-	.scrolltbody td { border: 1px solid #000; border-top: 0; }
-	.scrolltbody tbody {
-	    display: block;
-	    height: 800px;
-	    overflow: auto;
-	}
-	.scrolltbody th:nth-of-type(1), .scrolltbody td:nth-of-type(1) { width: 40px; }
-	.scrolltbody th:nth-of-type(2), .scrolltbody td:nth-of-type(2) { width: 80px; }
-	.scrolltbody th:nth-of-type(3), .scrolltbody td:nth-of-type(3) { width: 100px; }
-	.scrolltbody th:nth-of-type(4), .scrolltbody td:nth-of-type(4) { width: 100px; }
-	.scrolltbody th:last-child { width: 100px; }
-	.scrolltbody td:last-child { width: calc( 100px - 19px );  }
-	</style>
+
 	<style>
 	    .sc {width: 100%; height: 800px; overflow: auto;  overflow-x: hidden;}
 	</style>
@@ -45,6 +25,10 @@
 	</style>
 	
 	<p></p>
+	<div style="text-align: center;"><h2>비용처리 목록</h2></div>
+	
+	<p></p>
+	
 	<form th:action = "@{/expense/list}" method = "post">
 		<div class = "mb-3" align="center">
 			<tr>
@@ -63,8 +47,12 @@
 	<div style="text-align: right;">
 	<button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/expense/list}'|">조건 초기화</button>
 		&nbsp;
+	<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#dateSetModal">날짜 설정</button>
+		&nbsp;
 	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dataUploadModal">데이터 업로드</button>
+		&nbsp;&nbsp;
 	</div>
+	
 	<p></p>
 	<!--scrolltbody를 table class에 입력-->
 	
@@ -132,6 +120,34 @@
   </div>
 </div>	
 <!-- dataUploadModal_end-->
+<!--dateSetModal_start-->
+<div class="modal fade" id="dateSetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">날짜 설정</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+	  <form th:action="@{/expense/list/date}" method="post">
+      <div class="modal-body">
+		<label>시작 날짜</label>
+		<input type="date" name="startDate" />
+		&nbsp;
+		<label>종료 날짜</label>
+		<input type="date" name="endDate" />
+		<br>
+		<small>검색하고 싶은 기간을 설정해주세요</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="submit" class="btn btn-primary">확인</button>
+      </div>
+	  </form>
+    </div>
+  </div>
+</div>	
+
+<!--dateSetModal_end-->
 <!--receiptModal-->
 
 
