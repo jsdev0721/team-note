@@ -3,6 +3,7 @@ package com.groupware.note.expense;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,18 @@ public class ExpenseDataController {
 		return "expenseList";
 	}
 	
+	@PostMapping("/list/date")
+	public String dateSetList(Model model, @Valid DateSetListForm dslForm) {
+		List<Expense>list = new ArrayList<>();
+		
+		LocalDateTime startDate = dslForm.getStartDate().atStartOfDay();
+		LocalDateTime endDate = dslForm.getEndDate().atStartOfDay();
+		
+		list = edService.dateSetList(startDate, endDate);
+		
+		model.addAttribute("expenseList", list);
+		return "expenseList";
+	}
 
 	
 	@GetMapping("/list")

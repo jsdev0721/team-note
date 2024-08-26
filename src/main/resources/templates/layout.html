@@ -9,7 +9,6 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 		<script th:src="@{/bootstrap.min.js}"></script>
 		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
-		
 		<script>
 			function startTime() {
 			    var today = new Date();
@@ -189,6 +188,13 @@
 				$(".imgUpdate").toggle();
 			}
 		</script>
+		<style>
+			.sticky {
+			  position: fixed;
+			  top: 0;
+			  width: 100%;
+			}
+		</style>
 		<title>게시판</title>
 	</head>
 	<body onload="startTime()">
@@ -196,7 +202,7 @@
 			    <input type="hidden" id="outlatitude" name="outlatitude">
 			    <input type="hidden" id="outlongitude" name="outlongitude">
 	</form>
-		<div id="header" class="container-fluid">
+		<div id="header" class="myHeader">
 			<a href="#" id="time" onclick="sendOutLocation(event)">
 				<p id="clock"></p>
 			</a>
@@ -299,6 +305,19 @@
 			</div>
 		</div>
 		<!-- 캘린더 modal -->
-			
+		<script>
+			window.onscroll = function() {myFunction()};
+
+			var header = document.getElementById("header");
+			var sticky = header.offsetTop;
+
+			function myFunction() {
+			  if (window.pageYOffset > sticky) {
+			    header.classList.add("sticky");
+			  } else {
+			    header.classList.remove("sticky");
+			  }
+			}
+		</script>
 	</body>
 </html>
