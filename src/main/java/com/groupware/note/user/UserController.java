@@ -136,10 +136,9 @@ public class UserController {
 				Files photo = userDetails.getPhoto();
 				this.userDetailsService.deletePhoto(userDetails);
 				this.fileService.delete(photo);
-			}else {				
-				Files files = this.fileService.uploadFile(multipartFile);
-				this.userDetailsService.uploadPhoto(users, files);
-			}
+			}		
+			Files files = this.fileService.uploadFile(multipartFile);
+			this.userDetailsService.uploadPhoto(users, files);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

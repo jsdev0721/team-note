@@ -42,6 +42,7 @@ public class NoteModelAttribute {
 			model.addAttribute("queue", this.approvalService.findByUser(users, "queue"));
 			model.addAttribute("process", this.approvalService.findByUser(users, "process"));
 			model.addAttribute("complete", this.approvalService.findByUser(users, "complete"));
+			model.addAttribute("users", users);
 		}
 	}
 	
