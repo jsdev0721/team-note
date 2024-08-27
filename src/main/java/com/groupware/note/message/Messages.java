@@ -32,4 +32,6 @@ public class Messages {
 	private String content;
 	
 	private LocalDateTime sendTime;
+	
+	
 }

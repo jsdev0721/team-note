@@ -221,16 +221,27 @@
 						<form th:action="@{/user/photo}" method="post" enctype="multipart/form-data"><!-- 사진 업로드 시작 -->
 							<i class="bi bi-camera" onclick="photoUpdate()"></i>
 							<div class="imgUpdate" style="display: none;">
-								<input class="form-control" type="file" id="formFileMultiple" accept=".jpg, .png, .gif, .jpeg, .bmp" name="multipartFiles">
-								<input class="btn btn-success" type="submit" value="수정">
+								<input class="file" type="file" id="formFileMultiple" accept=".jpg, .png, .gif, .jpeg, .bmp" name="multipartFiles">
+								<input class="file-upload" type="submit" value="수정">
 							</div>
 						</form>
 					</div><!-- 사진 직급(개인정보) end -->
-					
 					<div class="myApproval" style="flex: 0.25;">
-						
+						<ul>
+							<li>
+								<span th:text="${#lists.size(queue)}"></span>
+								<span class="dot"></span>
+							</li>
+							<li>
+								<span th:text="${#lists.size(process)}"></span>
+								<span class="dot"></span>
+							</li>
+							<li>
+								<span th:text="${#lists.size(complete)}"></span>
+								<span class="dot"></span>
+							</li>
+						</ul>
 					</div><!-- 나의 결재 end -->
-					
 					<div class="low" style="flex: 0.25;background-color: #eee;">
 						<div class="attendance">
 							<a th:href="@{/attendance/list}">출근 기록</a>
@@ -238,17 +249,15 @@
 						<div class="leave">
 							<a th:href="@{/approval/create/HR}">휴가 신청</a>
 						</div>
-					<!--<div class="cart">
-							<a th:href="@{/welfaremall/viewCart}">
-								<img src="/images/cart.png" alt="카트">
-							</a>
-						</div>-->
+						<div class="cart">
+							<a th:href="@{/welfaremall/viewCart}">장바구니</a>
+						</div>
 					</div><!-- 출근기록 휴가신청 end -->
 			  	</div>
 			</div>
 			<!-- 마이페이지 -->
 			
-			<a href="#" class="menu"><img src="/images/menu.png"></a> <!-- menu -->
+			<!-- <a href="#" class="menu"><img src="/images/menu.png"></a> -->
 		</div><!-- header end -->
 		
 		<th:block layout:fragment="content"></th:block>
