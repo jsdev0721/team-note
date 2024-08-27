@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.groupware.note.DataNotFoundException;
-import com.groupware.note.position.PositionRepository;
+import com.groupware.note.user.Users;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +22,9 @@ public class DepartmentService {
 		}
 		return _departments.get(); 
 	}
+	
+	
+	
 	
 	
 	
