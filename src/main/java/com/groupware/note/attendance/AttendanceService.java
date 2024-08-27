@@ -128,10 +128,18 @@ public class AttendanceService {
 		if(!attendances.isEmpty()) {
 			return attendances;
 		}else {throw new DataNotFoundException("데이터가 없습니다");}
-		
+	}
+	public void deleteAttendance(Users users) {
+		List<Attendance> list = this.attendanceRepository.findByUser(users);
+		if(!list.isEmpty()) {
+			for(Attendance attendance : list) {
+				attendance.setUser(null);
+				this.attendanceRepository.save(attendance);
+			}
+		}else {throw new DataNotFoundException("데이터가 없습니다");}
 	}
 	
 	
 
-	
+
 }

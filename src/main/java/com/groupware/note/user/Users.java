@@ -1,7 +1,9 @@
 package com.groupware.note.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.groupware.note.position.Positions;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,4 +38,6 @@ public class Users {
 	private Positions position;
 	
 	private String name;
+	
+	
 }

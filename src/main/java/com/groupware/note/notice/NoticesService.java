@@ -73,6 +73,15 @@ public class NoticesService {
 		  this.noticesRepository.delete(notices);
 		//return this.noticesRepository.deleteById(noticesId);
 	}
+	public void deleteNotices(Users user) {
+		List<Notices> list = this.noticesRepository.findByUser(user);
+		if(!list.isEmpty()) {
+			for(Notices notices : list) {
+				notices.setUser(null);
+				this.noticesRepository.save(notices);
+			}
+		}else {throw new DataNotFoundException("데이터가 없습니다");}
+	}
 	
 	
 		

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.groupware.note.DataNotFoundException;
-import com.groupware.note.files.Files;
 import com.groupware.note.position.PositionService;
-import com.groupware.note.position.Positions;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +19,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final PositionService positionService;
+	
 	
 	public Users create(String username, String password) {
 		Optional<Users> option = this.userRepository.findByUsername(username);
@@ -53,7 +52,11 @@ public class UserService {
 			return new Users();
 		}
 	}
+
+
+
 	
+
 	public Users getUser(Integer userId) {
 		Optional<Users> users = this.userRepository.findById(userId);
 		if(users.isPresent()) {
@@ -85,5 +88,16 @@ public class UserService {
 	public List<Users> getAllUsers(){
 		return this.userRepository.findAll();
 	}
-
+	public void deletePosition(Integer userId) {
+		Optional<Users> users = this.userRepository.findById(userId);
+		if(users.isPresent()) {
+			Users user=users.get();
+			user.setPosition(null);
+			this.userRepository.save(user);
+		}else {throw new DataNotFoundException("사용자를 찾을 수 없습니다.");}
+	}
+	public void deleteUser(Users users) {
+		this.userRepository.delete(users);
+	}
+	
 }
