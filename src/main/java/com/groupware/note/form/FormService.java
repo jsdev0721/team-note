@@ -67,8 +67,16 @@ public class FormService {
 		this.formRepository.save(forms);
 	}
 	public void delete(Forms forms) {
-		 this.formRepository.delete(forms);
-		
+		 this.formRepository.delete(forms);	
+	}
+	public void deleteForm(Users user) {
+		List<Forms> list = this.formRepository.findByUser(user);
+		if(!list.isEmpty()) {
+			for(Forms forms : list) {
+				forms.setUser(null);
+				this.formRepository.save(forms);
+			}
+		}else {throw new DataNotFoundException("데이터가 없습니다");}	
 	}
 
 }

@@ -39,5 +39,13 @@ public class PositionService {
 			return positions.get();
 		}else {throw new DataNotFoundException("데이터가 없습니다");}
 	}
+	public void deleteDepartment(Users users) {
+		Optional<Positions> optional =this.positionRepository.findByUsers(users);
+		if(optional.isPresent()) {
+			Positions positions=optional.get();
+			positions.setDepartment(null);
+			this.positionRepository.save(positions);
+		}else {throw new DataNotFoundException("데이터가 없습니다");}
+	}
 }
 

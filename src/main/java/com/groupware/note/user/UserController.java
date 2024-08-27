@@ -18,11 +18,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.groupware.note.approval.Approval;
+import com.groupware.note.approval.ApprovalService;
 import com.groupware.note.attendance.Attendance;
 import com.groupware.note.attendance.AttendanceService;
+import com.groupware.note.calendar.Calendar;
+import com.groupware.note.calendar.CalendarService;
 import com.groupware.note.department.Departments;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
+import com.groupware.note.form.FormService;
+import com.groupware.note.leave.LeaveService;
+import com.groupware.note.notice.Notices;
+import com.groupware.note.notice.NoticesService;
 import com.groupware.note.position.PositionService;
 import com.groupware.note.position.Positions;
 
@@ -39,6 +47,11 @@ public class UserController {
 	private final FileService fileService;
 	private final AttendanceService attendanceService;
 	private final PositionService positionService;
+	private final ApprovalService approvalService;
+	private final NoticesService noticesService;
+	private final FormService formService;
+	private final CalendarService calendarService;
+	private final LeaveService leaveService;
 	
 	@GetMapping("/login")
 	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
@@ -194,6 +207,23 @@ public class UserController {
 		System.out.println("검색을 합니다");
 		
 		return "HR_list";
+	}
+	
+	@GetMapping("/delete/{userId}")
+	public String userDelete(@PathVariable(value="userId") Integer userId){
+		Users users =this.userService.getUser(userId);
+		this.attendanceService.deleteAttendance(users);
+		//this.approvalService.deleteApproval(users);
+		this.noticesService.deleteNotices(users);
+		this.formService.deleteForm(users);
+		this.calendarService.deleteCalender(users);
+		this.leaveService.deleteLeave(users);
+		this.positionService.deleteDepartment(users);
+		this.userService.deletePosition(userId);
+		this.userDetailsService.deleteUserDetails(users);
+		this.userService.deleteUser(users);//유저 삭제
+	
+		return "redirect:/user/list";
 	}
 
 }
