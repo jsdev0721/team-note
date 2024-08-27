@@ -9,5 +9,6 @@ import com.groupware.note.user.Users;
 public interface CalendarRepository extends JpaRepository<Calendar, Integer>{
 	
 	List<Calendar> findByUser(Users user);
+	List<Calendar> findByUserOrDepartmentName(Users user, String departmentName);
 
 }

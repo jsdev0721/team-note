@@ -15,7 +15,7 @@ public class WelfareMallForm {
 	private String productName;
 	@NotEmpty
 	private String desciption;
-	@NotEmpty
+	
 	private Integer price;
 	
 	private List<MultipartFile> fileList;

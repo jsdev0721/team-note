@@ -14,6 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Expense {
 	private Long expenseDataId;
 	
 	@ManyToOne
+	@JoinColumn(name="writer")
 	private UserDetails writer;
 	
 	private String expenseType;
@@ -37,4 +39,5 @@ public class Expense {
 	private String description;
 	@ManyToOne
 	private Files file;
+	
 }

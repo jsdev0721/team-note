@@ -1,6 +1,18 @@
 <html layout:decorate="~{layout}">
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/index.css}">
+		<script>
+			$(function(){
+				var status = $('#status').val();
+				if(status === "queue"){
+					$(".queue").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}else if(status === "process"){
+					$(".process").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}else if(status === "complete"){
+					$(".complete").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}
+			});
+		</script>
 		<title>note</title>
 	</head>
 	<div layout:fragment="content" class="container my-3" id="main">
@@ -10,25 +22,24 @@
 				<h3>결재</h3>
 				<a th:href="@{/approval/list}"><img src="/images/plus_site.png"></a>
 			</div>
-			<ul class="nav nav-tabs" id="myTab" role="tablist">
-				<li class="nav-item" role="presentation">
-					<a th:href="@{?status=queue}" class="nav-link active" data-bs-toggle="tab" role="tab" aria-selected="true">결재 대기</a>
-				</li>
-				<li class="nav-item" role="presentation">
-				    <a th:href="@{?status=process}" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 중</a>
-				</li>
-				<li class="nav-item" role="presentation">
-				    <a th:href="@{?status=complete}" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false">결재 완료</a>
-				</li>
-			</ul>
-			<table class="table table-hover">
-				<tbody>
-					<tr th:each="approval : ${approvalList}">
-						<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+			<input type="text" style="display: none;" th:value="${status}" id="status">
+			<div class="approval-nav">
+				<ul> 
+					<li class="page-item"><a class="page-link queue" th:href="@{?status=queue}">결재 대기</a></li>
+					<li class="page-item"><a class="page-link process" th:href="@{?status=process}">결재 중</a></li>
+					<li class="page-item"><a class="page-link complete" th:href="@{?status=complete}">결재 완료</a></li>
+				</ul>
+			</div>
+			<div class="list">
+				<table class="table table-hover">
+					<tbody>
+						<tr th:each="approval : ${approvalList}">
+							<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div><!-- approval list end -->
+		</div><!-- approval end -->
 		<!-- 결재 -->
 	
 		<div id="right"> <!-- 오른쪽 배치 (공지, 서식, 복지몰) -->
@@ -37,18 +48,20 @@
 					<h3>공지사항</h3>
 					<a th:href="@{/notices/list}"><img src="/images/plus_site.png"></a>
 				</div>
-				<table class="table table-hover">
-					<tbody>
-						<tr th:each="notice : ${noticeList}">
-							<td><a th:href="@{|/notices/detail/${notice.noticeId}|}" th:text="${notice.title}"></a></td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="list">
+					<table class="table table-hover">
+						<tbody>
+							<tr th:each="notice : ${noticeList}">
+								<td><a th:href="@{|/notices/detail/${notice.noticeId}|}" th:text="${notice.title}"></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div><!-- notice list end -->
 			</div> <!-- notice end -->
 			<div id="welfaremall">
 				<div class="txt d-flex justify-content-between">
 					<h3>복지몰</h3>
-					<a href="#"><img src="/images/plus_site.png"></a>
+					<a th:href="@{/welfaremall/list}"><img src="/images/plus_site.png"></a>
 				</div>
 			</div> <!-- welfaremall end -->
 			<div id="publicForm">
@@ -56,54 +69,60 @@
 					<h3>서식게시판</h3>
 					<a th:href="@{/forms/list}"><img src="/images/plus_site.png"></a>
 				</div>
-				<table class="table table-hover">
-					<tbody>
-						<tr th:each="form : ${formList}">
-							<td><a th:href="@{|/forms/detail/${form.formId}|}" th:text="${form.title}"></a></td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="list">
+					<table class="table table-hover">
+						<tbody>
+							<tr th:each="form : ${formList}">
+								<td><a th:href="@{|/forms/detail/${form.formId}|}" th:text="${form.title}"></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div><!-- form list end -->
 			</div> <!-- form end -->
 		</div><!-- right end -->
 		
-		<!--메세지-->
-		<div>
-			<a href="#" class="chat icon-wrap">
-				<img src="/images/chat.png" alt="채팅 아이콘" class="icon">
-			</a>
-		</div>
-		<!--메세지-->
-		
-		<!--캘린더(임시) 메인페이지 꾸밀때 날려도 됩니다. 나중에 거기에 맞춰서 고칠예정-->
-		<a href="#" class="calendar icon-wrap" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-			<img src="/images/calendar_icons.png" alt="캘린더 아이콘" class="icon">
-		</a>
-		<div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-			<div class="offcanvas-header">
-				<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">캘린더</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		<div id="sidebar">
+			<!--메세지-->
+			<div>
+				<a href="#" th:onClick="window.open('/message/list','message','width=800, height=600')" class="chat icon-wrap">
+					<img src="/images/chat.png" alt="채팅 아이콘" class="icon">
+				</a>
 			</div>
-			<div class="offcanvas-body">
-			<div th:replace="~{calendar :: calendarFragment}"></div>
+			<!--메세지-->
+			
+			<!--캘린더-->
+			<a href="#" class="calendar icon-wrap" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+				<img src="/images/calendar_icons.png" alt="캘린더 아이콘" class="icon">
+			</a>
+			<div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">캘린더</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<div class="container">
+						<div id='calendar'></div> <!--캘린더-->
+					</div>
+				</div>
 			</div>
-		</div>
-		<!--캘린더(임시) 메인페이지 꾸밀때 날려도 됩니다. 나중에 거기에 맞춰서 고칠예정-->
+			<!--캘린더-->
+			
+			<!-- 인사 -->
+			<div sec:authorize="hasAuthority('ROLE_HR')">
+				<a th:href="@{/user/list}" class="hr icon-wrap">
+					<img src="/images/hr.png" alt="인사 아이콘" class="icon">
+				</a>
+			</div>
+			<!-- 인사 -->
+			
+			<!-- 회계 -->
+			<div sec:authorize="hasAuthority('ROLE_ACCOUNTING')">
+				<a th:href="@{/expense/list}" class="accounting icon-wrap">
+					<img src="/images/accounting.png" alt="회계 아이콘" class="icon">
+				</a>
+			</div>
+			<!-- 회계 -->
+		</div><!-- sidebar end -->
 		
-		<!-- 인사 -->
-		<div>
-			<a href="#" class="hr icon-wrap">
-				<img src="/images/hr.png" alt="인사 아이콘" class="icon">
-			</a>
-		</div>
-		<!-- 인사 -->
-		
-		<!-- 회계 -->
-		<div>
-			<a th:href="@{/expense/list}" class="accounting icon-wrap">
-				<img src="/images/accounting.png" alt="회계 아이콘" class="icon">
-			</a>
-		</div>
-		<!-- 회계 -->
-		
-	</div>
+	</div><!-- container end -->
 </html>

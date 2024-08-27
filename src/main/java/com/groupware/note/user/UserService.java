@@ -1,7 +1,6 @@
 package com.groupware.note.user;
 
 import java.util.List;
-
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.groupware.note.DataNotFoundException;
-
 import com.groupware.note.position.PositionService;
-
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,6 +52,10 @@ public class UserService {
 			return new Users();
 		}
 	}
+
+
+
+	
 
 	public Users getUser(Integer userId) {
 		Optional<Users> users = this.userRepository.findById(userId);

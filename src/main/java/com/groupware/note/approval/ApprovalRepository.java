@@ -3,6 +3,9 @@ package com.groupware.note.approval;
 import java.util.List;
 
 
+
+
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +19,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, Integer> {
 	Page<Approval> findByDepartmentAndStatus(Departments department , String status , Pageable pageable);
 	Page<Approval> findByUser(Users user ,Pageable pageable);
 	Page<Approval> findByDepartmentAndStatusAndTitleLike(Departments department , String status , String title , Pageable pageable);
+
 	List<Approval> findByUser(Users user);
+
+	List<Approval> findByUserAndStatus(Users users, String status);
+
 }

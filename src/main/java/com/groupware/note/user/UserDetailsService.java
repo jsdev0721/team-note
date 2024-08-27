@@ -39,8 +39,8 @@ public class UserDetailsService {
 	
 	public void minusLeave(UserDetails userDetails, Integer leaveDate) {
 		UserDetails user = userDetails;
-//		Integer leave = user.getLeave() - (leaveDate+1);
-//		user.setLeave(leave);
+		Integer leave = user.getLeave() - (leaveDate+1);
+		user.setLeave(leave);
 		this.userDetailsRepository.save(user);
 	}
 	
@@ -90,8 +90,9 @@ public class UserDetailsService {
 	}
 	
 	public List<UserDetails> searchList(String name){
-		return this.userDetailsRepository.findByNameLike("%"+name+"%");	 
+		return this.userDetailsRepository.findByNameLike("%"+name+"%");
 	}
+
 	public void deleteUserDetails(Users users) {
 		Optional<UserDetails> optional = this.userDetailsRepository.findByUser(users);
 		if(optional.isPresent()) {
@@ -99,6 +100,14 @@ public class UserDetailsService {
 			 userDetails.setUser(null);
 			 this.userDetailsRepository.save(userDetails);
 		}else {throw new DataNotFoundException("데이터가 없습니다");}
+	}
+
+	
+	public void deletePhoto(UserDetails userDetails) {
+		UserDetails user = userDetails;
+		user.setPhoto(null);
+		this.userDetailsRepository.save(user);
+
 	}
 	
 }

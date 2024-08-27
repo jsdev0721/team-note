@@ -25,6 +25,10 @@ public class CalendarService {
 		return this.calendarRepository.findByUser(user);
 	}
 	
+	public List<Calendar> calendarList(Users user, String departmentName){
+		return this.calendarRepository.findByUserOrDepartmentName(user, departmentName);
+	}
+	
 	public Calendar getCalendar(Integer id) {
 		Optional<Calendar> oc = this.calendarRepository.findById(id);
 		if(oc.isPresent()) {

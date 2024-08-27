@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 	<head>
 		<!--Required meta tags-->
 		<meta charset="utf-8">
@@ -20,7 +21,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
-				<script>
+				<script th:inline="javascript">
 				    let stompClient = null;
 				    function connect() { // 웹소켓 연결
 				        let socket = new SockJS("/ws");
@@ -57,32 +58,44 @@
 				            'content': content,
 				            'chatRoom': { 'user2': { 'username': selectedUsername } }
 				        }));
+						scrollToBottom();
+						document.getElementById("messageInput").value = "";
 				    }
+					
 				    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬
+						
 				        let messages = document.getElementById('messages');
 				        let messageElement = document.createElement('div');
-						var d = new Date(); 
+						let mess = document.createElement('div');
 						
-						console.log(d);
+						
+						
+						let messageTime = message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16);
 						let alignmentClass = (message.sender.username === selectedUsername) ? 'left-align' : 'right-align';
 						messageElement.classList.add(alignmentClass);
-						messageElement.innerText = '[' + message.sender.username + ']\n ' + message.content + '\n' +
-						((d.getMonth() + 1) > 9 ? (d.getMonth() + 1).toString() : "0" + (d.getMonth() + 1)) + "-" + (d.getDate() > 9 ? d.getDate().toString() : "0" + d.getDate().toString());
-				        messages.appendChild(messageElement);
+						messageElement.innerText =  '[ ' + message.content + ' ]' + '\n';
+						mess.classList.add(alignmentClass);
+						mess.innerText = messageTime + 	'\n\n' ;
+						messages.appendChild(messageElement);
+						messages.appendChild(mess);
+						scrollToBottom();
 				    }
+					
 					
 					
 				    window.onload = connect;
 				</script>
+	
+
 	</head>
 	
 	<body>
-		
+	
 			<div class="container my-3" style = "width: 600px;">
 			    <div class="row justify-content-center">
 			        <div class="col-2" style = "width: 200px;">
-						<h4>메신저</h4>
-			            <h5><div th:text="${sessionName.name}"></div></h5>
+
+			            <h4><div th:text="|${sessionName.name}의 메신저|"></div></h4>
 			            <hr>
 			            <table class="table table-striped">
 			                <thead class="table-primary">
@@ -104,13 +117,15 @@
 			            <div id="messageRoom" class="d-none">
 							<h4><div id="test"></div></h4>
 							<hr>
+							<!--대화 입력-->
 			                <div id="messages" style="height: 350px; overflow-y: auto"></div>
+							
 							<div class="row justify-content-center my-3">
 								<div class="col-9">
 			                	<input class="form-control" type="text" id="messageInput" placeholder="메시지를 입력하세요">
 								</div>
 								<div class="col">
-								<button class="btn btn-primary" onclick="sendMessage()">전송</button>
+								<button class="btn btn-primary" id="enterkey" onclick="sendMessage()">전송</button>
 								</div>
 							</div>
 			            </div>
@@ -119,9 +134,35 @@
 			        </div>
 			    </div>
 			</div>
+			
 	</body>
+	<script>
+		   
+		    // Get the scrollable div element
+		    let scrollableDiv = 
+		        document.getElementById('messages');
+
+		    // Function to scroll to the bottom of the div
+		    function scrollToBottom() {
+		        scrollableDiv.scrollTop = scrollableDiv
+		            .scrollHeight;
+		    }
+		</script>
+	
+	<!--엔터로 메세지 입력-->
+	<script>
+		var input = document.getElementById("messageInput");
+		input.addEventListener("keypress", function(event){
+			if(event.key==="Enter"){
+				event.preventDefault();
+				document.getElementById("enterkey").click();
+			}
+		});
+	</script>
+	<!--대화창 이름 띄우기-->
 	<script>
 		var test_id = document.getElementById("test");
 		test_id.innerHTML = '대화';
 	</script>
+
 </html>
