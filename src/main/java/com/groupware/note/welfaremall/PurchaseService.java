@@ -21,12 +21,8 @@ public class PurchaseService {
 		purchase.setPurchaseDate(LocalDateTime.now());
 		return this.purchaseRepository.save(purchase);
 	}
-	public Purchase findByUserAndPurchaseType(Users user , String purchaseType) {
-		Optional<Purchase> _purchase = this.purchaseRepository.findByUserAndPurchaseType(user, purchaseType);
-		if(_purchase.isEmpty()) {
-			return new Purchase();
-		}
-		return _purchase.get();
+	public List<Purchase> findByUserAndPurchaseTypeAndPurchaseStatus(Users user , String purchaseType , String purchaseStatus) {
+		return this.purchaseRepository.findByUserAndPurchaseTypeAndPurchaseStatus(user, purchaseType, purchaseStatus);
 	}
 	public Purchase findById(Integer id) {
 		Optional<Purchase> _purchase = this.purchaseRepository.findById(id);
@@ -49,5 +45,8 @@ public class PurchaseService {
 	}
 	public List<Purchase> findAll() {
 		return this.purchaseRepository.findAll();
+	}
+	public List<Purchase> findByUserAndPurchaseType(Users user , String purchaseType) {
+		return this.purchaseRepository.findByUserAndPurchaseType(user, purchaseType);
 	}
 }

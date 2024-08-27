@@ -4,11 +4,9 @@ import java.net.MalformedURLException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +37,17 @@ public class WelfareMallController {
 	private final UserService userService;
 	private final PurchaseService purchaseService;
 	private final UserDetailsService userDetailsService;
+	
+	public boolean checkProduct(List<Cart> cartList , WelfareMall welfareMall) {
+		for(Cart cart : cartList) {
+			if(cart.getProduct()==welfareMall) {
+				cart.setQuantity(cart.getQuantity()+1);
+				this.cartService.save(cart);
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	@GetMapping("/list")
 	public String findAll(Model model , @RequestParam(value = "page" , defaultValue = "0") int page ,@RequestParam(defaultValue = "personal" , value = "type")String type , Principal principal) {
@@ -149,11 +158,11 @@ public class WelfareMallController {
 		return "redirect:/welfaremall/list";
 	}
 	@GetMapping("/addCart/{id}")
-	public String addCart(@PathVariable("id")Integer id , Principal principal , @RequestParam("to") String to) {
+	public String addCart(@PathVariable("id")Integer id , Principal principal , @RequestParam("to") String to , @RequestParam("type")String type) {
 		WelfareMall welfareMall = this.welfareMallService.findById(id);
 		Users user = this.userService.getUser(principal.getName());
 		Cart cart = this.cartService.findByProductAndUser(welfareMall, user);
-		if(cart.getProduct()!=null) {
+		if(cart.getQuantity()!=null) {
 			cart.setQuantity(cart.getQuantity()+1);
 		}
 		else {
@@ -165,12 +174,13 @@ public class WelfareMallController {
 		}
 		this.cartService.save(cart);
 		if(to.equals("list")) {
-			return "redirect:/welfaremall/list";			
+			return String.format("redirect:/welfaremall/list?type=%s", type);			
 		}
-		return "redirect:/welfaremall/viewCart";
+		return String.format("redirect:/welfaremall/viewCart?type=%s", type);
 	}
 	@GetMapping("/deleteCart/{id}")
-	public String deleteCart(@PathVariable("id")Integer id,@RequestParam("to") String to , Principal principal) {
+	public String deleteCart(@PathVariable("id")Integer id,@RequestParam("to") String to , Principal principal , @RequestParam("type")String type) {
+		System.out.println(type);
 		Users user = this.userService.getUser(principal.getName());
 		WelfareMall welfareMall = this.welfareMallService.findById(id);
 		Cart cart = this.cartService.findByProductAndUser(welfareMall, user);
@@ -182,9 +192,9 @@ public class WelfareMallController {
 			this.cartService.delete(cart);
 		}
 		if(to.equals("list")) {
-			return "redirect:/welfaremall/list";
+			return String.format("redirect:/welfaremall/list?type=%s", type);
 		}
-		return "redirect:/welfaremall/viewCart";
+		return String.format("redirect:/welfaremall/viewCart?type=%s", type);
 	}
 	@GetMapping("/viewCart")
 	public String viewCart(Model model , Principal principal , @RequestParam(value = "type" , defaultValue = "personal") String type) {
@@ -211,28 +221,32 @@ public class WelfareMallController {
 	@GetMapping("/purchase")
 	public String purchase(Model model , Principal principal , @RequestParam(value = "type" , defaultValue = "personal")String type) {
 		Users user = this.userService.getUser(principal.getName());
-		Purchase _purchase = this.purchaseService.findByUserAndPurchaseType(user, type);
+		List<Purchase> purchaseList = this.purchaseService.findByUserAndPurchaseTypeAndPurchaseStatus(user, type , "queue");
 		List<Cart> cartList = this.cartService.findByUser(user, type);
 		model.addAttribute("cartList", cartList);
-		if(cartList!=null&&cartList.isEmpty()) {
+		Purchase _purchase = purchaseList.isEmpty() ? new Purchase() : purchaseList.get(0);
+		if(cartList!=null&&!cartList.isEmpty()) {
 			List<WelfareMall> productList = new ArrayList<>();
 			for(Cart cart : cartList) {
 				WelfareMall welfareMall = new WelfareMall();
 				welfareMall = cart.getProduct();
 				productList.add(welfareMall);
 			}
-			if(_purchase.getProductList()==productList) {
-				model.addAttribute("purchase", _purchase);
-				model.addAttribute("type", type);
-				UserDetails userDetail = this.userDetailsService.findByUser(user);
-				boolean run = false;
-				if(type.equals("personal")) {
-					run = userDetail.getPoints()>=_purchase.getTotalPrice() ? true : false;
-				}else {
-					run = user.getPosition().getDepartment().getPoints()>=_purchase.getTotalPrice() ? true : false;
+			for(Purchase purchase :purchaseList) {
+				if(purchase.getProductList()==productList) {
+					model.addAttribute("purchase", purchase);
+					model.addAttribute("type", type);
+					UserDetails userDetail = this.userDetailsService.findByUser(user);
+					boolean run = false;
+					if(type.equals("personal")) {
+						run = userDetail.getPoints()>=purchase.getTotalPrice() ? true : false;
+					}else {
+						run = user.getPosition().getDepartment().getPoints()>=purchase.getTotalPrice() ? true : false;
+					}
+					model.addAttribute("run", run);
+					return "purchase";
 				}
-				model.addAttribute("run", run);
-				return "purchase";
+				
 			}
 			_purchase.setProductList(productList);
 		}
@@ -261,10 +275,10 @@ public class WelfareMallController {
 		model.addAttribute("run", run);
 		return "purchase";
 	}
-	@PostMapping("/purchase")
-	public String purchase(Principal principal , @RequestParam(value = "type")String type) {
+	@PostMapping("/purchase/{id}")
+	public String purchase(@PathVariable("id")Integer id, Principal principal , @RequestParam(value = "type")String type) {
 		Users user = this.userService.getUser(principal.getName());
-		Purchase purchase = this.purchaseService.findByUserAndPurchaseType(user, type);
+		Purchase purchase = this.purchaseService.findById(id);
 		UserDetails userDetail = this.userDetailsService.findByUser(user);
 		List<Cart> cartList = this.cartService.findByUser(user, type);
 		if(userDetail.getPoints()>=purchase.getTotalPrice()&&type.equals("personal")) {
@@ -285,6 +299,14 @@ public class WelfareMallController {
 			this.purchaseService.save(purchase);
 		}
 		return "redirect:/welfaremall/viewCart";
+	}
+	@GetMapping("/purchaseRecord")
+	public String purchaseRecord(Model model , Principal principal ,@RequestParam(value = "type" , defaultValue = "personal") String type) {
+		Users user = this.userService.getUser(principal.getName());
+		List<Purchase> purchase = this.purchaseService.findByUserAndPurchaseType(user, type);
+		model.addAttribute("purchase", purchase);
+		model.addAttribute("type", type);
+		return "purchaseRecord";
 	}
 	@GetMapping("/cancelPurchase/{id}")
 	public String cancelPurchase(@PathVariable("id")Integer id , Principal principal) {
@@ -318,14 +340,5 @@ public class WelfareMallController {
 		this.purchaseService.delete(purchase);
 		return "redirect:/welfaremall/list";
 	}
-	public boolean checkProduct(List<Cart> cartList , WelfareMall welfareMall) {
-		for(Cart cart : cartList) {
-			if(cart.getProduct()==welfareMall) {
-				cart.setQuantity(cart.getQuantity()+1);
-				this.cartService.save(cart);
-				return true;
-			}
-		}
-		return false;
-	}
+
 }
