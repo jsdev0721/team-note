@@ -286,4 +286,46 @@ public class WelfareMallController {
 		}
 		return "redirect:/welfaremall/viewCart";
 	}
+	@GetMapping("/cancelPurchase/{id}")
+	public String cancelPurchase(@PathVariable("id")Integer id , Principal principal) {
+		Users user = this.userService.getUser(principal.getName());
+		Purchase purchase = this.purchaseService.findById(id);
+		if(purchase.getPurchaseStatus().equals("complete")) {
+			return "redirect:/welfaremall/list";
+		}
+		List<WelfareMall> productList = purchase.getProductList();
+		List<Cart> cartList = this.cartService.findByUser(user, purchase.getPurchaseType());
+		for(WelfareMall welfareMall : productList) {
+			if(!checkProduct(cartList, welfareMall)) {
+				Cart cart = new Cart();
+				cart.setType(welfareMall.getType());
+				cart.setProduct(welfareMall);
+				cart.setUser(user);
+				cart.setPoint(welfareMall.getPrice());
+				cart.setQuantity(1);
+				this.cartService.save(cart);
+			}
+		}
+		if(purchase.getPurchaseType().equals("personal")) {
+			UserDetails userDetail = this.userDetailsService.findByUser(user);
+			long calc = userDetail.getPoints()+purchase.getTotalPrice();
+			userDetail.setPoints(calc);
+		}
+		else {
+			long calc = user.getPosition().getDepartment().getPoints()+purchase.getTotalPrice();
+			user.getPosition().getDepartment().setPoints(calc);
+		}
+		this.purchaseService.delete(purchase);
+		return "redirect:/welfaremall/list";
+	}
+	public boolean checkProduct(List<Cart> cartList , WelfareMall welfareMall) {
+		for(Cart cart : cartList) {
+			if(cart.getProduct()==welfareMall) {
+				cart.setQuantity(cart.getQuantity()+1);
+				this.cartService.save(cart);
+				return true;
+			}
+		}
+		return false;
+	}
 }
