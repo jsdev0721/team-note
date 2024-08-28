@@ -32,13 +32,7 @@ public class NoteController {
 		model.addAttribute("formList", this.formService.formsList(page,4));
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
-<<<<<<< HEAD
-		model.addAttribute("approvalList", this.approvalService.ApprovalList(department, status, page , 10));
-=======
-		int noReadMessages = this.messageService.getAllUnreadMessage(user);
-		model.addAttribute("noRM", noReadMessages);
 		model.addAttribute("approvalList", this.approvalService.ApprovalList(user, department, status, page , 10));
->>>>>>> 2a8bc81b26e27318569f4a9256ad44958e0b079d
 		model.addAttribute("status", status);
 		if(!user.getStatus().equals("출근")) {
 			return "attendanceButton";
