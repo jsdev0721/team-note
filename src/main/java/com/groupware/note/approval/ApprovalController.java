@@ -96,6 +96,7 @@ public class ApprovalController {
 			_approval.setContent(approvalForm.getContent());
 			_approval.setUserSign(new String[3]);
 			if(approvalForm.getMultipartFiles()!=null&&!approvalForm.getMultipartFiles().isEmpty()) {
+				
 				List<Files> fileList = new ArrayList<>();
 				if(_approval.getDepartment().getDepartmentName().equals("accounting")) {
 					for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
