@@ -37,8 +37,7 @@ public class UserDetailsService {
 		}
 	}
 	
-	public void minusLeave(UserDetails userDetails, Integer leaveDate) {
-		UserDetails user = userDetails;
+	public void minusLeave(UserDetails user, Integer leaveDate) {
 		Integer leave = user.getLeave() - (leaveDate+1);
 		user.setLeave(leave);
 		this.userDetailsRepository.save(user);

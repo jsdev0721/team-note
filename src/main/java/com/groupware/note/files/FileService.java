@@ -39,7 +39,14 @@ public class FileService {
 	}
 	//jpg , jpeg , bmp , gif , png, webp 타입일 경우 true return
 	public boolean validFileExtension(String fileExtension) {
-		String[] extension = {"jpg","jpeg","bmp","gif","png", "webp"};
+		String[] extension = {"jpg","jpeg","bmp","gif","png", "webp", "JPG","JPEG","BMP","GIF", "PNG", "WEBP"};
+		if(Arrays.stream(extension).anyMatch(value -> value.equals(fileExtension))) {
+			return true;
+		}
+		return false;
+	}
+	public boolean validExcelFileExtension(String fileExtension) {
+		String[] extension = {"xls","xlsx","xlsm","xla","xlam"};
 		if(Arrays.stream(extension).anyMatch(value -> value.equals(fileExtension))) {
 			return true;
 		}

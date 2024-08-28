@@ -21,6 +21,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+		
 				<script th:inline="javascript">
 				    let stompClient = null;
 				    function connect() { // 웹소켓 연결
@@ -90,7 +91,14 @@
 	</head>
 	
 	<body>
-	
+		<script>
+			function unreadMsg(){
+				fetch().then();
+				document.getElementById('unread').innerHTML= 4;
+				setTimeout(unreadMsg, 1000);
+				
+			}
+		</script>
 			<div class="container my-3" style = "width: 600px;">
 			    <div class="row justify-content-center">
 			        <div class="col-2" style = "width: 200px;">
@@ -107,7 +115,10 @@
 			                <tbody>
 			                    <tr th:each="user, loop : ${nameList}">
 			                        <td th:text="${loop.index} + 1"></td>
-			                        <td><a href="#" th:text="${user.name}" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a></td>
+			                        <td><a href="#" th:text="${user.name}" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a>
+										<span class="text-danger small ms-2"><span id="unread"></span></span>
+									</td>
+									
 			                    </tr>
 			                </tbody>
 			            </table>
@@ -137,12 +148,11 @@
 			
 	</body>
 	<script>
-		   
-		    // Get the scrollable div element
+		   //스크롤 아래로
 		    let scrollableDiv = 
 		        document.getElementById('messages');
 
-		    // Function to scroll to the bottom of the div
+
 		    function scrollToBottom() {
 		        scrollableDiv.scrollTop = scrollableDiv
 		            .scrollHeight;

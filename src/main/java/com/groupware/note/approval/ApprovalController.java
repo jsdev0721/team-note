@@ -1,10 +1,17 @@
 package com.groupware.note.approval;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.security.Principal;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
+import com.groupware.note.expense.ExpenseDataService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.leave.LeaveForm;
@@ -45,6 +53,7 @@ public class ApprovalController {
 	private final UserDetailsService userDetailsService;
 	private final LeaveService leaveService;
 	private final CommentService commentService;
+	private final ExpenseDataService expenseDataService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
@@ -83,19 +92,39 @@ public class ApprovalController {
 			_approval.setUser(user);
 			if(!approvalForm.getDepartmentName().equals("General")) {
 				Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
-				System.out.println("---------------------------------------------------------"+department.getDepartmentName());
 				_approval.setDepartment(department);
 			}
 			else {
 				Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
-				System.out.println("---------------------------------------------------------"+department.getDepartmentName());
 				_approval.setDepartment(department);
 			}
 			_approval.setTitle(approvalForm.getTitle());
 			_approval.setContent(approvalForm.getContent());
 			_approval.setUserSign(new String[3]);
 			if(approvalForm.getMultipartFiles()!=null&&!approvalForm.getMultipartFiles().isEmpty()) {
+				
 				List<Files> fileList = new ArrayList<>();
+				if(_approval.getDepartment().getDepartmentName().equals("accounting")) {
+					for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
+						String fileExtension = this.fileService.extendsFile(multipartFile.getOriginalFilename());
+						if(this.fileService.validExcelFileExtension(fileExtension)||this.fileService.validFileExtension(fileExtension)) {
+							Files file = new Files();
+							file = this.fileService.uploadFile(multipartFile);
+							fileList.add(file);
+						}else {
+							if(fileList!=null&&!fileList.isEmpty()) {
+								for(Files file : fileList) {
+									this.fileService.delete(file);
+								}
+							}
+							bindingResult.reject("파일형식인식불가", "파일 종류를 다시 확인해주세요");
+							return "approvalCreate";
+						}
+					}
+					_approval.setFileList(fileList);
+					this.approvalService.save(_approval);
+					return "redirect:/approval/list";
+				}
 				for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
 					Files file = new Files();
 					file = this.fileService.uploadFile(multipartFile);
@@ -103,7 +132,7 @@ public class ApprovalController {
 				}
 				_approval.setFileList(fileList);
 			}
-			Approval approval = this.approvalService.save(_approval);
+			this.approvalService.save(_approval);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -115,6 +144,13 @@ public class ApprovalController {
 		leaveForm.setDepartmentName("HR");
 		return "approvalCreate_leave";
 	}
+	
+	@GetMapping("/create/accounting")
+	public String approvalCreateExpense(LeaveForm leaveForm) { //휴가폼
+		leaveForm.setDepartmentName("accounting");
+		return "approvalCreate_expense";
+	}
+	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create/HR")
 	public String approvalCreateLeave(@Valid LeaveForm leaveForm, BindingResult bindingResult, Principal principal) {
@@ -173,24 +209,23 @@ public class ApprovalController {
 	@GetMapping("/update/{id}")
 	public String changeStatus(@PathVariable("id")Integer id , @RequestParam(value = "status")String status , Principal principal) {
 		Approval approval = this.approvalService.findById(id);
-		String[] signArray = new String[3];
 		approval.setStatus(status);
 		Users user = this.userService.getUser(principal.getName());
 		UserDetails userDetail = this.userDetailsService.findByUser(user);
 		String[] userSign = approval.getUserSign();
 		for(int i=0 ; i<userSign.length ; i++) {
-			if(userSign[i]!=null) {
-				signArray[i]=userSign[i];
+			if(status.equals("complete")&&userSign[i]==null) {
+				userSign[i] = userDetail.getName();
 			}
-			if(status.equals("complete")) {
-				signArray[i]=userDetail.getName();
-			}
-			else {
-				signArray[i]=userDetail.getName();
+			else if(status.equals("process")&&userSign[i]==null) {
+				userSign[i] = userDetail.getName();
+				break;
+			}else if(status.equals("queue")) {
+				userSign=new String[3];
 				break;
 			}
 		}
-		approval.setUserSign(signArray);
+		approval.setUserSign(userSign);
 		if(!approval.getCommentList().isEmpty()) {
 			for(Comments comment : approval.getCommentList()) {
 				this.commentService.delete(comment);
@@ -198,12 +233,32 @@ public class ApprovalController {
 			approval.setCommentList(null);			
 		}
 
-		if(approval.getDepartment().equals("HR")&&status.equals("complete")) {
+		if(approval.getDepartment().getDepartmentName().equals("HR")&&status.equals("complete")) {
 			UserDetails userDetails = this.userDetailsService.findByUser(approval.getUser());
 			Users users = userDetails.getUser();
 			Period leaveDate = Period.between(approval.getStartDate(), approval.getEndDate());
 			this.userDetailsService.minusLeave(userDetails, leaveDate.getDays());
 			this.leaveService.create(users, approval.getTitle(), approval.getContent(), approval.getStartDate(), approval.getEndDate(), status, approval.getFileList());
+		}
+		else if(approval.getDepartment().getDepartmentName().equals("accounting")&&status.equals("complete")) {
+			try {
+				Files image = new Files();
+				FileInputStream fileInputStream = null;
+				for(Files file : approval.getFileList()) {
+					String fileExtension = this.fileService.extendsFile(file.getOriginFileName());
+					if(this.fileService.validExcelFileExtension(fileExtension)) {
+						File _file = new File(this.fileService.getFilePath(file.getOriginFileName(), file.getStoreFileName()));
+						fileInputStream = new FileInputStream(_file);
+					}else if(this.fileService.validFileExtension(fileExtension)) {
+						image = file;
+					}
+				}
+				XSSFWorkbook excelworkbook = new XSSFWorkbook(fileInputStream);
+				XSSFSheet worksheet = excelworkbook.getSheetAt(0);
+				this.expenseDataService.uploadExpenseData(worksheet, image);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		this.approvalService.save(approval);
 		return "redirect:/approval/list";

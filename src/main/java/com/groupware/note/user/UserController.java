@@ -151,6 +151,12 @@ public class UserController {
 	public String photoUpdate(@RequestParam(value = "multipartFiles") MultipartFile multipartFile, Principal principal) {
 		try {
 			Users users = this.userService.getUser(principal.getName());
+			UserDetails userDetails = this.userDetailsService.findByUser(users);
+			if(userDetails.getPhoto() != null) {
+				Files photo = userDetails.getPhoto();
+				this.userDetailsService.deletePhoto(userDetails);
+				this.fileService.delete(photo);
+			}		
 			Files files = this.fileService.uploadFile(multipartFile);
 			this.userDetailsService.uploadPhoto(users, files);
 		} catch (Exception e) {

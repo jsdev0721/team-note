@@ -27,11 +27,18 @@ public class MessageService {
 		chatRoom.setUser2(user2);
 		return this.crRepo.save(chatRoom);
 	}
+	
+	//대화 읽음 표시
+	public void readMessage(Messages message) {
+		this.mRepo.save(message);
+	}
+	
 	//대화내용 저장
 	public Messages saveMessage(Users sender, Users receiver, String content) {
 		Messages message = new Messages();
 		message.setContent(content);
 		message.setSendTime(LocalDateTime.now());
+		message.setSeenByR(0);
 		Optional<ChatRooms> _chatRoom1 = this.crRepo.findByUser1AndUser2(sender, receiver);
 		
 		if(_chatRoom1.isPresent()) {
@@ -54,6 +61,28 @@ public class MessageService {
 			} //if : _chatRoom2.isPresent
 		} //if : _chatRoom1.isPresent
 	}// method : saveMessage
+	
+	//전체 안읽은 대화 목록
+	public int getAllUnreadMessage(Users user) {
+		
+		List<ChatRooms> crList = new ArrayList<>();
+		crList = this.crRepo.allRoomList(user);
+		int noRM = 0;
+		for(ChatRooms cr : crList) {
+			List<Messages> _mlist = this.mRepo.findByNotSender(cr, user);
+			noRM = noRM + _mlist.size();
+			System.out.println("=====================================================");
+			System.out.println(noRM);
+		}
+		return noRM;
+	}
+	
+	
+	//안읽은 대화 목록
+	public Integer getUnreadMessage(Users user, ChatRooms chatRoom) {
+		List<Messages> _list = null;
+		return null;
+	}
 	
 	//기존 대화내용 불러오기
 	public List<Messages> getMessagesBetweenUsers(String username1, String username2){

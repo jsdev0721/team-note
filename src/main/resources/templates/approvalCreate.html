@@ -1,9 +1,15 @@
 <html layout:decorate="~{layout}">
 	<head>
 		<script>
-			function link() {
+			function link_HR() {
 				var select = document.getElementById('department').value;
 				if(select === 'HR') {
+					location.href = "/approval/create/HR";
+				}
+			}
+			function link_ac(){
+				var select = document.getElementById('dep_ac').value;
+				if(select === 'accounting'){
 					location.href = "/approval/create/HR";
 				}
 			}
@@ -15,10 +21,13 @@
 			<div class="card" th:object="${approvalForm}">
 				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
 				<div class="form-check">
-					<label class="form-check-label"><input class="form-check-input" type="radio" th:field="*{departmentName}" id="department"  value="HR" oninput="link()" />휴가</label>
+					<label class="form-check-label"><input class="form-check-input" type="radio" th:field="*{departmentName}" id="department"  value="HR" oninput="link_HR()" />휴가</label>
 				</div>
 				<div class="form-check">
-					<label class="form-check-label"><input class="form-check-input" type="radio" th:field="*{departmentName}"value="General"/>일반</label>
+					<label class="form-check-label"><input class="form-check-input" type="radio" th:field="*{departmentName}" value="General"/>일반</label>
+				</div>
+				<div class="form-check">
+					<label class="form-check-label"><input class="form-check-input" type="radio" th:field="*{departmentName}" id="dep_ac" value="accounting" oninput="link_ac()" />회계</label>
 				</div>
 			
 				<h5 class="card-header"><input type="text" th:field="*{title}" placeholder="제목을 입력해 주세요" style="font-size: 16px;"/></h5>
