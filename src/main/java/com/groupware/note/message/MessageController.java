@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.groupware.note.user.UserDetails;
@@ -65,6 +66,30 @@ public class MessageController {
 		return list;
 	}
 	
-
+	//안읽은 메세지 숫자 체크
+	@GetMapping("/message/unread")
+	@ResponseBody
+	public int getNoRM(Model model, Principal principal) {
+		Users user = this.uService.getUser(principal.getName());
+		int noReadMessages = this.mService.getAllUnreadMessage(user);
+		return noReadMessages;
+	}
+	
+	
+	//대화창에서 바로 숫자 변경. 아직 실행 안됨
+	@GetMapping("/message/read/{messageid}")
+	@ResponseBody
+	public void readMessage(@PathVariable("messageid") Integer id, Principal p ) {
+		int iid = id;
+		Long longId = Long.valueOf(iid);
+		Messages message = this.mService.getMessageById(longId);
+		Users me = this.uService.getUser(p.getName());
+		if(!message.getSender().equals(me)) {
+			if(message.getSeenByR()==0) {
+				message.setSeenByR(1);
+				this.mService.readMessage(message);
+			}
+		}
+	}
 	
 }

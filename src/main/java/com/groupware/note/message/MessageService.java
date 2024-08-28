@@ -70,8 +70,6 @@ public class MessageService {
 		for(ChatRooms cr : crList) {
 			List<Messages> _mlist = this.mRepo.findByNotSender(cr, user);
 			noRM = noRM + _mlist.size();
-			System.out.println("=====================================================");
-			System.out.println(noRM);
 		}
 		return noRM;
 	}
@@ -103,5 +101,10 @@ public class MessageService {
 				return new ArrayList<>();
 			}//if : cr2.isPresent
 		} //if : cr1.isPresent
+	}
+	
+	public Messages getMessageById(Long id) {
+		Messages message = this.getMessageById(id);
+		return message;
 	}
 }

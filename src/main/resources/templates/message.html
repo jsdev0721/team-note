@@ -65,11 +65,15 @@
 					
 				    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬
 						
+						//수정중
+						let messageid = message.id;
+						console.log(messageid);
+						console.log(typeof messageid);
+						fetch(`/message/read/${messageid}`);
+												
 				        let messages = document.getElementById('messages');
 				        let messageElement = document.createElement('div');
 						let mess = document.createElement('div');
-						
-						
 						
 						let messageTime = message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16);
 						let alignmentClass = (message.sender.username === selectedUsername) ? 'left-align' : 'right-align';
@@ -90,15 +94,7 @@
 
 	</head>
 	
-	<body>
-		<script>
-			function unreadMsg(){
-				fetch().then();
-				document.getElementById('unread').innerHTML= 4;
-				setTimeout(unreadMsg, 1000);
-				
-			}
-		</script>
+	<body onload="noread()">
 			<div class="container my-3" style = "width: 600px;">
 			    <div class="row justify-content-center">
 			        <div class="col-2" style = "width: 200px;">
@@ -116,7 +112,9 @@
 			                    <tr th:each="user, loop : ${nameList}">
 			                        <td th:text="${loop.index} + 1"></td>
 			                        <td><a href="#" th:text="${user.name}" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a>
-										<span class="text-danger small ms-2"><span id="unread"></span></span>
+										<span id="viewbadge" class="text-danger small ms-2">
+										<span id="noRM" class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"></span>
+									</span>
 									</td>
 									
 			                    </tr>
@@ -145,7 +143,25 @@
 			        </div>
 			    </div>
 			</div>
-			
+			<script>
+				//이름 옆에 안읽은 메세지 띄우는 용. 제작중
+				function noread(){
+					let noRMbad = document.getElementById('noRM');
+					fetch(`/message/unread`)
+					.then((response)=>response.json())
+					.then(data =>{
+						let bad = document.getElementById('viewbadge');
+						noRMbad.innerHTML = data;
+						if(data === 0){
+							bad.style.display = 'none';
+						} else{
+							bad.style.display = 'block';
+						};
+					 });
+					//setTimeout(unread, 1000);
+					
+				}	
+			</script>
 	</body>
 	<script>
 		   //스크롤 아래로
