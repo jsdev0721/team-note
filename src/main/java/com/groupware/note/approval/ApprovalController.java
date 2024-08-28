@@ -1,5 +1,6 @@
 package com.groupware.note.approval;
 
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.security.Principal;
 import java.time.Period;
@@ -85,12 +86,10 @@ public class ApprovalController {
 			_approval.setUser(user);
 			if(!approvalForm.getDepartmentName().equals("General")) {
 				Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
-				
 				_approval.setDepartment(department);
 			}
 			else {
 				Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
-				
 				_approval.setDepartment(department);
 			}
 			_approval.setTitle(approvalForm.getTitle());
@@ -98,6 +97,27 @@ public class ApprovalController {
 			_approval.setUserSign(new String[3]);
 			if(approvalForm.getMultipartFiles()!=null&&!approvalForm.getMultipartFiles().isEmpty()) {
 				List<Files> fileList = new ArrayList<>();
+				if(_approval.getDepartment().getDepartmentName().equals("accounting")) {
+					for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
+						String fileExtension = this.fileService.extendsFile(multipartFile.getOriginalFilename());
+						if(this.fileService.validExcelFileExtension(fileExtension)||this.fileService.validFileExtension(fileExtension)) {
+							Files file = new Files();
+							file = this.fileService.uploadFile(multipartFile);
+							fileList.add(file);
+						}else {
+							if(fileList!=null&&!fileList.isEmpty()) {
+								for(Files file : fileList) {
+									this.fileService.delete(file);
+								}
+							}
+							bindingResult.reject("파일형식인식불가", "파일 종류를 다시 확인해주세요");
+							return "approvalCreate";
+						}
+					}
+					_approval.setFileList(fileList);
+					this.approvalService.save(_approval);
+					return "redirect:/approval/list";
+				}
 				for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
 					Files file = new Files();
 					file = this.fileService.uploadFile(multipartFile);
@@ -105,7 +125,7 @@ public class ApprovalController {
 				}
 				_approval.setFileList(fileList);
 			}
-			Approval approval = this.approvalService.save(_approval);
+			this.approvalService.save(_approval);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
