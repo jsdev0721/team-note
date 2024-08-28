@@ -40,5 +40,15 @@ public class CartService {
 	public void delete(Cart cart) {
 		this.cartRepository.delete(cart);
 	}
+	public void deleteCart(Users users) {
+		List<Cart> list=this.cartRepository.findByUser(users);
+		if(!list.isEmpty() || list.isEmpty()) {
+			for(Cart cart : list) {
+				cart.setUser(null);
+				this.cartRepository.save(cart);
+				}
+			}else {throw new DataNotFoundException("데이터가 없습니다");}
+		
+	}
 	
 }

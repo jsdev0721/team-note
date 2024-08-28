@@ -71,7 +71,7 @@ public class FormService {
 	}
 	public void deleteForm(Users user) {
 		List<Forms> list = this.formRepository.findByUser(user);
-		if(!list.isEmpty()) {
+		if(!list.isEmpty() || list.isEmpty()) {
 			for(Forms forms : list) {
 				forms.setUser(null);
 				this.formRepository.save(forms);
