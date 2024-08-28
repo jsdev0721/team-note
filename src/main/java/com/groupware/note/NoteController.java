@@ -38,7 +38,7 @@ public class NoteController {
 		Departments department = user.getPosition().getDepartment();
 		int noReadMessages = this.messageService.getAllUnreadMessage(user);
 		model.addAttribute("noRM", noReadMessages);
-		model.addAttribute("approvalList", this.approvalService.ApprovalList(department, status, page , 10));
+		model.addAttribute("approvalList", this.approvalService.ApprovalList(user, department, status, page , 10));
 		model.addAttribute("status", status);
 		if(!user.getStatus().equals("출근")) {
 			return "attendanceButton";
