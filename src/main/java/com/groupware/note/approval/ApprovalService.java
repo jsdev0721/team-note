@@ -66,7 +66,7 @@ public class ApprovalService {
 
 	public void deleteApproval(Users users) {
 		List<Approval> optional = this.approvalRepository.findByUser(users);
-		if(!optional.isEmpty()) {
+		if(!optional.isEmpty() || optional.isEmpty()) {
 			for(Approval approval : optional) {
 				approval.setUser(null);
 				this.approvalRepository.save(approval);
