@@ -75,21 +75,4 @@ public class MessageController {
 		return noReadMessages;
 	}
 	
-	
-	//대화창에서 바로 숫자 변경. 아직 실행 안됨
-	@GetMapping("/message/read/{messageid}")
-	@ResponseBody
-	public void readMessage(@PathVariable("messageid") Integer id, Principal p ) {
-		int iid = id;
-		Long longId = Long.valueOf(iid);
-		Messages message = this.mService.getMessageById(longId);
-		Users me = this.uService.getUser(p.getName());
-		if(!message.getSender().equals(me)) {
-			if(message.getSeenByR()==0) {
-				message.setSeenByR(1);
-				this.mService.readMessage(message);
-			}
-		}
-	}
-	
 }
