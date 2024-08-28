@@ -59,6 +59,7 @@ public class UserController {
 	private final PurchaseService purchaseService;
 	private final CartService cartService;
 	private final chatRoomService chatRoomService;
+	private final MessageService messageService;
 	
 	@GetMapping("/login")
 	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
@@ -246,8 +247,10 @@ public class UserController {
 			System.out.println("userPurchaseNull완료");
 			this.cartService.deleteCart(users);
 			System.out.println("userCartNull완료");
-			this.chatRoomService.deleteChatRoom(users, null);
-			System.out.println("userChatRoomNull완료");
+			this.messageService.deleteMessage(users);
+			System.out.println("userMessage삭제");
+			this.chatRoomService.deleteChatRoom(users);
+			System.out.println("userChatRoom삭제");
 			this.userDetailsService.deleteUserDetails(users);
 			System.out.println("userdetailsNull완료");
 			this.userService.deletePosition(userId);
