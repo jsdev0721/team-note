@@ -13,6 +13,7 @@ import com.groupware.note.approval.ApprovalService;
 import com.groupware.note.department.Departments;
 import com.groupware.note.form.FormService;
 import com.groupware.note.leave.LeaveForm;
+import com.groupware.note.message.MessageService;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
@@ -26,6 +27,7 @@ public class NoteController {
 	private final NoticesService noticesService;
 	private final ApprovalService approvalService;
 	private final UserService userService;
+	private final MessageService messageService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/")
@@ -34,6 +36,8 @@ public class NoteController {
 		model.addAttribute("formList", this.formService.formsList(page,4));
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
+		int noReadMessages = this.messageService.getAllUnreadMessage(user);
+		model.addAttribute("noRM", noReadMessages);
 		model.addAttribute("approvalList", this.approvalService.ApprovalList(department, status, page , 10));
 		model.addAttribute("status", status);
 		if(!user.getStatus().equals("출근")) {

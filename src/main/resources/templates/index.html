@@ -86,6 +86,10 @@
 			<div>
 				<a href="#" th:onClick="window.open('/message/list','message','width=800, height=600')" class="chat icon-wrap">
 					<img src="/images/chat.png" alt="채팅 아이콘" class="icon">
+					<span th:if="${noRM} > 0" class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+						<div th:text="${noRM}"></div>
+					   <span class="visually-hidden">unread messages</span>
+					 </span>
 				</a>
 			</div>
 			<!--메세지-->
