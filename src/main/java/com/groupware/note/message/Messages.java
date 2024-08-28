@@ -2,6 +2,8 @@ package com.groupware.note.message;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.groupware.note.user.Users;
 
 import jakarta.persistence.Entity;
@@ -33,5 +35,7 @@ public class Messages {
 	
 	private LocalDateTime sendTime;
 	
+	@ColumnDefault("0")
+	private Integer seenByR;
 	
 }
