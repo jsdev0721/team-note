@@ -71,8 +71,6 @@ public class MessageService {
 		for(ChatRooms cr : crList) {
 			List<Messages> _mlist = this.mRepo.findByNotSender(cr, user);
 			noRM = noRM + _mlist.size();
-			System.out.println("=====================================================");
-			System.out.println(noRM);
 		}
 		return noRM;
 	}
@@ -105,13 +103,8 @@ public class MessageService {
 			}//if : cr2.isPresent
 		} //if : cr1.isPresent
 	}
-	/*public void deleteMessage(Users user) {
-		List<Messages> list =this.mRepo.findBySender(user);
-		if(!list.isEmpty() || list.isEmpty()) {
-			for(Messages messages : list) {
-				messages.setSender(null);
-				this.mRepo.delete(messages);
-				}
-			}else {throw new DataNotFoundException("데이터가 없습니다");}	
-	}*/
+
+
+	
+
 }
