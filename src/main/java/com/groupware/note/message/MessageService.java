@@ -104,19 +104,7 @@ public class MessageService {
 		} //if : cr1.isPresent
 	}
 
-	
-	public Messages getMessageById(Long id) {
-		Messages message = this.getMessageById(id);
-		return message;
-	}
-	public void deleteMessage(Users user) {
-		List<Messages> list =this.mRepo.findBySender(user);
-		if(!list.isEmpty() || list.isEmpty()) {
-			for(Messages messages : list) {
-				messages.setSender(null);
-				this.mRepo.delete(messages);
-				}
-			}else {throw new DataNotFoundException("데이터가 없습니다");}	
 
-	}
+	
+
 }

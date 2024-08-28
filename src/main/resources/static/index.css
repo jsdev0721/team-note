@@ -12,16 +12,16 @@ a{text-decoration: none;color: #000;}
 .approval-nav ul{display: flex;padding: 0;margin: 0;}
 .approval-nav ul li{flex: 1;border: 1px solid rgb(32, 62, 110);border-top-left-radius: 5px;border-top-right-radius: 5px;}
 .approval-nav ul li a{display: block;height: 40px;line-height: 40px;text-align: center;}
-#approval .list{border: 1px solid rgb(32, 62, 110);border-top: none;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;padding: 10px;}
+#approval .list{border: 1px solid rgb(32, 62, 110);border-top: none;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;padding: 10px;height: 70%;}
 #approval .list .table{margin: 0;}
 
 /* right */
 #right{width: 45%;}
-#notice{height: 250px;margin-bottom: 20px;}
+#notice{margin-bottom: 20px;}
 #welfaremall{margin-bottom: 20px;}
-#publicForm{height: 250px;}
 
-#right .list{border: 1px solid rgb(32, 62, 110);border-radius: 5px;padding: 10px;}
+
+#right .list{border: 1px solid rgb(32, 62, 110);border-radius: 5px;padding: 10px;height: 200px;}
 #right .list .table{margin: 0;}
 
 /* sidebar */
