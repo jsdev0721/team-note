@@ -224,7 +224,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/delete/{userId}")
-	public String userDelete(@PathVariable(value="userId") Integer userId,Principal principal){
+	public String userDelete(@PathVariable(value="userId") Integer userId){
 		
 		Users users =this.userService.getUser(userId);
 		UserDetails userDetails= this.userDetailsService.getUser(userId);
