@@ -9,6 +9,11 @@ import com.groupware.note.user.Users;
 
 @Repository
 public interface PurchaseRepository extends JpaRepository<Purchase, Integer> {
+
+	//Optional<Purchase> findByUserAndPurchaseType(Users user , String purchaseType);
+	List<Purchase> findByUser(Users users);
+
 	List<Purchase> findByUserAndPurchaseTypeAndPurchaseStatus(Users user , String purchaseType , String purchaseStatus);
 	List<Purchase> findByUserAndPurchaseType(Users user , String purchaseType);
+
 }

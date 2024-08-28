@@ -224,7 +224,7 @@
 								<i class="bi bi-camera" onclick="photoUpdate()"></i>
 							</div><!-- info-photo end -->
 							<div class="info-profile">
-								<p class="profile">이름&nbsp;<strong th:text="${users.name}"></strong></p>
+								<p class="profile">이름&nbsp;<strong th:text="${userDetails.name}"></strong></p>
 								<div class="profile">
 									<span th:if="${#strings.equals(users.position.department.departmentName, 'accounting')}">회계</span>
 									<span th:if="${#strings.equals(users.position.department.departmentName, 'HR')}">인사</span>
@@ -238,13 +238,13 @@
 								</div>
 							</div><!-- info-profile end -->
 						</div><!-- div(사용자 사진, 정보) end -->
-						<form th:action="@{/user/photo}" method="post" enctype="multipart/form-data"><!-- 사진 업로드 시작 -->
-							<div class="imgUpdate" style="display: none;">
+						<div class="imgUpdate" style="display: none;">
+							<form th:action="@{/user/photo}" method="post" enctype="multipart/form-data"><!-- 사진 업로드 시작 -->
 								<input class="file" type="file" id="formFileMultiple" accept=".jpg, .png, .gif, .jpeg, .bmp" name="multipartFiles">
 								<input class="file-upload" type="submit" value="수정">
-							</div>
-						</form>
-					</div><!-- 사진 직급(개인정보) end -->
+							</form>
+						</div>
+					</div><!-- 사진 직급(개인정보) info end -->
 					<div class="myApproval" style="flex: 0.25;">
 						<ul>
 							<li>

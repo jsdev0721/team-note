@@ -19,7 +19,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, Integer> {
 	Page<Approval> findByDepartmentAndStatus(Departments department , String status , Pageable pageable);
 	Page<Approval> findByUser(Users user ,Pageable pageable);
 	Page<Approval> findByDepartmentAndStatusAndTitleLike(Departments department , String status , String title , Pageable pageable);
-
+	
+	Page<Approval> findByUserAndStatus(Users users, String status, Pageable pageable);
+	Page<Approval> findByUserAndStatusAndTitleLike(Users users, String status , String title , Pageable pageable);
+	
 	List<Approval> findByUser(Users user);
 
 	List<Approval> findByUserAndStatus(Users users, String status);

@@ -75,7 +75,7 @@ public class NoticesService {
 	}
 	public void deleteNotices(Users user) {
 		List<Notices> list = this.noticesRepository.findByUser(user);
-		if(!list.isEmpty()) {
+		if(!list.isEmpty() || list.isEmpty()) {
 			for(Notices notices : list) {
 				notices.setUser(null);
 				this.noticesRepository.save(notices);

@@ -46,6 +46,15 @@ public class PurchaseService {
 	public List<Purchase> findAll() {
 		return this.purchaseRepository.findAll();
 	}
+
+	public void deletePurchase(Users users) {
+		List<Purchase> list=this.purchaseRepository.findByUser(users);
+		if(!list.isEmpty() || list.isEmpty()) {
+			for(Purchase purchase : list) {
+				purchase.setUser(null);
+			}	
+		}else {throw new DataNotFoundException("데이터가 없습니다");}
+	}
 	public List<Purchase> findByUserAndPurchaseType(Users user , String purchaseType) {
 		return this.purchaseRepository.findByUserAndPurchaseType(user, purchaseType);
 	}

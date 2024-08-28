@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.stereotype.Service;
 
+import com.groupware.note.DataNotFoundException;
 import com.groupware.note.files.Files;
 import com.groupware.note.user.UserDetails;
 import com.groupware.note.user.UserDetailsRepository;
@@ -63,6 +64,7 @@ public class ExpenseDataService {
 		List<Expense> list = this.eRepository.findByDateOrderBy(dt);
 		return list;
 	}
+	
 	//데이터 업로드
 	public void uploadExpenseData( XSSFSheet worksheet, Files file) {
 	    for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
@@ -84,8 +86,13 @@ public class ExpenseDataService {
 		      }
 	    }
 	}
-	
-	
-
-	
+	public void deleteExpense(UserDetails user) {//0827 박은영 null처리
+		List<Expense> list = this.eRepository.findByWriter(user);
+		if(!list.isEmpty() || list.isEmpty()) {
+			for(Expense expense : list) {
+				expense.setWriter(null);
+				this.eRepository.save(expense);	
+			}
+		}else {throw new DataNotFoundException("데이터가 없습니다");}
+		}
 }

@@ -84,15 +84,17 @@ public class ExpenseDataController {
 	
 	@PostMapping("/upload")
 	public String upLoadExpense(@Valid ExpenseForm exForm,  Model model) throws IOException{
-		
+		System.out.println("=============1==========");
 		Files photoReceipt = null;
 		InputStream is = null;
 		String errorMessage = null;
 			
 		for(MultipartFile multipartFile : exForm.getMultipartFiles()) {
 			if(fService.validFileExtension(fService.extendsFile(multipartFile.getOriginalFilename()))) {
+				System.out.println("=============2==========");
 				photoReceipt = fService.uploadFile(multipartFile);
 			} else if(fService.extendsFile(multipartFile.getOriginalFilename()).equals("xlsx")) {
+				System.out.println("=============3==========");
 				is = multipartFile.getInputStream();
 			} else {
 				errorMessage = "파일 종류를 다시 확인해주세요";
@@ -114,11 +116,11 @@ public class ExpenseDataController {
 			return "expenseError";
 		}
 				
-		
+		System.out.println("=======================================실행====================");
 		XSSFWorkbook excelworkbook = new XSSFWorkbook(is);
 		XSSFSheet worksheet = excelworkbook.getSheetAt(0);
 		edService.uploadExpenseData(worksheet, photoReceipt);
-		
+		System.out.println("======================================3");
 		
 		return "redirect:/expense/list";
   }

@@ -43,7 +43,7 @@ public class CalendarService {
 	}
 	public void deleteCalender(Users users) {
 		List<Calendar> list =this.calendarRepository.findByUser(users);
-		if(!list.isEmpty()) {
+		if(!list.isEmpty() || list.isEmpty()) {
 			for(Calendar calendar : list) {
 				calendar.setUser(null);
 				this.calendarRepository.save(calendar);
