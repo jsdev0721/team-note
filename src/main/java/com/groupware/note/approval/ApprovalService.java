@@ -27,8 +27,11 @@ public class ApprovalService {
 		sorts.add(Sort.Order.desc("updateTime"));
 		return  PageRequest.of(page, quantity, Sort.by(sorts));
 	}
-	public Page<Approval> ApprovalList(Departments department , String status , int page , int quantity) {
+	public Page<Approval> ApprovalList(Users users, Departments department , String status , int page , int quantity) {
 		Pageable pageable = getPageable(page , quantity);
+		if(status.equals("queue")) {
+			return this.approvalRepository.findByUserAndStatus(users, status, pageable);
+		}
 		return this.approvalRepository.findByDepartmentAndStatus(department, status, pageable);
 	}
 	
@@ -54,9 +57,12 @@ public class ApprovalService {
 		return _approval.get();
 	}
 	
-	public Page<Approval> findByLike(String search , Departments department , String status , int page , int quantity) {
+	public Page<Approval> findByLike(Users users, String search , Departments department , String status , int page , int quantity) {
 		String _search = "%"+search+"%";
 		Pageable pageable = getPageable(page , quantity);
+		if(status.equals("queue")) {
+			return this.approvalRepository.findByUserAndStatusAndTitleLike(users, status, _search, pageable);
+		}
 		return this.approvalRepository.findByDepartmentAndStatusAndTitleLike(department, status, _search, pageable);
 	}
 	public void deleteById(Approval approval) {
