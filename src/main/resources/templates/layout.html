@@ -188,6 +188,7 @@
 				$(".imgUpdate").toggle();
 			}
 		</script>
+	
 		<style>
 			.sticky {
 			  position: fixed;
@@ -197,7 +198,7 @@
 		</style>
 		<title>게시판</title>
 	</head>
-	<body onload="startTime()">
+	<body onload="startTime(), unread()">
 	<form id="checkOutForm" method="post" th:action="@{/attendance/checkout}">
 			    <input type="hidden" id="outlatitude" name="outlatitude">
 			    <input type="hidden" id="outlongitude" name="outlongitude">
