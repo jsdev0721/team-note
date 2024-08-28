@@ -18,73 +18,7 @@
 					.right-align {
 					    text-align: right;}
 		</style>
-		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
-		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
 		
-				<script th:inline="javascript">
-				    let stompClient = null;
-				    function connect() { // 웹소켓 연결
-				        let socket = new SockJS("/ws");
-				        stompClient = Stomp.over(socket);
-				        stompClient.connect({}, function (frame) {
-				            console.log('Connected: ' + frame);
-				            stompClient.subscribe('/topic/messages', function (messageOutput) {
-				                showMessage(JSON.parse(messageOutput.body));
-				            });
-				        });
-				    }
-					
-					let selectedUsername = null; // 유저목록에서 선택한 유저
-				    function openMessageRoom(username, name) { // 유저목록에서 유저를 클릭하면 시작
-						test_id.innerHTML = name;
-						selectedUsername = username;
-				        document.getElementById('messageRoom').classList.remove('d-none');
-			
-						fetch(`/message/messages/${selectedUsername}`) // Controller로 보내기
-						    .then(response => response.json())
-						    .then(messages => {
-						        let messagesDiv = document.getElementById('messages');
-						        messagesDiv.innerHTML = ''; // 기존 메시지 초기화
-						        messages.forEach(message => {
-						            showMessage(message, name);
-						        });
-						    });
-						
-							
-				    }
-				    function sendMessage() { // 전송을 누르면, 대화내용 정보를 Controller로 보냄
-				        let content = document.getElementById('messageInput').value;
-				        stompClient.send("/app/message.sendMessage", {}, JSON.stringify({
-				            'content': content,
-				            'chatRoom': { 'user2': { 'username': selectedUsername } }
-				        }));
-						scrollToBottom();
-						document.getElementById("messageInput").value = "";
-				    }
-					
-				    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬
-												
-				        let messages = document.getElementById('messages');
-				        let messageElement = document.createElement('div');
-						let mess = document.createElement('div');
-						
-						let messageTime = message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16);
-						let alignmentClass = (message.sender.username === selectedUsername) ? 'left-align' : 'right-align';
-						messageElement.classList.add(alignmentClass);
-						messageElement.innerText =  '[ ' + message.content + ' ]' + '\n';
-						mess.classList.add(alignmentClass);
-						mess.innerText = messageTime + 	'\n\n' ;
-						messages.appendChild(messageElement);
-						messages.appendChild(mess);
-						scrollToBottom();
-				    }
-					
-					
-					
-				    window.onload = connect;
-				</script>
-	
 
 	</head>
 	
@@ -163,5 +97,72 @@
 		var test_id = document.getElementById("test");
 		test_id.innerHTML = '대화';
 	</script>
+	
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+	
+	<script>
+	    let stompClient = null;
+	    function connect() { // 웹소켓 연결
+	        let socket = new SockJS("/ws");
+	        stompClient = Stomp.over(socket);
+	        stompClient.connect({}, function (frame) {
+	            console.log('Connected: ' + frame);
+	            stompClient.subscribe('/topic/messages', function (messageOutput) {
+	                showMessage(JSON.parse(messageOutput.body));
+	            });
+	        });
+	    }
+		
+		let selectedUsername = null; // 유저목록에서 선택한 유저
+	    function openMessageRoom(username, name) { // 유저목록에서 유저를 클릭하면 시작
+			test_id.innerHTML = name;
+			selectedUsername = username;
+	        document.getElementById('messageRoom').classList.remove('d-none');
 
+			fetch(`/message/messages/${selectedUsername}`) // Controller로 보내기
+			    .then(response => response.json())
+			    .then(messages => {
+			        let messagesDiv = document.getElementById('messages');
+			        messagesDiv.innerHTML = ''; // 기존 메시지 초기화
+			        messages.forEach(message => {
+			            showMessage(message, name);
+			        });
+			    });
+			
+				
+	    }
+	    function sendMessage() { // 전송을 누르면, 대화내용 정보를 Controller로 보냄
+	        let content = document.getElementById('messageInput').value;
+	        stompClient.send("/app/message.sendMessage", {}, JSON.stringify({
+	            'content': content,
+	            'chatRoom': { 'user2': { 'username': selectedUsername } }
+	        }));
+			scrollToBottom();
+			document.getElementById("messageInput").value = "";
+	    }
+		
+	    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬
+									
+	        let messages = document.getElementById('messages');
+	        let messageElement = document.createElement('div');
+			let mess = document.createElement('div');
+			
+			let messageTime = message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16);
+			let alignmentClass = (message.sender.username === selectedUsername) ? 'left-align' : 'right-align';
+			messageElement.classList.add(alignmentClass);
+			messageElement.innerText =  '[ ' + message.content + ' ]' + '\n';
+			mess.classList.add(alignmentClass);
+			mess.innerText = messageTime + 	'\n\n' ;
+			messages.appendChild(messageElement);
+			messages.appendChild(mess);
+			scrollToBottom();
+	    }
+		
+		
+		
+	    window.onload = connect;
+	</script>
+		
 </html>
