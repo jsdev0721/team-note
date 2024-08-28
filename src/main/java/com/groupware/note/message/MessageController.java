@@ -37,6 +37,7 @@ public class MessageController {
 		model.addAttribute("nameList", nameList);
 		return "message";
 	}
+	
 	//대화내용을 saveMessage로 보내 저장한다
 	@MessageMapping("/message.sendMessage")
 	@SendTo("/topic/messages")
@@ -51,7 +52,17 @@ public class MessageController {
 	@GetMapping("/message/messages/{username2}")
 	@ResponseBody
 	public List<Messages> getMessage(@PathVariable("username2") String username2, Principal principal){
-		return this.mService.getMessagesBetweenUsers(principal.getName(), username2);
+		List<Messages> list = this.mService.getMessagesBetweenUsers(principal.getName(), username2);
+		Users _sender = this.uService.getUser(principal.getName());
+		for(Messages m : list) {
+			if(!m.getSender().equals(_sender)) {
+				if(m.getSeenByR()==0) {
+					m.setSeenByR(1);
+					this.mService.readMessage(m);
+				}
+			}
+		}
+		return list;
 	}
 	
 

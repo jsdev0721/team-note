@@ -115,6 +115,13 @@ public class ApprovalController {
 		leaveForm.setDepartmentName("HR");
 		return "approvalCreate_leave";
 	}
+	
+	@GetMapping("/create/accounting")
+	public String approvalCreateExpense(LeaveForm leaveForm) { //휴가폼
+		leaveForm.setDepartmentName("accounting");
+		return "approvalCreate_expense";
+	}
+	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create/HR")
 	public String approvalCreateLeave(@Valid LeaveForm leaveForm, BindingResult bindingResult, Principal principal) {
