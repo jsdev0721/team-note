@@ -105,13 +105,13 @@ public class MessageService {
 			}//if : cr2.isPresent
 		} //if : cr1.isPresent
 	}
-	/*public void deleteMessage(Users user) {
+	public void deleteMessage(Users user) {
 		List<Messages> list =this.mRepo.findBySender(user);
 		if(!list.isEmpty() || list.isEmpty()) {
 			for(Messages messages : list) {
 				messages.setSender(null);
-				this.mRepo.save(messages);
+				this.mRepo.delete(messages);
 				}
 			}else {throw new DataNotFoundException("데이터가 없습니다");}	
-	}*/
+	}
 }
