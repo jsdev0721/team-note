@@ -95,9 +95,7 @@ public class UserDetailsService {
 	public void deleteUserDetails(Users users) {
 		Optional<UserDetails> optional = this.userDetailsRepository.findByUser(users);
 		if(optional.isPresent()) {
-			 UserDetails userDetails= optional.get();
-			 userDetails.setUser(null);
-			 this.userDetailsRepository.save(userDetails);
+			 this.userDetailsRepository.delete(optional.get());
 		}else {throw new DataNotFoundException("데이터가 없습니다");}
 	}
 

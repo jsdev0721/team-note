@@ -96,8 +96,11 @@ public class UserService {
 			this.userRepository.save(user);
 		}else {throw new DataNotFoundException("사용자를 찾을 수 없습니다.");}
 	}
-	public void deleteUser(Users users) {
-		this.userRepository.delete(users);
+	public void deleteUser(Integer userId) {
+		Optional<Users> optional =this.userRepository.findById(userId);
+		if(optional.isPresent()) {
+			this.userRepository.delete(optional.get());
+		}else {throw new DataNotFoundException("유저정보가 없습니다");}
 	}
 	
 }

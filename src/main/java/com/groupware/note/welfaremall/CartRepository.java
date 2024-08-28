@@ -13,4 +13,5 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 	List<Cart> findByUserAndType(Users user , String type);
 	Optional<Cart> findByProductAndUser(WelfareMall product , Users user);
 	Optional<Cart> findByUserAndProduct(Users user , WelfareMall product);
+	List<Cart> findByUser(Users user);
 }

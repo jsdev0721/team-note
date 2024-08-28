@@ -131,7 +131,7 @@ public class AttendanceService {
 	}
 	public void deleteAttendance(Users users) {
 		List<Attendance> list = this.attendanceRepository.findByUser(users);
-		if(!list.isEmpty()) {
+		if(!list.isEmpty() || list.isEmpty()) {
 			for(Attendance attendance : list) {
 				attendance.setUser(null);
 				this.attendanceRepository.save(attendance);

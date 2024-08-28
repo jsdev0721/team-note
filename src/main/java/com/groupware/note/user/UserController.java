@@ -18,21 +18,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.groupware.note.approval.Approval;
+import com.groupware.note.DataNotFoundException;
 import com.groupware.note.approval.ApprovalService;
 import com.groupware.note.attendance.Attendance;
 import com.groupware.note.attendance.AttendanceService;
-import com.groupware.note.calendar.Calendar;
 import com.groupware.note.calendar.CalendarService;
 import com.groupware.note.department.Departments;
+import com.groupware.note.expense.ExpenseDataService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.form.FormService;
 import com.groupware.note.leave.LeaveService;
-import com.groupware.note.notice.Notices;
+import com.groupware.note.message.MessageService;
+import com.groupware.note.message.chatRoomService;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.position.PositionService;
 import com.groupware.note.position.Positions;
+import com.groupware.note.welfaremall.CartService;
+import com.groupware.note.welfaremall.PurchaseService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +54,12 @@ public class UserController {
 	private final NoticesService noticesService;
 	private final FormService formService;
 	private final CalendarService calendarService;
+	private final ExpenseDataService expenseDataService;
 	private final LeaveService leaveService;
+	private final PurchaseService purchaseService;
+	private final CartService cartService;
+	private final chatRoomService chatRoomService;
+	private final MessageService messageService;
 	
 	@GetMapping("/login")
 	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
@@ -216,19 +224,43 @@ public class UserController {
 	}
 	
 	@GetMapping("/delete/{userId}")
-	public String userDelete(@PathVariable(value="userId") Integer userId){
+	public String userDelete(@PathVariable(value="userId") Integer userId,Principal principal){
+		
 		Users users =this.userService.getUser(userId);
-		this.attendanceService.deleteAttendance(users);
-		//this.approvalService.deleteApproval(users);
-		this.noticesService.deleteNotices(users);
-		this.formService.deleteForm(users);
-		this.calendarService.deleteCalender(users);
-		this.leaveService.deleteLeave(users);
-		this.positionService.deleteDepartment(users);
-		this.userService.deletePosition(userId);
-		this.userDetailsService.deleteUserDetails(users);
-		this.userService.deleteUser(users);//유저 삭제
-	
+		UserDetails userDetails= this.userDetailsService.getUser(userId);
+		try {
+			this.expenseDataService.deleteExpense(userDetails);
+			System.out.println("userExpenseNull완료");
+			this.attendanceService.deleteAttendance(users);
+			System.out.println("userattendanceNull완료");
+			this.noticesService.deleteNotices(users);
+			System.out.println("usernoticesNull완료");
+			this.formService.deleteForm(users);
+			System.out.println("userformNull완료");
+			this.calendarService.deleteCalender(users);
+			System.out.println("usercalenderNull완료");
+			this.approvalService.deleteApproval(users);
+			System.out.println("userapprovalNull완료");
+			this.leaveService.deleteLeave(users);
+			System.out.println("userLeavNull완료");
+			this.purchaseService.deletePurchase(users);
+			System.out.println("userPurchaseNull완료");
+			this.cartService.deleteCart(users);
+			System.out.println("userCartNull완료");
+			this.messageService.deleteMessage(users);
+			System.out.println("userMessage삭제");
+			this.chatRoomService.deleteChatRoom(users);
+			System.out.println("userChatRoom삭제");
+			this.userDetailsService.deleteUserDetails(users);
+			System.out.println("userdetailsNull완료");
+			this.userService.deletePosition(userId);
+			System.out.println("userpositionNull완료");
+			this.userService.deleteUser(userId);
+			System.out.println("userdelete 완료");
+		}catch(DataNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("처리할 데이터가 없습니다");
+		}
 		return "redirect:/user/list";
 	}
 

@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.groupware.note.DataNotFoundException;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
 
@@ -102,9 +103,20 @@ public class MessageService {
 			}//if : cr2.isPresent
 		} //if : cr1.isPresent
 	}
+<<<<<<< HEAD
 	
 	public Messages getMessageById(Long id) {
 		Messages message = this.getMessageById(id);
 		return message;
+=======
+	public void deleteMessage(Users user) {
+		List<Messages> list =this.mRepo.findBySender(user);
+		if(!list.isEmpty() || list.isEmpty()) {
+			for(Messages messages : list) {
+				messages.setSender(null);
+				this.mRepo.delete(messages);
+				}
+			}else {throw new DataNotFoundException("데이터가 없습니다");}	
+>>>>>>> 2a8bc81b26e27318569f4a9256ad44958e0b079d
 	}
 }

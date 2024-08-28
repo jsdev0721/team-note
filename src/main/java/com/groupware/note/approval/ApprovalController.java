@@ -60,7 +60,7 @@ public class ApprovalController {
 	public String approvalList(Model model , @RequestParam(value = "status" , defaultValue = "queue") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal) {
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
-		Page<Approval> approvalList = this.approvalService.ApprovalList(department, status , page , 10);
+		Page<Approval> approvalList = this.approvalService.ApprovalList(user, department, status , page , 10);
 		model.addAttribute("approvalList", approvalList);
 		model.addAttribute("status", status);
 		return "approvalList";
@@ -69,7 +69,7 @@ public class ApprovalController {
 	public String serch(Model model , @RequestParam(value = "status") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal , @RequestParam(value = "search")String search) {
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
-		Page<Approval> approvalList =  this.approvalService.findByLike(search , department , status , page , 10);
+		Page<Approval> approvalList =  this.approvalService.findByLike(user, search , department , status , page , 10);
 		model.addAttribute("approvalList" , approvalList);
 		return "approvalList";
 	}

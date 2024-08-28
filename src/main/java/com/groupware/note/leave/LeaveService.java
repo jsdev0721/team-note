@@ -36,7 +36,7 @@ public class LeaveService {
 		if(optional.isPresent()) {
 			Leave leave=optional.get();
 			leave.setUser(null);
-		}else {throw new DataNotFoundException("데이터가 없습니다");}
+		}
 	}
 
 }

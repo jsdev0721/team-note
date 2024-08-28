@@ -1,5 +1,10 @@
 package com.groupware.note.message;
 
+
+
+
+
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +16,9 @@ import com.groupware.note.user.Users;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRooms, Long> {
 	Optional<ChatRooms> findByUser1AndUser2(Users user1, Users user2);
+	List<ChatRooms> findByUser1OrUser2(Users user1,Users user2);
+	//List<ChatRooms> findByUser1(Users user1);
+	//List<ChatRooms> findByUser2(Users user2);
 	
 	@Query("select cr from ChatRooms cr where cr.user1 = :user or cr.user2 = :user")
 	List<ChatRooms> allRoomList(@Param("user") Users user);
