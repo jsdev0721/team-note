@@ -62,5 +62,21 @@ public class ApprovalService {
 	public void deleteById(Approval approval) {
 		this.approvalRepository.delete(approval);
 		
-	} 
+	}
+
+	public void deleteApproval(Users users) {
+		List<Approval> optional = this.approvalRepository.findByUser(users);
+		if(!optional.isEmpty()) {
+			for(Approval approval : optional) {
+				approval.setUser(null);
+				this.approvalRepository.save(approval);
+			}
+		}else {throw new DataNotFoundException("데이터가 없습니다");}
+	}
+
+	
+	public List<Approval> findByUser(Users users, String status) {
+		return this.approvalRepository.findByUserAndStatus(users, status);
+
+	}
 }

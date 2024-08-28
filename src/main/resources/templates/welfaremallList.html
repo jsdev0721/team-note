@@ -49,25 +49,7 @@
 			<tbody>
 				<tr th:each="product : ${list}">
 					<td><a th:href="@{|/welfaremall/detail/${product.productId}|}" th:text="${product.productName}"></a></td>
-					<td><button type="button" class="btn btn-primary btn-sm" data-bs-target="#AddCart" data-bs-toggle="modal">+</button></td>
-					<div class="modal fade" id="AddCart" tabindex="-1" data-bs-backdrop="static" aria-labelledby="ModalCartLabel" aria-hidden="true" data-bs-keyboard="false">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="moal-title" id="ModalCartLabel">선택</h5>
-									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-							<div class="modal-body">
-											
-						</div>
-							<div class="modal-footer">
-								<a type="button" class="btn btn-secondary" th:href="@{|/welfaremall/addCart/${product.productId}?to=list|}">List</a>
-								<a type="button" class="btn btn-secondary" th:href="@{|/welfaremall/addCart/${product.productId}?to=cart|}">Cart</a>
-							</div>
-
-						</div>
-					</div>
-							</div>
+					<td><a type="button" class="btn btn-outline-success btn-sm" th:href="@{|/welfaremall/addCart/${product.productId}?to=list&type=${type}|}" onclick="alert('장바구니추가');">+</a></td>
 				</tr>
 			</tbody>
 		</table><!-- 결재 리스트 end -->
@@ -92,7 +74,7 @@
 			<a th:href="@{/welfaremall/viewCart}" class="create">
 				<img src="/images/cart.png" alt="카트">
 			</a>
+			<a th:href="@{/welfaremall/purchaseRecord}">구매내역</a>
 		</div>
-		
 	</div>
 </html>

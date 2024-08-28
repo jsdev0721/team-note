@@ -41,4 +41,14 @@ public class CalendarService {
 	public void deleteCalendar (Calendar c) {
 		this.calendarRepository.delete(c);
 	}
+	public void deleteCalender(Users users) {
+		List<Calendar> list =this.calendarRepository.findByUser(users);
+		if(!list.isEmpty()) {
+			for(Calendar calendar : list) {
+				calendar.setUser(null);
+				this.calendarRepository.save(calendar);
+				}
+			}else {throw new DataNotFoundException("데이터가 없습니다");}
+		
+	}
 }

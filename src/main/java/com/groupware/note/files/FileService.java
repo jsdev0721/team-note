@@ -45,6 +45,13 @@ public class FileService {
 		}
 		return false;
 	}
+	public boolean validExcelFileExtension(String fileExtension) {
+		String[] extension = {"xls","xlsx","xlsm","xla","xlam"};
+		if(Arrays.stream(extension).anyMatch(value -> value.equals(fileExtension))) {
+			return true;
+		}
+		return false;
+	}
 	//FilePath 설정 고정경로+저장이름+파일확장자 조합
 	public String getFilePath(String originFileName , String storeFileName) {
 		String fileType = extendsFile(originFileName);

@@ -1,8 +1,11 @@
 package com.groupware.note.approval;
 
+import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.security.Principal;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.core.io.Resource;
@@ -83,12 +86,10 @@ public class ApprovalController {
 			_approval.setUser(user);
 			if(!approvalForm.getDepartmentName().equals("General")) {
 				Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
-				System.out.println("---------------------------------------------------------"+department.getDepartmentName());
 				_approval.setDepartment(department);
 			}
 			else {
 				Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
-				System.out.println("---------------------------------------------------------"+department.getDepartmentName());
 				_approval.setDepartment(department);
 			}
 			_approval.setTitle(approvalForm.getTitle());
@@ -96,6 +97,27 @@ public class ApprovalController {
 			_approval.setUserSign(new String[3]);
 			if(approvalForm.getMultipartFiles()!=null&&!approvalForm.getMultipartFiles().isEmpty()) {
 				List<Files> fileList = new ArrayList<>();
+				if(_approval.getDepartment().getDepartmentName().equals("accounting")) {
+					for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
+						String fileExtension = this.fileService.extendsFile(multipartFile.getOriginalFilename());
+						if(this.fileService.validExcelFileExtension(fileExtension)||this.fileService.validFileExtension(fileExtension)) {
+							Files file = new Files();
+							file = this.fileService.uploadFile(multipartFile);
+							fileList.add(file);
+						}else {
+							if(fileList!=null&&!fileList.isEmpty()) {
+								for(Files file : fileList) {
+									this.fileService.delete(file);
+								}
+							}
+							bindingResult.reject("파일형식인식불가", "파일 종류를 다시 확인해주세요");
+							return "approvalCreate";
+						}
+					}
+					_approval.setFileList(fileList);
+					this.approvalService.save(_approval);
+					return "redirect:/approval/list";
+				}
 				for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
 					Files file = new Files();
 					file = this.fileService.uploadFile(multipartFile);
@@ -103,7 +125,7 @@ public class ApprovalController {
 				}
 				_approval.setFileList(fileList);
 			}
-			Approval approval = this.approvalService.save(_approval);
+			this.approvalService.save(_approval);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -180,24 +202,23 @@ public class ApprovalController {
 	@GetMapping("/update/{id}")
 	public String changeStatus(@PathVariable("id")Integer id , @RequestParam(value = "status")String status , Principal principal) {
 		Approval approval = this.approvalService.findById(id);
-		String[] signArray = new String[3];
 		approval.setStatus(status);
 		Users user = this.userService.getUser(principal.getName());
 		UserDetails userDetail = this.userDetailsService.findByUser(user);
 		String[] userSign = approval.getUserSign();
 		for(int i=0 ; i<userSign.length ; i++) {
-			if(userSign[i]!=null) {
-				signArray[i]=userSign[i];
+			if(status.equals("complete")&&userSign[i]==null) {
+				userSign[i] = userDetail.getName();
 			}
-			if(status.equals("complete")) {
-				signArray[i]=userDetail.getName();
-			}
-			else {
-				signArray[i]=userDetail.getName();
+			else if(status.equals("process")&&userSign[i]==null) {
+				userSign[i] = userDetail.getName();
+				break;
+			}else if(status.equals("queue")) {
+				userSign=new String[3];
 				break;
 			}
 		}
-		approval.setUserSign(signArray);
+		approval.setUserSign(userSign);
 		if(!approval.getCommentList().isEmpty()) {
 			for(Comments comment : approval.getCommentList()) {
 				this.commentService.delete(comment);
@@ -205,7 +226,7 @@ public class ApprovalController {
 			approval.setCommentList(null);			
 		}
 
-		if(approval.getDepartment().equals("HR")&&status.equals("complete")) {
+		if(approval.getDepartment().getDepartmentName().equals("HR")&&status.equals("complete")) {
 			UserDetails userDetails = this.userDetailsService.findByUser(approval.getUser());
 			Users users = userDetails.getUser();
 			Period leaveDate = Period.between(approval.getStartDate(), approval.getEndDate());
