@@ -37,7 +37,4 @@ public class Users {
 	@JsonIgnore
 	private Positions position;
 	
-	private String name;
-	
-	
 }

@@ -223,7 +223,7 @@
 								<i class="bi bi-camera" onclick="photoUpdate()"></i>
 							</div><!-- info-photo end -->
 							<div class="info-profile">
-								<p class="profile">이름&nbsp;<strong th:text="${users.name}"></strong></p>
+								<p class="profile">이름&nbsp;<strong th:text="${userDetails.name}"></strong></p>
 								<div class="profile">
 									<span th:if="${#strings.equals(users.position.department.departmentName, 'accounting')}">회계</span>
 									<span th:if="${#strings.equals(users.position.department.departmentName, 'HR')}">인사</span>
