@@ -1,5 +1,7 @@
 package com.groupware.note.approval;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.security.Principal;
@@ -8,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
+import com.groupware.note.expense.ExpenseDataService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.leave.LeaveForm;
@@ -48,6 +53,7 @@ public class ApprovalController {
 	private final UserDetailsService userDetailsService;
 	private final LeaveService leaveService;
 	private final CommentService commentService;
+	private final ExpenseDataService expenseDataService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
@@ -233,6 +239,26 @@ public class ApprovalController {
 			Period leaveDate = Period.between(approval.getStartDate(), approval.getEndDate());
 			this.userDetailsService.minusLeave(userDetails, leaveDate.getDays());
 			this.leaveService.create(users, approval.getTitle(), approval.getContent(), approval.getStartDate(), approval.getEndDate(), status, approval.getFileList());
+		}
+		else if(approval.getDepartment().getDepartmentName().equals("accounting")&&status.equals("complete")) {
+			try {
+				Files image = new Files();
+				FileInputStream fileInputStream = null;
+				for(Files file : approval.getFileList()) {
+					String fileExtension = this.fileService.extendsFile(file.getOriginFileName());
+					if(this.fileService.validExcelFileExtension(fileExtension)) {
+						File _file = new File(this.fileService.getFilePath(file.getOriginFileName(), file.getStoreFileName()));
+						fileInputStream = new FileInputStream(_file);
+					}else if(this.fileService.validFileExtension(fileExtension)) {
+						image = file;
+					}
+				}
+				XSSFWorkbook excelworkbook = new XSSFWorkbook(fileInputStream);
+				XSSFSheet worksheet = excelworkbook.getSheetAt(0);
+				this.expenseDataService.uploadExpenseData(worksheet, image);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		this.approvalService.save(approval);
 		return "redirect:/approval/list";
