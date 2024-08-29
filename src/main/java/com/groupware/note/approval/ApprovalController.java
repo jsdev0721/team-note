@@ -145,11 +145,6 @@ public class ApprovalController {
 		return "approval/approvalCreate_leave";
 	}
 	
-	@GetMapping("/create/accounting")
-	public String approvalCreateExpense(LeaveForm leaveForm) { //회계폼
-		leaveForm.setDepartmentName("accounting");
-		return "approval/approvalCreate_expense";
-	}
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create/HR")
@@ -240,6 +235,7 @@ public class ApprovalController {
 			this.userDetailsService.minusLeave(userDetails, leaveDate.getDays());
 			this.leaveService.create(users, approval.getTitle(), approval.getContent(), approval.getStartDate(), approval.getEndDate(), status, approval.getFileList());
 		}
+		
 		else if(approval.getDepartment().getDepartmentName().equals("accounting")&&status.equals("complete")) {
 			try {
 				Files image = new Files();
@@ -255,7 +251,7 @@ public class ApprovalController {
 				}
 				XSSFWorkbook excelworkbook = new XSSFWorkbook(fileInputStream);
 				XSSFSheet worksheet = excelworkbook.getSheetAt(0);
-				this.expenseDataService.uploadExpenseData(worksheet, image);
+				this.expenseDataService.uploadExpenseData(worksheet, image, approval.getUser());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

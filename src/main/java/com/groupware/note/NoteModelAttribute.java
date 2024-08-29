@@ -1,13 +1,11 @@
 package com.groupware.note;
 
 import java.security.Principal;
-import java.util.List;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import com.groupware.note.approval.Approval;
 import com.groupware.note.approval.ApprovalService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
@@ -32,7 +30,7 @@ public class NoteModelAttribute {
 		if(principal != null) {
 			Users users = this.userService.getUser(principal.getName());
 			UserDetails userDetails = this.userDetailsService.findByUser(users);
-			if(this.fileService.fileExists(userDetails)) {
+			if(this.fileService.fileExists(userDetails.getPhoto())) {
 				Files file = this.fileService.findByFiles(userDetails.getPhoto().getFileId());
 				model.addAttribute("file", file);			// 컨트롤러의 메소드마다 해당 모델을 넣어준다. 
 			}
