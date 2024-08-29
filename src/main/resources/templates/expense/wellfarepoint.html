@@ -1,0 +1,36 @@
+<html layout:decorate="~{layout}">
+	<head>
+		<title>회계</title>
+	</head>
+<div layout:fragment="content" class="container">
+	
+	<form th:action="@{/expense/wellfarePoint}" method="post" th:object="${pointInputForm}" >
+		<div th:replace="~{form_errors :: formErrorsFragment}"></div>
+		<p></p>
+		<div class="mb-3">
+			<label for="depPointPer" class="form-label">부서 인당 포인트</label>
+			<input type="text" th:field="${wfPointInput.depPointPer}" class="form-control" />
+		</div>
+			
+		<div class="mb-3">
+			<label for="depPointPlus" class="form-label">부서 플러스 포인트</label>
+			<input type="text" th:field="${wfPointInput.depPointPlus}" class="form-control" />
+		</div>		
+			
+		<div class="mb-3">
+			<label for="individualPoint" class="form-label">개인 포인트</label>
+			<input type="text" th:field="${wfPointInput.individualPoint}" class="form-control" />
+		</div>
+		<input type="submit" value="저장하기" class="btn btn-primary my-2" />
+		
+	</form>
+	<p></p>
+	<table>
+		<tr th:each="point : ${DeppList}">
+			<td th:text="${point}"></td>
+		</tr>
+	</table>
+	
+	
+</div>
+</html>

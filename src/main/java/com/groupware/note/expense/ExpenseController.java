@@ -1,15 +1,12 @@
 package com.groupware.note.expense;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,11 +18,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.groupware.note.department.DepartmentRepository;
+import com.groupware.note.department.Departments;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
-import com.groupware.note.user.UserDetails;
+import com.groupware.note.welfaremall.Purchase;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +32,50 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/expense")
-public class ExpenseDataController {
+public class ExpenseController {
 	private final FileService fService;
 	private final ExpenseDataService edService;
+	private final PurchaseDataService pdService;
+	private final WellfareInputService wfiService;
+	
+	
+	@GetMapping("/menu")
+	public String expenseMenu() {
+		return "expense/expenseMenu";
+	}
+	
+	@GetMapping("/purchaseList")
+	public String purchaseList(Model model, @RequestParam(value="pt" , defaultValue = "") String pt) {
+		List<Purchase> list = new ArrayList<>();
+		if(!pt.equals("")) {
+			list= this.pdService.ListByType(pt);
+		}else {
+			list = this.pdService.basicList();
+		}
+		model.addAttribute("purchaseList", list);
+		return "expense/purchaseList";
+	}
+	
+	@GetMapping("/wellfarePoint")
+	public String wellfarepointInput(Model model, PointInputForm pointInputForm) {
+		List<String> depList = new ArrayList<>();
+		depList = this.wfiService.calDepPoint();
+		model.addAttribute("DeppList", depList);
+		WellfarePointInput wfpi = this.wfiService.wellfarePointInput();
+		model.addAttribute("wfPointInput", wfpi);
+		return "expense/wellfarepoint";
+	}
+	
+	@PostMapping("/wellfarePoint")
+	public String wellfarepointInput(@Valid PointInputForm pointInputForm, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			System.out.println("=======================================================");
+			return "expense/wellfarepoint";
+		}
+		this.wfiService.updatePoint(pointInputForm.getDepPointPer(), pointInputForm.getDepPointPlus(), pointInputForm.getIndividualPoint());
+		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		return "redirect:/expense/wellfarePoint";
+	}
 	
 	@GetMapping("/lists")
 	public String dateList(Model model, @RequestParam(value="date", defaultValue = "") LocalDateTime dt) {
@@ -82,8 +121,8 @@ public class ExpenseDataController {
 	}
 	
 	
-	@PostMapping("/upload")
-	public String upLoadExpense(@Valid ExpenseForm exForm,  Model model) throws IOException{
+//	@PostMapping("/upload")
+//	public String upLoadExpense(@Valid ExpenseForm exForm,  Model model) throws IOException{
 //		System.out.println("=============1==========");
 //		Files photoReceipt = null;
 //		InputStream is = null;
@@ -120,10 +159,9 @@ public class ExpenseDataController {
 //		XSSFWorkbook excelworkbook = new XSSFWorkbook(is);
 //		XSSFSheet worksheet = excelworkbook.getSheetAt(0);
 //		edService.uploadExpenseData(worksheet, photoReceipt);
-//		System.out.println("======================================3");
-		
-		return "redirect:/expense/list";
-  }
+//		System.out.println("======================================3");		
+//		return "redirect:/expense/list";
+//  }
 	
 	
 	@GetMapping("/photo/{fileId}")
