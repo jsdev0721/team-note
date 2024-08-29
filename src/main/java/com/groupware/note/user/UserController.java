@@ -242,10 +242,11 @@ public class UserController {
 	}
 	
 	@GetMapping("/delete/{userId}")
-	public String userDelete(@PathVariable(value="userId") Integer userId){
+	public String userDelete(@PathVariable(value="userId") Integer userId,Principal principal){
 		
 		Users users =this.userService.getUser(userId);
 		UserDetails userDetails= this.userDetailsService.getUser(userId);
+		if(!users.getUsername().equals(principal.getName())) {
 		try {
 			this.expenseDataService.deleteExpense(userDetails);
 			System.out.println("userExpenseNull완료");
@@ -278,7 +279,10 @@ public class UserController {
 		}catch(DataNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("처리할 데이터가 없습니다");
-		}
+			}
+		}else {return "redirect:/user/list";}
+		System.out.println("내 계정은 삭제할수 없습니다");
+		
 		return "redirect:/user/list";
 	}
 

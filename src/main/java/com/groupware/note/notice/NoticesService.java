@@ -83,8 +83,6 @@ public class NoticesService {
 		}else {throw new DataNotFoundException("데이터가 없습니다");}
 	}
 	
-	
-		
 }
 	
 	
