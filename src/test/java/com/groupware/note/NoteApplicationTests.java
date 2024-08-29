@@ -11,6 +11,8 @@ import com.groupware.note.approval.ApprovalService;
 import com.groupware.note.department.DepartmentRepository;
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
+import com.groupware.note.expense.WellfarePointInput;
+import com.groupware.note.expense.WellfarePointInputRepositiory;
 import com.groupware.note.files.FileRepository;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
@@ -58,6 +60,9 @@ class NoteApplicationTests {
 	@Autowired
 	private UserDetailsRepository userDetailsRepository; 
 	
+	@Autowired
+	private WellfarePointInputRepositiory wfpi;
+	
 	@Test
 	void testJpa() {
 		
@@ -80,6 +85,17 @@ class NoteApplicationTests {
 				positionsRepository.save(pos);
 			}
 		}
+		
+		//복지포인트 입력기능
+		WellfarePointInput wf = new WellfarePointInput();
+		wf.setDepPointPer((long) 100);
+		wf.setDepPointPlus((long) 100);
+		wf.setIndividualPoint((long) 100);
+		wf.setDepPointThisDay((long) 0);
+		wf.setDepPointNext((long) 0 );
+		wf.setIndPointThisDay((long) 0 );
+		wf.setIndPointNext((long) 0 );
+		wfpi.save(wf);
 		
 //		Files _file = new Files();
 //		_file.setOriginFileName("user.png");

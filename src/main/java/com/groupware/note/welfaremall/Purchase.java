@@ -37,15 +37,15 @@ public class Purchase {
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cartList_id")
 	private List<WelfareMall> productList;
-	
+	//갯수
 	private Integer quantity;
-	
+	//총액
 	private Integer totalPrice;
-	
+	//대기/실행/완료
 	private String purchaseStatus;
 	
 	private LocalDateTime purchaseDate;
-	
+	//개인/부서 구문
 	private String purchaseType;
 	
 }
