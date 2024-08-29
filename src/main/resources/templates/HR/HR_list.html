@@ -1,17 +1,15 @@
 <html layout:decorate="~{layout}">
 	<div layout:fragment="content" class="container">
+		<br>
 		<h4>인사 페이지</h4>
+		<br>
 		<tbody>
 			<table class="table">
-				<thead>
+				<thead class="table-success">
 					<tr>	
 						<th>name</th>
 						<th>birthdate</th>
 						<th>email</th>
-						<!--<th>photo</th>
-						<th>leave</th>
-						<th>poionts</th>-->
-						
 					</tr>
 				</thead>
 				<tbody>
@@ -25,7 +23,7 @@
 				</tbody>
 			</table>
 			<form th:action="@{/user/list}" method="post" >
-					<input type="text" name="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" />
+					<label class="form-check-label"><input type="text" name="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" />
 					<input type="submit" value="검색" class="btn btn-success my-3" />
 			</form>
 			</tr>
