@@ -66,29 +66,29 @@ public class UserController {
 		if(principal != null) {
 			Users user = this.userService.getUser(principal.getName());
 			if(!user.getStatus().equals("출근")) {
-				return "attendanceButton";
+				return "attendance/attendanceButton";
 			}else {				
 				return "redirect:/";
 			}
 		}else {			
-			return "login";
+			return "user/login";
 		}
 	}
 	
 	@GetMapping("/regist")
 	public String regist(UserCreateForm userCreateForm) {
-		return "regist";
+		return "user/regist";
 	}
 	
 	@PostMapping("/regist")
 	public String regist(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {
-			return "regist";
+			return "user/regist";
 		}
 		if(!userCreateForm.getPassword().equals(userCreateForm.getPasswordCheck())) { //비밀번호와 비밀번호 확인이 일치하지 않으면
 			bindingResult.rejectValue("passwordCheck", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
 			//bindingResult.rejectValue(잘못입력 된 값(필드명), 에러코드(내가 지정함), 에러 메세지) => bindingResult에서 에러 메세지를 하나 더 추가하여 넘겨주어야 할 때
-			return "regist";
+			return "user/regist";
 		}
 		try { //중복검사
 			Users users = this.userService.create(userCreateForm.getUsername(), userCreateForm.getPassword());
@@ -96,25 +96,25 @@ public class UserController {
 		} catch (DataIntegrityViolationException e) { //SiteUser에서 주었던 unique 제약조건 위반시 해당 에러클래스가 처리함 
 			e.printStackTrace();
 			bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
-			return "regist";
+			return "user/regist";
 		} catch (Exception e) {
 			e.printStackTrace();
 			bindingResult.reject("signupFailed", e.getMessage());
 			//bindingResult.reject(에러코드, 에러메세지)
-			return "regist";
+			return "user/regist";
 		}
 		
-		return "login";
+		return "user/login";
 	}
 	
 	@GetMapping("/find/id")
 	public String findID() {
-		return "findID";
+		return "user/findID";
 	}
 	
 	@GetMapping("/find/pw")
 	public String findPW(UserPasswordForm userPasswordForm) {
-		return "findPW";
+		return "user/findPW";
 	}
 	
 	@PostMapping("/find/pw")
@@ -123,7 +123,7 @@ public class UserController {
 		Boolean check = this.userService.checkPW(username);
 		model.addAttribute("check", check);
 		model.addAttribute("users", users);
-		return "findPW";
+		return "user/findPW";
 	}
 	
 	@PostMapping("/change/pw")
@@ -133,7 +133,7 @@ public class UserController {
 			Boolean check = true;
 			model.addAttribute("check", check);
 			model.addAttribute("users", users);
-			return "findPW";
+			return "user/findPW";
 		}
 		if(!userPasswordForm.getPassword().equals(userPasswordForm.getPasswordCheck())) {
 			bindingResult.rejectValue("passwordCheck", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
@@ -141,7 +141,7 @@ public class UserController {
 			Boolean check = true;
 			model.addAttribute("check", check);
 			model.addAttribute("users", users);
-			return "findPW";
+			return "user/findPW";
 		}
 		this.userService.changePW(userPasswordForm.getUsername(), userPasswordForm.getPassword());
 		return "redirect:/user/login";
@@ -178,7 +178,7 @@ public class UserController {
 		List<UserDetails> userList = this.userDetailsService.userfindByAll();
 		model.addAttribute("userList",userList);
 		
-		return "HR_list";
+		return "HR/HR_list";
 		
 	}
 	@GetMapping("/detail/{userId}")//detail에 대한 고유값
@@ -193,7 +193,7 @@ public class UserController {
 		model.addAttribute("attendance", attendance);
 		System.out.println("불러와 주우우웅우우우세야야야양야ㅑㅇ");
 		
-		return "HR_detail";
+		return "HR/HR_detail";
 	}
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/update/{userId}")
@@ -201,7 +201,7 @@ public class UserController {
 		Users users =this.userService.getUser(userId);
 		model.addAttribute("users",users);
 		
-		return "HR_update";
+		return "HR/HR_update";
 	}
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/update/{userId}")

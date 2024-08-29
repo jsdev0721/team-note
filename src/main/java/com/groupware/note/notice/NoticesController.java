@@ -44,7 +44,7 @@ public class NoticesController {
 		Page<Notices> noticesList = this.noticesService.noticesList(page,10);
 		model.addAttribute("paging",noticesList);
 		
-		return "notices_list";
+		return "notice/notices_list";
 	}
 	@PostMapping("/list")
 	public String noticeSearchList(Model model
@@ -52,7 +52,7 @@ public class NoticesController {
 		Page<Notices> noticesList = this.noticesService.noticesSearchList(page, searchListForm.getSearchkeyword());
 		model.addAttribute("paging",noticesList);
 		
-		return "notices_list";
+		return "notice/notices_list";
 	}
 	@GetMapping("/detail/{noticeId}")
 	public String detail(Model model,@PathVariable("noticeId") Integer noticeId) {
@@ -60,7 +60,7 @@ public class NoticesController {
 		model.addAttribute("fileList",notices.getFileList());
 		model.addAttribute("notices" ,notices);
 		
-		return "notices_detail";
+		return "notice/notices_detail";
 	}
 	@GetMapping("/download/{noticeId}")
 	public ResponseEntity<Resource> download(@PathVariable("noticeId") Integer noticeId){
@@ -72,7 +72,7 @@ public class NoticesController {
 	@GetMapping("/create")
 	public String create(NoticeForm noticeForm) {
 		
-		return "notices_form";
+		return "notice/notices_form";
 		
 	}
 	@PreAuthorize("isAuthenticated()")
@@ -80,7 +80,7 @@ public class NoticesController {
 	public String create(@Valid NoticeForm noticeForm,BindingResult bindingResult,Principal principal) {
 		 
 		if(bindingResult.hasErrors()) {
-			return "notices_form";
+			return "notice/notices_form";
 		}
 		
 		List<Files> fileList = new ArrayList<>();
@@ -105,7 +105,7 @@ public class NoticesController {
 		noticeForm.setContent(notices.getContent());
 		model.addAttribute("notices",notices);
 		
-		return "notices_update";
+		return "notice/notices_update";
 	}
 	
 	@PreAuthorize("isAuthenticated()")
@@ -114,7 +114,7 @@ public class NoticesController {
 			,@Valid NoticeForm noticeForm,BindingResult bindingResult,Principal principal) {
 		if(bindingResult.hasErrors()) {
 			
-			return "notices_update";
+			return "notice/notices_update";
 		}
 		Notices notices2 = this.noticesService.getNotice(noticeId);
 		List<Files> fileList = new ArrayList<>();

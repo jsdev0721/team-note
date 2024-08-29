@@ -55,23 +55,23 @@ public class WelfareMallController {
 		Users user = this.userService.getUser(principal.getName());
 		model.addAttribute("cartList", this.cartService.findByUser(user, type));
 		model.addAttribute("type", type);
-		return "welfaremallList";
+		return "welfaremall/welfaremallList";
 	}
 	
 	@PostMapping("/list")
 	public String findByProductNameLike(Model model , @RequestParam(value = "page" , defaultValue = "0")int page ,@RequestParam(value = "productName")String productName ,@RequestParam(value = "type") String type) {
 		model.addAttribute("list", this.welfareMallService.findByProductNameLike(productName, type, page, 9));
 		model.addAttribute("type", type);
-		return "welfaremallList";
+		return "welfaremall/welfaremallList";
 	}
 	@GetMapping("/create")
 	public String create(WelfareMallForm welfareMallForm) {
-		return "welfaremallCreate";
+		return "welfaremall/welfaremallCreate";
 	}
 	@PostMapping("/create")
 	public String create(@Valid WelfareMallForm welfareMallForm , BindingResult bindingResult , @RequestParam("type")String type) {
 		if(bindingResult.hasErrors()) {
-			return "welfaremallCreate";
+			return "welfaremall/welfaremallCreate";
 		}
 		WelfareMall welfareMall = new WelfareMall();
 		welfareMall.setProductName(welfareMallForm.getProductName());
@@ -100,7 +100,7 @@ public class WelfareMallController {
 		}
 		WelfareMall welfareMall = this.welfareMallService.findById(id);
 		model.addAttribute("welfaremall", welfareMall);
-		return "welfaremallDetail";
+		return "welfaremall/welfaremallDetail";
 	}
 	@GetMapping("/photo/{id}")
 	public ResponseEntity<Resource>viewPhoto(@PathVariable("id")Integer id) throws MalformedURLException{
@@ -115,12 +115,12 @@ public class WelfareMallController {
 		welfareMallForm.setPrice(welfareMall.getPrice());
 		model.addAttribute("welfaremall", welfareMall);
 		model.addAttribute("fileList", welfareMall.getPhotos());
-		return "welfaremallEdit";
+		return "welfaremall/welfaremallEdit";
 	}
 	@PostMapping("/edit/{id}")
 	public String editWelfaremall(@Valid WelfareMallForm welfareMallForm , BindingResult bindingResult ,@PathVariable("id")Integer id) {
 		if(bindingResult.hasErrors()) {
-			return "welfaremallDetail";
+			return "welfaremall/welfaremallDetail";
 		}
 		WelfareMall welfareMall = this.welfareMallService.findById(id);
 		if(!welfareMallForm.getFileList().isEmpty()) {
@@ -201,7 +201,7 @@ public class WelfareMallController {
 		Users user = this.userService.getUser(principal.getName());
 		model.addAttribute("cartList", this.cartService.findByUser(user, type));
 		model.addAttribute("type", type);
-		return "cartList";
+		return "welfaremall/cartList";
 	}
 	@PostMapping("/viewCart")
 	public String viewCart(Model model , Principal principal , @RequestParam("productName")String productName , @RequestParam(value = "type" , defaultValue = "personal")String type) {
@@ -216,7 +216,7 @@ public class WelfareMallController {
 		}
 		model.addAttribute("run", true);
 		model.addAttribute("cartList", cartList);
-		return "cartList";
+		return "welfaremall/cartList";
 	}
 	@GetMapping("/purchase")
 	public String purchase(Model model , Principal principal , @RequestParam(value = "type" , defaultValue = "personal")String type) {
@@ -244,7 +244,7 @@ public class WelfareMallController {
 						run = user.getPosition().getDepartment().getPoints()>=purchase.getTotalPrice() ? true : false;
 					}
 					model.addAttribute("run", run);
-					return "purchase";
+					return "welfaremall/purchase";
 				}
 				
 			}
@@ -273,7 +273,7 @@ public class WelfareMallController {
 			run = user.getPosition().getDepartment().getPoints()>=purchase.getTotalPrice() ? true : false;
 		}
 		model.addAttribute("run", run);
-		return "purchase";
+		return "welfaremall/purchase";
 	}
 	@PostMapping("/purchase/{id}")
 	public String purchase(@PathVariable("id")Integer id, Principal principal , @RequestParam(value = "type")String type) {
@@ -306,7 +306,7 @@ public class WelfareMallController {
 		List<Purchase> purchase = this.purchaseService.findByUserAndPurchaseType(user, type);
 		model.addAttribute("purchase", purchase);
 		model.addAttribute("type", type);
-		return "purchaseRecord";
+		return "welfaremall/purchaseRecord";
 	}
 	@GetMapping("/cancelPurchase/{id}")
 	public String cancelPurchase(@PathVariable("id")Integer id , Principal principal) {

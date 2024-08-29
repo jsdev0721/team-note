@@ -41,7 +41,7 @@ public class FormController {
 		Page<Forms> formsList = this.formService.formsList(page , 10);
 		model.addAttribute("paging",formsList);
 		
-		return "forms_list";
+		return "form/forms_list";
 	}
 	@PostMapping("/list")
 	public String formsSerchList(Model model
@@ -49,7 +49,7 @@ public class FormController {
 		Page<Forms> formsList = this.formService.searchList(page, searchListForm.getSearchKeyword());
 		model.addAttribute("paging", formsList);
 		
-		return "forms_list";
+		return "form/forms_list";
 	}
 	@GetMapping("/detail/{formId}")
 	public String detail(Model model,@PathVariable("formId") Integer formId) {
@@ -57,7 +57,7 @@ public class FormController {
 		model.addAttribute("fileList",forms.getFileList());
 		model.addAttribute("forms",forms);
 		
-		return "forms_detail";
+		return "form/forms_detail";
 	}
 	@GetMapping("/download/{formId}")
 	public ResponseEntity<Resource> download(@PathVariable("formId") Integer formsId){
@@ -68,14 +68,14 @@ public class FormController {
 	@GetMapping("/create")
 	public String create(FormsForm formsForm) {
 		
-		return "forms_form";
+		return "form/forms_form";
 	}
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create")
 	public String create(@Valid FormsForm formsForm,BindingResult bindingResult,Principal principal) {
 		if(bindingResult.hasErrors()) {
 			
-		return "forms_form";
+		return "form/forms_form";
 		}
 		List<Files> fileList = new ArrayList<>();
 		if(formsForm.getMultiPartFile()!=null&&!formsForm.getMultiPartFile().isEmpty()) {
@@ -98,14 +98,14 @@ public class FormController {
 		Forms forms = this.formService.getForm(formId);
 		model.addAttribute("forms",forms);
 		
-		return "forms_update";
+		return "form/forms_update";
 	}
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/update/{formId}")
 	public String update(@PathVariable("formId") Integer formId
 			,@Valid FormsForm formsForm,BindingResult bindingResult,Principal principal) {
 		if(bindingResult.hasErrors()) {
-			return "forms_update";
+			return "form/forms_update";
 		}
 		Forms forms = this.formService.getForm(formId);
 		

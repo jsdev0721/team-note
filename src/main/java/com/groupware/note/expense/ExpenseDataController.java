@@ -43,7 +43,7 @@ public class ExpenseDataController {
 		List<Expense> list = new ArrayList<>();
 		list = this.edService.dateList(dt);
 		model.addAttribute("expenseList", list);
-		return "expenseList";
+		return "expense/expenseList";
 	}
 	
 	@PostMapping("/list/date")
@@ -56,7 +56,7 @@ public class ExpenseDataController {
 		list = edService.dateSetList(startDate, endDate);
 		
 		model.addAttribute("expenseList", list);
-		return "expenseList";
+		return "expense/expenseList";
 	}
 
 	
@@ -71,14 +71,14 @@ public class ExpenseDataController {
 			list = edService.list();	
 		}
 		model.addAttribute("expenseList", list);
-		return "expenseList";
+		return "expense/expenseList";
 	}
 	
 	@PostMapping("/list")
 	public String barSearchrList(Model model, @Valid ExpenseBarSearchedListForm ebslForm ) {
 		List<Expense> list = edService.barSearchedList(ebslForm.getBrowse(), ebslForm.getSearch());
 		model.addAttribute("expenseList", list);
-		return "expenseList";
+		return "expense/expenseList";
 	}
 	
 	
@@ -99,21 +99,21 @@ public class ExpenseDataController {
 			} else {
 				errorMessage = "파일 종류를 다시 확인해주세요";
 				model.addAttribute("errorMessage", errorMessage);
-				return "expenseError";
+				return "expense/expenseError";
 			}
 				
 		}
 		if(photoReceipt==null) {
 			errorMessage = "사진 파일을 같이 업로드 해 주세요";
 			model.addAttribute("errorMessage", errorMessage);
-			return "expenseError";
+			return "expense/expenseError";
 		}
 		
 		if(is == null) {
 			this.fService.delete(photoReceipt);
 			errorMessage = "엑셀 파일을 같이 업로드 해 주세요";
 			model.addAttribute("errorMessage", errorMessage);
-			return "expenseError";
+			return "expense/expenseError";
 		}
 				
 		System.out.println("=======================================실행====================");

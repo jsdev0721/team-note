@@ -63,7 +63,7 @@ public class ApprovalController {
 		Page<Approval> approvalList = this.approvalService.ApprovalList(user, department, status , page , 10);
 		model.addAttribute("approvalList", approvalList);
 		model.addAttribute("status", status);
-		return "approvalList";
+		return "approval/approvalList";
 	}
 	@PostMapping("/list")
 	public String serch(Model model , @RequestParam(value = "status") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal , @RequestParam(value = "search")String search) {
@@ -71,20 +71,20 @@ public class ApprovalController {
 		Departments department = user.getPosition().getDepartment();
 		Page<Approval> approvalList =  this.approvalService.findByLike(user, search , department , status , page , 10);
 		model.addAttribute("approvalList" , approvalList);
-		return "approvalList";
+		return "approval/approvalList";
 	}
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/create")
 	public String approvalCreate(ApprovalForm approvalForm) {
 		approvalForm.setDepartmentName("General");
-		return "approvalCreate";
+		return "approval/approvalCreate";
 	}
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create")
 	public String approvalCreate(@Valid ApprovalForm approvalForm , BindingResult bindingResult , Principal principal) {
 		if(bindingResult.hasErrors()) {
-			return "approvalCreate";
+			return "approval/approvalCreate";
 		}
 		try {
 			Approval _approval = new Approval();
@@ -118,7 +118,7 @@ public class ApprovalController {
 								}
 							}
 							bindingResult.reject("파일형식인식불가", "파일 종류를 다시 확인해주세요");
-							return "approvalCreate";
+							return "approval/approvalCreate";
 						}
 					}
 					_approval.setFileList(fileList);
@@ -142,27 +142,27 @@ public class ApprovalController {
 	@GetMapping("/create/HR")
 	public String approvalCreateLeave(LeaveForm leaveForm) { //휴가폼
 		leaveForm.setDepartmentName("HR");
-		return "approvalCreate_leave";
+		return "approval/approvalCreate_leave";
 	}
 	
 	@GetMapping("/create/accounting")
-	public String approvalCreateExpense(LeaveForm leaveForm) { //휴가폼
+	public String approvalCreateExpense(LeaveForm leaveForm) { //회계폼
 		leaveForm.setDepartmentName("accounting");
-		return "approvalCreate_expense";
+		return "approval/approvalCreate_expense";
 	}
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create/HR")
 	public String approvalCreateLeave(@Valid LeaveForm leaveForm, BindingResult bindingResult, Principal principal) {
 		if(bindingResult.hasErrors()) {
-			return "approvalCreate_leave";
+			return "approval/approvalCreate_leave";
 		}
 		Users users = this.userService.getUser(principal.getName());
 		UserDetails userDetails = this.userDetailsService.findByUser(users);
 		Period leaveDate = Period.between(leaveForm.getStartDate(), leaveForm.getEndDate());
 		if(0 > (userDetails.getLeave() - (leaveDate.getDays()+1))) {
 			bindingResult.reject("HRcreateFailed", "남은 휴가 일수가 선택한 휴가 일수보다 짧습니다.");
-			return "approvalCreate_leave";
+			return "approval/approvalCreate_leave";
 		}
 		try {
 			Approval _approval = new Approval();
@@ -197,7 +197,7 @@ public class ApprovalController {
 		model.addAttribute("fileList", approval.getFileList());
 		model.addAttribute("commentList", approval.getCommentList());
 		model.addAttribute("userInfo", this.userService.getUser(principal.getName()));
-		return "approvalDetail";
+		return "approval/approvalDetail";
 	}
 	
 	@GetMapping("/download/{id}")
@@ -270,13 +270,13 @@ public class ApprovalController {
 		model.addAttribute("approval", approval);
 		model.addAttribute("fileList", approval.getFileList());
 		approvalForm.setDepartmentName(approval.getDepartment().getDepartmentName());
-		return "approvalEdit";
+		return "approval/approvalEdit";
 	}
 	@PostMapping("/edit/{id}")
 	public String edit(Model model , @PathVariable("id")Integer id , @Valid ApprovalForm approvalForm , BindingResult bindingResult , Principal principal) {
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("approval", this.approvalService.findById(id));
-			return "approvalEdit";
+			return "approval/approvalEdit";
 		}
 		Approval approval = this.approvalService.findById(id);
 		approval.setTitle(approvalForm.getTitle());

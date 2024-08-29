@@ -39,7 +39,7 @@ public class AttendanceController {
 		
 		List<Attendance> attendanceList = this.attendanceService.getAttendanceList(user.getUserId(), date); // 맨마지막날짜(년-월)에 해당하는 데이터 가져오기 
 		model.addAttribute("attendanceList", attendanceList);
-		return "attendanceList";
+		return "attendance/attendanceList";
 	}
 	
 	@PreAuthorize("isAuthenticated()")
@@ -54,7 +54,7 @@ public class AttendanceController {
 		
 		List<Attendance> attendanceList = this.attendanceService.getAttendanceList(user.getUserId(), date);
 		model.addAttribute("attendanceList", attendanceList);
-		return "attendanceList";
+		return "attendance/attendanceList";
 	}
 	
 	@PreAuthorize("isAuthenticated()")
@@ -62,7 +62,7 @@ public class AttendanceController {
 	public String getCheckIn(Principal principal, Model model) {
 		Users user = this.userService.getUser(principal.getName());
 		if(!user.getStatus().equals("출근")) {
-			return "attendanceButton";
+			return "attendance/attendanceButton";
 		}else {
 			return "redirect:/";
 		}
