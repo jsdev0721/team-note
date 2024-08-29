@@ -2,11 +2,15 @@ package com.groupware.note.user;
 
 import java.net.MalformedURLException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.support.CronExpression;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +33,6 @@ import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.form.FormService;
 import com.groupware.note.leave.LeaveService;
-import com.groupware.note.message.MessageService;
 import com.groupware.note.message.chatRoomService;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.position.PositionService;
@@ -212,6 +215,21 @@ public class UserController {
 		
 		return "redirect:/user/list";
 	}
+	
+//	@PreAuthorize("isAuthenticated()")
+//	@PostMapping("/update/{userId}")
+//	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName
+//			,@RequestParam(value="departmentId")Departments id
+//			, @RequestParam(value = "updateTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime updateTime) {
+//		Positions positions= this.positionService.findByPositionName(positionName, id);
+//		this.positionService.updatePosition(userId, positions);
+//		return "redirect:/user/list";
+//	}
+//	//초 분 시 일 월 요일
+//	@Scheduled
+//	public void updatePosition() {
+//		
+//	}
 	
 	@PostMapping("/list")
 	public String userSearchList(Model model,@Valid SearchListForm searchListForm) {
