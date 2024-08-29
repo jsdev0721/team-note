@@ -19,4 +19,6 @@ public class WelfareMallForm {
 	private Integer price;
 	
 	private List<MultipartFile> fileList;
+	
+	private MultipartFile mainImage;
 }

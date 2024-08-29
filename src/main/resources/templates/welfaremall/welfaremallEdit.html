@@ -17,9 +17,13 @@
 				<div class="card-body">
 					<h5 class="card-text"><textarea th:field="*{desciption}" placeholder="내용을 입력해 주세요" style="font-size: 16px;"></textarea></h5>
 				</div>
+				<div>
+					<label for="formMainImage" class="form-label">표지사진</label>
+					<input class="form-control" type="file" id="formMainImage" name="mainImage" accept=".jpg, .png, .gif, .jpeg, .bmp"/>
+				</div>
 				<div>					
 					<label for="formFileMultiple" class="form-label">파일업로드</label>
-                    <input class="form-control" type="file" id="formFileMultiple" name="fileList" multiple/>
+                    <input class="form-control" type="file" id="formFileMultiple" name="fileList" accept=".jpg, .png, .gif, .jpeg, .bmp" multiple/>
 					<div th:each="file : ${fileList}">
 						<span th:text="${file.originFileName}"></span>
 						<a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/edit/${welfaremall.productId}/${file.fileId}|}">-</a>

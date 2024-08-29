@@ -86,7 +86,27 @@ public class FileService {
 		}
 		return file;
 	}
-
+	public Files updateFile(Files _file , MultipartFile multipartFile) {
+		Files file = findByFiles(_file.getFileId());
+		if(multipartFile==null||multipartFile.isEmpty()) {
+			return file;
+		}
+		if(fileExists(_file)) {
+			File originFile = new File(getFilePath(_file.getOriginFileName(), _file.getStoreFileName()));
+			originFile.delete();
+		}
+		try {
+			String originFileName = multipartFile.getOriginalFilename();
+			String storeFileName = UUID.randomUUID().toString();
+			file.setOriginFileName(originFileName);
+			file.setStoreFileName(storeFileName);
+			multipartFile.transferTo(new File(setFilePath(originFileName, storeFileName)));
+			this.fileRepository.save(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return file;
+	}
 	//download 메소드 -> ResponseEntity 으로 return
 	public ResponseEntity<Resource> downloadFile(Files file) {
 		String filePath = getFilePath(file.getOriginFileName() , file.getStoreFileName());
@@ -133,8 +153,7 @@ public class FileService {
 			return;
 		}
 	}
-	public boolean fileExists(UserDetails userDetail) {
-		Files file = userDetail.getPhoto();
+	public boolean fileExists(Files file) {
 		if(file==null) {
 			return false;
 		}

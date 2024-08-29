@@ -17,9 +17,13 @@
 				<div class="card-body">
 					<h5 class="card-text"><textarea name="desciption" placeholder="내용을 입력해 주세요" style="font-size: 16px;"></textarea></h5>
 				</div>
+				<div>
+					<label for="formMainImage" class="form-label">표지사진</label>
+					<input class="form-control" type="file" id="formMainImage" name="mainImage" accept=".jpg, .png, .gif, .jpeg, .bmp"/>
+				</div>
 				<div>					
 					<label for="formFileMultiple" class="form-label">파일업로드</label>
-                    <input class="form-control" type="file" id="formFileMultiple" name="fileList" multiple/>
+                    <input class="form-control" type="file" id="formFileMultiple" name="fileList" accept=".jpg, .png, .gif, .jpeg, .bmp"  multiple/>
 				</div>
 				<div class="card-footer">
 					<p><input type="number" name="price" min="100" max="999999999" placeholder="가격을 입력해 주세요" style="font-size: 16px;"/></p>

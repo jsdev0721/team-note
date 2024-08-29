@@ -77,6 +77,10 @@ public class WelfareMallController {
 		welfareMall.setProductName(welfareMallForm.getProductName());
 		welfareMall.setDescription(welfareMallForm.getDesciption());
 		welfareMall.setPrice(welfareMallForm.getPrice());
+		if(welfareMallForm.getMainImage()!=null&&!welfareMallForm.getMainImage().isEmpty()) {
+			Files file = this.fileService.uploadFile(welfareMallForm.getMainImage());
+			welfareMall.setMainImage(file);
+		}
 		if(welfareMallForm.getFileList()!=null&&!welfareMallForm.getFileList().isEmpty()) {
 			List<Files> fileList = new ArrayList<>();		
 			for(MultipartFile multipartFile : welfareMallForm.getFileList()) {
@@ -87,7 +91,7 @@ public class WelfareMallController {
 			welfareMall.setPhotos(fileList);
 		}
 		welfareMall.setType(type);
-		this.welfareMallService.save(welfareMall);
+		WelfareMall _welfareMall = this.welfareMallService.save(welfareMall);
 		return "redirect:/welfaremall/list";
 	}
 	@GetMapping("/detail/{id}")
@@ -123,6 +127,10 @@ public class WelfareMallController {
 			return "welfaremall/welfaremallDetail";
 		}
 		WelfareMall welfareMall = this.welfareMallService.findById(id);
+		if(welfareMallForm.getMainImage()!=null&&!welfareMallForm.getMainImage().isEmpty()) {
+			Files file = welfareMall.getMainImage()!=null ? this.fileService.updateFile(welfareMall.getMainImage(), welfareMallForm.getMainImage()) : this.fileService.uploadFile(welfareMallForm.getMainImage());
+			welfareMall.setMainImage(file);
+		}
 		if(!welfareMallForm.getFileList().isEmpty()) {
 			List<Files> fileList = welfareMall.getPhotos();
 			for(MultipartFile multipartFile : welfareMallForm.getFileList()) {
