@@ -54,8 +54,9 @@
 				&nbsp;
 			<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#dateSetModal">날짜 설정</button>
 				&nbsp;
-			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dataUploadModal">데이터 업로드</button>
-				&nbsp;&nbsp;
+			<!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dataUploadModal">데이터 업로드</button>
+				&nbsp;-->
+				&nbsp;
 		</div>
 	</div>
 	
@@ -89,7 +90,14 @@
 				</button>
 			</td>
 			
-			<div th:id="@{|popup/${expense.file.fileId}|}" popover><img th:src="@{|/expense/photo/${expense.file.fileId}|}" style="width: 600px;"></div>
+			<div th:id="@{|popup/${expense.file.fileId}|}" popover>
+				<dl>
+					<dt><div th:text="|항목 : ${expense.expenseType}|"></div></dt>
+					<dt><div th:text="|비고 : ${expense.description}|"></dt>
+					<dt><p></p></dt>
+					<dt><img th:src="@{|/expense/photo/${expense.file.fileId}|}" style="width: 600px;"></dt>	
+				</dl>
+			</div>
 			
 		</tr>
 	</tbody>

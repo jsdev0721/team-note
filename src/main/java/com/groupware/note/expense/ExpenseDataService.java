@@ -14,6 +14,7 @@ import com.groupware.note.DataNotFoundException;
 import com.groupware.note.files.Files;
 import com.groupware.note.user.UserDetails;
 import com.groupware.note.user.UserDetailsRepository;
+import com.groupware.note.user.Users;
 
 import lombok.RequiredArgsConstructor;
 
@@ -66,21 +67,21 @@ public class ExpenseDataService {
 	}
 	
 	//데이터 업로드
-	public void uploadExpenseData( XSSFSheet worksheet, Files file) {
+	public void uploadExpenseData( XSSFSheet worksheet, Files file, Users user) {
 	    for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
 		      Row row = worksheet.getRow(i);
 		      if(row.getCell(0).getStringCellValue().equals("End")) {
 		    	  break;
 		      }
 		      Expense data = new Expense();
-		      Optional<UserDetails> _user = udRepo.findByName(row.getCell(0).getStringCellValue());
+		      Optional<UserDetails> _user = udRepo.findById(user.getUserId());
 		      if(_user.isPresent()) {
 		    	  UserDetails writer = _user.get();
 			      data.setWriter(writer);
-			      data.setExpenseType(row.getCell(1).getStringCellValue());
-			      data.setAmount(row.getCell(2).getNumericCellValue());
-			      data.setUseDate(row.getCell(3).getLocalDateTimeCellValue());
-			      data.setDescription(row.getCell(4).getStringCellValue());
+			      data.setExpenseType(row.getCell(0).getStringCellValue());
+			      data.setAmount(row.getCell(1).getNumericCellValue());
+			      data.setUseDate(row.getCell(2).getLocalDateTimeCellValue());
+			      data.setDescription(row.getCell(3).getStringCellValue());
 			      data.setFile(file);
 			      this.eRepository.save(data);
 		      }
