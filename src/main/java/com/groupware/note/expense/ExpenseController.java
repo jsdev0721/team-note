@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.groupware.note.department.DepartmentRepository;
+import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
@@ -37,7 +38,7 @@ public class ExpenseController {
 	private final ExpenseDataService edService;
 	private final PurchaseDataService pdService;
 	private final WellfareInputService wfiService;
-	
+	private final DepartmentService dService;
 	
 	@GetMapping("/menu")
 	public String expenseMenu() {
@@ -63,6 +64,8 @@ public class ExpenseController {
 		model.addAttribute("DeppList", depList);
 		WellfarePointInput wfpi = this.wfiService.wellfarePointInput();
 		model.addAttribute("wfPointInput", wfpi);
+		List<Departments> dep = this.dService.findAll();
+		model.addAttribute("dep", dep);
 		return "expense/wellfarepoint";
 	}
 	
