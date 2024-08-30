@@ -12,3 +12,5 @@ input{border: 1px solid rgb(32, 62, 110) !important;}
 
 .btn{width: 100%;background-color: rgb(32, 62, 110);color: #fff;height: 50px;}
 .btn:hover{background-color: rgb(32, 62, 110);color: #fff;}
+.btn:focus{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
+.btn:active{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
