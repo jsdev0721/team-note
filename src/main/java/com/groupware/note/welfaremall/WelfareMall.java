@@ -24,6 +24,8 @@ public class WelfareMall {
 	private Integer productId;
 	
 	private String productName;
+	
+	private List<String> optionList;
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Files> photos;
 	@ManyToOne

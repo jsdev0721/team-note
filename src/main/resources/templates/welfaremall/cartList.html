@@ -24,21 +24,22 @@
 		<table class="table table-scriped-columns table-hover align-middle">
 			<thead>
 				<tr>
-					<th>제목</th>
-					<th>가격</th>
-					<td align="center" colspan="3">수량</td>
-					
-					<th>추가날짜</th>
+					<th scope="col">제목</th>
+					<th scope="col">옵션</th>
+					<th scope="col">가격</th>
+					<th scope="col" align="middle" colspan="3" width="10%" >수량</th>
+					<th scope="col">추가날짜</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="cart : ${cartList}">
-					<td><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
+					<td scope="row"><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
+					<td th:text="${cart.option}"></td>
 					<td th:text="${cart.point}"></td>
 					
-					<td><a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/deleteCart/${cart.product.productId}?to=cart&type=${type}|}">-</a></td>
+					<td><a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/deleteCart/${cart.product.productId}?to=cart&type=${type}&option=${cart.option}|}">-</a></td>
 					<td th:text="${cart.quantity}"></td>
-					<td><a class="btn btn-success btn-sm" th:href="@{|/welfaremall/addCart/${cart.product.productId}?to=cart&type=${type}|}">+</a></td>
+					<td><a class="btn btn-success btn-sm" th:href="@{|/welfaremall/addCart/${cart.product.productId}?to=cart&type=${type}&option=${cart.option}|}">+</a></td>
 					
 					<td th:text="${#temporals.format(cart.addDate,'MM.dd HH:mm')}"></td>
 					

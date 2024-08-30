@@ -48,7 +48,10 @@ public class CartService {
 				this.cartRepository.save(cart);
 				}
 			}else {throw new DataNotFoundException("데이터가 없습니다");}
-		
+	}
+	public Cart findByUserAndProductAndOptionLike(WelfareMall product , Users user , String option) {
+		Optional<Cart> _cart = this.cartRepository.findByUserAndProductAndOptionLike(user, product, option);
+		return _cart.isEmpty() ? new Cart() : _cart.get();
 	}
 	
 }

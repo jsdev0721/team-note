@@ -21,4 +21,6 @@ public class WelfareMallForm {
 	private List<MultipartFile> fileList;
 	
 	private MultipartFile mainImage;
+	
+	private List<String> optionList;
 }
