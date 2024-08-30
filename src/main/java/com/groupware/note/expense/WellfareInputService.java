@@ -63,7 +63,6 @@ public class WellfareInputService {
 			Long pByDep = (this.uRepo.findByDep(dep.getDepartmentName()).size()
 					* this.wpiRepo.findById(1).get().getDepPointPer()  )
 					+  this.wpiRepo.findById(1).get().getDepPointPlus();
-			//String changeFormat1 = Long.toString(longFormat);
 			String _deppoint =  dep.getDepartmentName() + " 에 입력될 포인트 : " + Long.toString(pByDep);
 			list.add(_deppoint);
 		}

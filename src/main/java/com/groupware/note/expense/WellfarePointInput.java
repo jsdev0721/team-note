@@ -23,11 +23,5 @@ public class WellfarePointInput {
 	
 	private Long individualPoint;
 	
-	private Long depPointThisDay;
-	
-	private Long indPointThisDay;
-	
-	private Long depPointNext;
-	
-	private Long indPointNext;
+
 }

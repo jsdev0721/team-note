@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.groupware.note.department.Departments;
 import com.groupware.note.user.Users;
 
 @Repository
@@ -20,6 +21,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Integer> {
 	
 	//비용처리에서 가져가는용
 	List<Purchase> findByPurchaseStatus(String purchaseStatus);
-	List<Purchase> findByPurchaseStatusAndPurchaseType(String purchaseStatus, String purchaseType);
-
+	List<Purchase> findByPurchaseStatusAndPurchaseTypeAndDepartment(String purchaseStatus, String purchaseType, Departments department);
+	List<Purchase> findByPurchaseStatusAndPurchaseTypeAndUser(String purchaseStatus, String purchaseType, Users user);
 }

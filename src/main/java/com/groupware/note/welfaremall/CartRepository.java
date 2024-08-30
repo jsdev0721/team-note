@@ -12,6 +12,6 @@ import com.groupware.note.user.Users;
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 	List<Cart> findByUserAndType(Users user , String type);
 	Optional<Cart> findByProductAndUser(WelfareMall product , Users user);
-	Optional<Cart> findByUserAndProduct(Users user , WelfareMall product);
+	Optional<Cart> findByUserAndProductAndOptionLike(Users user , WelfareMall product , String option);
 	List<Cart> findByUser(Users user);
 }

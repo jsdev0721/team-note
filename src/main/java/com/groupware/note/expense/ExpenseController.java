@@ -3,9 +3,7 @@ package com.groupware.note.expense;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.groupware.note.department.DepartmentRepository;
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
+import com.groupware.note.expense.PurchaseDataService.PData;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
-import com.groupware.note.welfaremall.Purchase;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,22 +37,25 @@ public class ExpenseController {
 	private final WellfareInputService wfiService;
 	private final DepartmentService dService;
 	
+
+	
 	@GetMapping("/menu")
 	public String expenseMenu() {
 		return "expense/expenseMenu";
 	}
 	
 	@GetMapping("/purchaseList")
-	public String purchaseList(Model model, @RequestParam(value="pt" , defaultValue = "") String pt) {
-		List<Purchase> list = new ArrayList<>();
-		if(!pt.equals("")) {
-			list= this.pdService.ListByType(pt);
-		}else {
-			list = this.pdService.basicList();
-		}
+	public String purchaseList(Model model, @RequestParam(value="pt" , defaultValue = "personal") String pt) {
+		List<PData> list = new ArrayList<>();
+		list = this.pdService.fpcList(pt);
 		model.addAttribute("purchaseList", list);
+		model.addAttribute("pt", pt);
 		return "expense/purchaseList";
 	}
+	
+	
+	
+	
 	
 	@GetMapping("/wellfarePoint")
 	public String wellfarepointInput(Model model, PointInputForm pointInputForm) {
@@ -72,11 +72,9 @@ public class ExpenseController {
 	@PostMapping("/wellfarePoint")
 	public String wellfarepointInput(@Valid PointInputForm pointInputForm, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {
-			System.out.println("=======================================================");
 			return "expense/wellfarepoint";
 		}
 		this.wfiService.updatePoint(pointInputForm.getDepPointPer(), pointInputForm.getDepPointPlus(), pointInputForm.getIndividualPoint());
-		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		return "redirect:/expense/wellfarePoint";
 	}
 	

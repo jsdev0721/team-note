@@ -151,6 +151,8 @@
 			
 			let messageTime = message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16);
 			let alignmentClass = (message.sender.username === selectedUsername) ? 'left-align' : 'right-align';
+			let font = mess.style.fontSize="small";
+			
 			messageElement.classList.add(alignmentClass);
 			messageElement.innerText =  '[ ' + message.content + ' ]' + '\n';
 			mess.classList.add(alignmentClass);
