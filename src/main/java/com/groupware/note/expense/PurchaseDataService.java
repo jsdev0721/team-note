@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.groupware.note.department.DepartmentRepository;
 import com.groupware.note.department.Departments;
 import com.groupware.note.user.UserDetails;
+import com.groupware.note.user.UserDetailsRepository;
 import com.groupware.note.user.UserDetailsService;
 import com.groupware.note.user.UserRepository;
 import com.groupware.note.user.Users;
@@ -33,6 +34,7 @@ public class PurchaseDataService {
 	private final PurchaseRepository pRepo;
 	private final UserDetailsService udService;
 	private final UserRepository uRepo;
+	private final UserDetailsRepository udRepo;
 	private final DepartmentRepository dRepo;
 	
 	@Getter
@@ -46,6 +48,7 @@ public class PurchaseDataService {
 		private Integer totalPrice;
 	}
 	
+	//구매내역 findPurchaseList
 	public List<PData> fpcList(String purchaseType){
 		List<PData> list = new ArrayList<>();
 		if(purchaseType.equals("group")) {
@@ -99,9 +102,40 @@ public class PurchaseDataService {
 		}
 	}
 	
+	public List<PData> findByDateList(List<PData> list, int year, int month){
+		List<PData> dateList = new ArrayList<>();
+		for(PData p : list) {
+			if(p.getYear()==year && p.getMonth()==month) {
+				dateList.add(p);
+			}
+		}
+		return dateList;
+	}
+	
+	public List<PData> findByIdList(List<PData> list, int id, String pt){
+		List<PData> idList = new ArrayList<>();
+		if(pt.equals("group")) {
+			Departments d = this.dRepo.findById(id).get();
+			for(PData p : list) {
+				if(p.getDep().equals(d)) {
+					idList.add(p);
+				}
+			}
+			
+		} else {
+			UserDetails u = this.udRepo.findById(id).get();
+			for(PData p : list) {
+				if(p.getUserDetail().equals(u)) {
+					idList.add(p);
+				}
+			}
+		}
+		
+		return idList;
+	}
 	
 	
-	public List<Purchase> findPurchaseList( int year, int month, int id, String purchaseType){
+	public List<Purchase> findPurchaseDetailList( int year, int month, int id, String purchaseType){
 		List<Purchase> list = new ArrayList<>();
 		LocalDate baseDate = LocalDate.of(year, month, 15);
 		LocalDateTime startDate = baseDate.with(firstDayOfMonth()).atStartOfDay(); // 00:00:00.00000000

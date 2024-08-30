@@ -47,11 +47,19 @@ public class ExpenseController {
 	}
 	
 	@GetMapping("/purchaseList")
-	public String purchaseList(Model model, @RequestParam(value="pt" , defaultValue = "personal") String pt) {
+	public String purchaseList(Model model, @RequestParam(value="year", defaultValue = "0") int year, 
+			@RequestParam(value = "month", defaultValue = "0") int month, @RequestParam(value = "id", defaultValue = "0") int id,  @RequestParam(value="pt" , defaultValue = "personal") String pt) {
 		List<PData> list = new ArrayList<>();
 		list = this.pdService.fpcList(pt);
-		model.addAttribute("purchaseList", list);
 		model.addAttribute("pt", pt);
+		if(month!=0 && year!=0) {
+			model.addAttribute("purchaseList", this.pdService.findByDateList(list, year, month));
+		} else if(id!=0) {
+			model.addAttribute("purchaseList", this.pdService.findByIdList(list, id, pt));
+		} else {
+			model.addAttribute("purchaseList", list);
+		}
+		
 		return "expense/purchaseList";
 	}
 	
@@ -59,7 +67,7 @@ public class ExpenseController {
 	public String purchaseDetail(Model model, @RequestParam(value = "year") int year, 
 			@RequestParam(value = "month") int month, @RequestParam(value = "id") Integer id, @RequestParam(value="pType") String pType ) {
 		List<Purchase> list = new ArrayList<>();
-		list = this.pdService.findPurchaseList(year, month, id, pType);
+		list = this.pdService.findPurchaseDetailList(year, month, id, pType);
 		model.addAttribute("pList", list);
 		model.addAttribute("pType", pType);
 		return "expense/purchaseDetail";
