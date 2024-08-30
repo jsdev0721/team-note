@@ -9,8 +9,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.support.CronExpression;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -209,27 +207,13 @@ public class UserController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/update/{userId}")
 	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName
-			,@RequestParam(value="departmentId")Departments id) {
+			,@RequestParam(value="departmentId")Departments id
+			,@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime updateTime) {
 		Positions positions= this.positionService.findByPositionName(positionName, id);
 		this.positionService.updatePosition(userId, positions);
 		
 		return "redirect:/user/list";
 	}
-	
-//	@PreAuthorize("isAuthenticated()")
-//	@PostMapping("/update/{userId}")
-//	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName
-//			,@RequestParam(value="departmentId")Departments id
-//			, @RequestParam(value = "updateTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime updateTime) {
-//		Positions positions= this.positionService.findByPositionName(positionName, id);
-//		this.positionService.updatePosition(userId, positions);
-//		return "redirect:/user/list";
-//	}
-//	//초 분 시 일 월 요일
-//	@Scheduled
-//	public void updatePosition() {
-//		
-//	}
 	
 	@PostMapping("/list")
 	public String userSearchList(Model model,@Valid SearchListForm searchListForm) {
