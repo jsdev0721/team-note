@@ -26,9 +26,11 @@
 	</form>
 	<p></p>
 	<table>
+		<tr><th>각 부서별 포인트</th></tr>
 		<tr th:each="point : ${DeppList}">
 			<td th:text="${point}"></td>
 		</tr>
+		<tr><td text="  "></td></tr>
 		<tr th:each="d : ${dep}">
 			<td th:text="|현재 ${d.departmentName} 포인트 : ${d.points}|"></td>
 		</tr>
