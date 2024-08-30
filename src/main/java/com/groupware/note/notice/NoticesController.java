@@ -100,13 +100,16 @@ public class NoticesController {
 	@GetMapping("/update/{noticeId}") 
 	public String update(Model model,@PathVariable("noticeId") Integer noticeId,NoticeForm noticeForm,Principal principal) {
 		
-		Notices notices = this.noticesService.getNotice(noticeId);
-		noticeForm.setTitle(notices.getTitle());
-		noticeForm.setContent(notices.getContent());
-		model.addAttribute("notices",notices);
-		
+		Notices notices1 = this.noticesService.getNotice(noticeId);
+		if(notices1.getUser().getUsername().equals(principal.getName())) {
+			Notices notices= this.noticesService.getNotice(noticeId);
+			model.addAttribute("notices",notices);
+			}else {
+				return "redirect:/notices/list";
+				}
 		return "notice/notices_update";
 	}
+	
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/update/{noticeId}")	
@@ -132,7 +135,9 @@ public class NoticesController {
 	}
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/delete/{noticeId}")
-	public String delete(@PathVariable("noticeId") Integer noticeId) {
+	public String delete(@PathVariable("noticeId") Integer noticeId,Principal priclpal) {
+		Notices notices1 =this.noticesService.getNotice(noticeId);
+		if(notices1.getUser().getUsername().equals(priclpal.getName())) {
 		Notices notices =this.noticesService.getNotice(noticeId);
 		List<Files> files = notices.getFileList();
 		if(!files.isEmpty()) {
@@ -143,6 +148,8 @@ public class NoticesController {
 		System.out.println("파일 지워어워워워워워워워워워");
 			}
 		}
+	}else {return "redirect:/notices/list";}
+		
 		return "redirect:/notices/list";
 	}
 	

@@ -119,7 +119,10 @@
 		<a th:href="@{/}"><img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;"></a>
 		
 		<div class="was-validated" id="mailSend">
-			<input type="text" id="email" name="email" class="form-control" placeholder="이메일을 입력해 주세요" required>
+			<div>
+				<i class="bi bi-person-exclamation"></i>
+				<input type="text" id="email" name="email" class="form-control" placeholder="이메일을 입력해 주세요" required>
+			</div>
 			<button type="button" id="sendBtn" class="btn btn-success mt-3" onclick="mailSend()">인증 코드 받기</button>
 		</div>
 		

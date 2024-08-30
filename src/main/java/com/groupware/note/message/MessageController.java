@@ -43,9 +43,6 @@ public class MessageController {
 	@MessageMapping("/message.sendMessage")
 	@SendTo("/topic/messages")
 	public Messages sendMessage(Messages message, Principal principal) {
-		System.out.println("-------------------------------------------------------------------------------");
-		System.out.println(message.getContent());
-		System.out.println(principal.getName());
 		Users sender = this.uService.getUser(principal.getName());
 		Users reseiver = this.uService.getUser(message.getChatRoom().getUser2().getUsername());
 		String content = message.getContent();

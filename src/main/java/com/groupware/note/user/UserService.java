@@ -52,11 +52,7 @@ public class UserService {
 			return new Users();
 		}
 	}
-
-
-
 	
-
 	public Users getUser(Integer userId) {
 		Optional<Users> users = this.userRepository.findById(userId);
 		if(users.isPresent()) {

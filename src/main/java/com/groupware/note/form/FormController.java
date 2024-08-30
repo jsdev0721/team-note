@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
+import com.groupware.note.notice.Notices;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
 
@@ -93,11 +94,15 @@ public class FormController {
 	}
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/update/{formId}")
-	public String update(Model model,@PathVariable("formId") Integer formId
-			,FormsForm formsForm,Principal principal) {
+	public String update(Model model,@PathVariable("formId") Integer formId,FormsForm formsForm,Principal principal) {
+		
+		Forms forms1 = this.formService.getForm(formId);
+		if(forms1.getUser().getUsername().equals(principal.getName())) {
 		Forms forms = this.formService.getForm(formId);
 		model.addAttribute("forms",forms);
-		
+		}else {
+			return "redirect:/notices/list";
+		}
 		return "form/forms_update";
 	}
 	@PreAuthorize("isAuthenticated()")
@@ -124,10 +129,18 @@ public class FormController {
 	}
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/delete/{formId}")
-	public String delete(@PathVariable("formId") Integer formId) {
+	public String delete(@PathVariable("formId") Integer formId,Principal principal) {
+		Forms forms1 = this.formService.getForm(formId);
+		if(forms1.getUser().getUsername().equals(principal.getName())) {
 		Forms forms = this.formService.getForm(formId);
-		this.formService.delete(forms);
-		
+		List<Files> files = forms.getFileList();
+		if(!files.isEmpty()) {
+			for(Files file : files) {
+				this.fileService.delete(file);
+				this.formService.delete(forms);
+			}
+		}
+	}else {return "redirect:/forms/list";}
 		return "redirect:/forms/list";
 	}
 	

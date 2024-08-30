@@ -2,11 +2,15 @@ package com.groupware.note.user;
 
 import java.net.MalformedURLException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.support.CronExpression;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +33,6 @@ import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.form.FormService;
 import com.groupware.note.leave.LeaveService;
-import com.groupware.note.message.MessageService;
 import com.groupware.note.message.chatRoomService;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.position.PositionService;
@@ -213,6 +216,21 @@ public class UserController {
 		return "redirect:/user/list";
 	}
 	
+//	@PreAuthorize("isAuthenticated()")
+//	@PostMapping("/update/{userId}")
+//	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName
+//			,@RequestParam(value="departmentId")Departments id
+//			, @RequestParam(value = "updateTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime updateTime) {
+//		Positions positions= this.positionService.findByPositionName(positionName, id);
+//		this.positionService.updatePosition(userId, positions);
+//		return "redirect:/user/list";
+//	}
+//	//초 분 시 일 월 요일
+//	@Scheduled
+//	public void updatePosition() {
+//		
+//	}
+	
 	@PostMapping("/list")
 	public String userSearchList(Model model,@Valid SearchListForm searchListForm) {
 		List<UserDetails> userList = this.userDetailsService.searchList(searchListForm.getSearchKeyword());
@@ -224,10 +242,11 @@ public class UserController {
 	}
 	
 	@GetMapping("/delete/{userId}")
-	public String userDelete(@PathVariable(value="userId") Integer userId){
+	public String userDelete(@PathVariable(value="userId") Integer userId,Principal principal){
 		
 		Users users =this.userService.getUser(userId);
 		UserDetails userDetails= this.userDetailsService.getUser(userId);
+		if(!users.getUsername().equals(principal.getName())) {
 		try {
 			this.expenseDataService.deleteExpense(userDetails);
 			System.out.println("userExpenseNull완료");
@@ -260,7 +279,10 @@ public class UserController {
 		}catch(DataNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("처리할 데이터가 없습니다");
-		}
+			}
+		}else {return "redirect:/user/list";}
+		System.out.println("내 계정은 삭제할수 없습니다");
+		
 		return "redirect:/user/list";
 	}
 

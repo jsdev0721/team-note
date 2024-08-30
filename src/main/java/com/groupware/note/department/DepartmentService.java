@@ -1,5 +1,6 @@
 package com.groupware.note.department;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -24,7 +25,10 @@ public class DepartmentService {
 	}
 	
 	
-	
+	public List<Departments> findAll(){
+		List<Departments> _dep = this.departmentRepository.findAll();
+		return _dep;
+	}
 	
 	
 	
