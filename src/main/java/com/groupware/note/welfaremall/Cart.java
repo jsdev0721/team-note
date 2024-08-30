@@ -37,4 +37,6 @@ public class Cart {
 	private LocalDateTime addDate;
 	
 	private String type;
+	
+	private String option;
 }

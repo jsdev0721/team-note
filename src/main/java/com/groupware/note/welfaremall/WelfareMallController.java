@@ -3,7 +3,12 @@ package com.groupware.note.welfaremall;
 import java.net.MalformedURLException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +70,17 @@ public class WelfareMallController {
 		return "welfaremall/welfaremallList";
 	}
 	@GetMapping("/create")
-	public String create(WelfareMallForm welfareMallForm) {
+	public String create(Model model , WelfareMallForm welfareMallForm) {
+		model.addAttribute("optionList", null);
+		return "welfaremall/welfaremallCreate";
+	}
+	@PostMapping("/optionInput")
+	public String optionInput(Model model , WelfareMallForm welfareMallForm , @RequestParam(value = "option") String option) {
+		List<String> optionList = welfareMallForm.getOptionList().isEmpty() ? new ArrayList<>() : new ArrayList<>(welfareMallForm.getOptionList());
+		if(!option.isBlank()&&!option.isEmpty()) {
+			optionList.add(0, option);
+		}
+		model.addAttribute("optionList" , optionList.toString().replaceAll("[\\[\\[\\]]",""));
 		return "welfaremall/welfaremallCreate";
 	}
 	@PostMapping("/create")
@@ -74,6 +89,9 @@ public class WelfareMallController {
 			return "welfaremall/welfaremallCreate";
 		}
 		WelfareMall welfareMall = new WelfareMall();
+		if(welfareMallForm.getOptionList()!=null) {
+			welfareMall.setOptionList(welfareMallForm.getOptionList());			
+		}
 		welfareMall.setProductName(welfareMallForm.getProductName());
 		welfareMall.setDescription(welfareMallForm.getDesciption());
 		welfareMall.setPrice(welfareMallForm.getPrice());
@@ -166,14 +184,15 @@ public class WelfareMallController {
 		return "redirect:/welfaremall/list";
 	}
 	@GetMapping("/addCart/{id}")
-	public String addCart(@PathVariable("id")Integer id , Principal principal , @RequestParam("to") String to , @RequestParam("type")String type) {
+	public String addCart(@PathVariable("id")Integer id , Principal principal , @RequestParam("to") String to , @RequestParam("type")String type , @RequestParam(value = "option" , defaultValue = "")String option) {
 		WelfareMall welfareMall = this.welfareMallService.findById(id);
 		Users user = this.userService.getUser(principal.getName());
-		Cart cart = this.cartService.findByProductAndUser(welfareMall, user);
+		Cart cart = this.cartService.findByUserAndProductAndOptionLike(welfareMall, user, option);
 		if(cart.getQuantity()!=null) {
 			cart.setQuantity(cart.getQuantity()+1);
 		}
 		else {
+			cart.setOption(option);
 			cart.setType(welfareMall.getType());
 			cart.setProduct(welfareMall);
 			cart.setUser(user);
