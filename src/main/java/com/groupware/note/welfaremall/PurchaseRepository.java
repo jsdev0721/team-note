@@ -1,5 +1,6 @@
 package com.groupware.note.welfaremall;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +24,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Integer> {
 	List<Purchase> findByPurchaseStatus(String purchaseStatus);
 	List<Purchase> findByPurchaseStatusAndPurchaseTypeAndDepartment(String purchaseStatus, String purchaseType, Departments department);
 	List<Purchase> findByPurchaseStatusAndPurchaseTypeAndUser(String purchaseStatus, String purchaseType, Users user);
+	List<Purchase> findByPurchaseStatusAndPurchaseTypeAndUserAndPurchaseDateBetween(String purchaseStatus, String purchaseType, Users user, LocalDateTime start, LocalDateTime end);
+	List<Purchase> findByPurchaseStatusAndPurchaseTypeAndDepartmentAndPurchaseDateBetween(String purchaseStatus, String purchaseType, Departments department, LocalDateTime start, LocalDateTime end);
 }

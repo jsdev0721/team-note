@@ -1,10 +1,14 @@
 package com.groupware.note.expense;
 
+import java.time.LocalDate;
+import static java.time.temporal.TemporalAdjusters.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.Year;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -54,7 +58,6 @@ public class PurchaseDataService {
 					for(Purchase p : pList) {
 						if(p.getPurchaseDate().getMonthValue()==j && p.getPurchaseDate().getYear()==i) {
 							price = price + p.getTotalPrice();
-							pList.remove(p);
 						}
 					}
 					if(price!=0) {
@@ -88,13 +91,30 @@ public class PurchaseDataService {
 							pd.setYear(i);
 							pd.setMonth(j);
 							list.add(pd);
-							System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 						}
 					}	
 					}
 			}
 			return list;
 		}
+	}
+	
+	
+	
+	public List<Purchase> findPurchaseList( int year, int month, int id, String purchaseType){
+		List<Purchase> list = new ArrayList<>();
+		LocalDate baseDate = LocalDate.of(year, month, 15);
+		LocalDateTime startDate = baseDate.with(firstDayOfMonth()).atStartOfDay(); // 00:00:00.00000000
+	    LocalDateTime endDate = baseDate.with(lastDayOfMonth()).atTime(LocalTime.MAX); // 23:59:59.999999
+		
+	    if(purchaseType.equals("personal")) {
+	    	Users user = this.uRepo.findById(id).get();
+	    	list = this.pRepo.findByPurchaseStatusAndPurchaseTypeAndUserAndPurchaseDateBetween("complete", purchaseType, user, startDate, endDate);
+	    } else if(purchaseType.equals("group")) {
+	    	Departments dep = this.dRepo.findById(id).get();
+	    	list = this.pRepo.findByPurchaseStatusAndPurchaseTypeAndDepartmentAndPurchaseDateBetween("complete", purchaseType, dep, startDate, endDate);
+	    } 
+		return list;
 	}
 
 }

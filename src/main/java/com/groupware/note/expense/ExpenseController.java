@@ -22,6 +22,8 @@ import com.groupware.note.department.Departments;
 import com.groupware.note.expense.PurchaseDataService.PData;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
+import com.groupware.note.user.Users;
+import com.groupware.note.welfaremall.Purchase;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,8 +55,15 @@ public class ExpenseController {
 		return "expense/purchaseList";
 	}
 	
-	
-	
+	@GetMapping("/purchaseDetail")
+	public String purchaseDetail(Model model, @RequestParam(value = "year") int year, 
+			@RequestParam(value = "month") int month, @RequestParam(value = "id") Integer id, @RequestParam(value="pType") String pType ) {
+		List<Purchase> list = new ArrayList<>();
+		list = this.pdService.findPurchaseList(year, month, id, pType);
+		model.addAttribute("pList", list);
+		model.addAttribute("pType", pType);
+		return "expense/purchaseDetail";
+	}
 	
 	
 	@GetMapping("/wellfarePoint")
