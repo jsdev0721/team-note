@@ -21,6 +21,7 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 		.authorizeHttpRequests((authorizeHttpRequest) -> authorizeHttpRequest
+				.requestMatchers("/user/list").hasRole("HR")
 				.requestMatchers("/**").permitAll())
 		.csrf((csrf) -> csrf
 				.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))

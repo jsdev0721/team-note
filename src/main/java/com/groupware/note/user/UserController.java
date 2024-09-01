@@ -25,6 +25,7 @@ import com.groupware.note.approval.ApprovalService;
 import com.groupware.note.attendance.Attendance;
 import com.groupware.note.attendance.AttendanceService;
 import com.groupware.note.calendar.CalendarService;
+import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
 import com.groupware.note.expense.ExpenseDataService;
 import com.groupware.note.files.FileService;
@@ -59,6 +60,7 @@ public class UserController {
 	private final CartService cartService;
 	private final chatRoomService chatRoomService;
 	//private final MessageService messageService;
+	private final DepartmentService departmentsService;
 	
 	@GetMapping("/login")
 	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
@@ -204,12 +206,16 @@ public class UserController {
 	}
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/update/{userId}")
-	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName
-			,@RequestParam(value="departmentId")Departments id
-			,@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime updateTime) {
-		Positions positions= this.positionService.findByPositionName(positionName, id);
-		this.positionService.updatePosition(userId, positions);
+	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName  
+			,@RequestParam(value="departmentId")String departmentName) {
+		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println(userId);
+		System.out.println(positionName);
 		
+		Departments departments=this.departmentsService.findBydepartmentName(departmentName);
+		Positions positions= this.positionService.findByPositionNameAndDepartment(positionName, departments);
+		this.positionService.updatePosition(userId, positions);
+		System.out.println("부서/직급 변경완료");
 		return "redirect:/user/list";
 	}
 	

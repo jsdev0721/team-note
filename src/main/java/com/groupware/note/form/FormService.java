@@ -66,7 +66,7 @@ public class FormService {
 		forms.setCreateDate(LocalDateTime.now());
 		this.formRepository.save(forms);
 	}
-	public void delete(Forms forms) {
+	public void deleteForms(Forms forms) {
 		 this.formRepository.delete(forms);	
 	}
 	public void deleteForm(Users user) {
