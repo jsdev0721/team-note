@@ -209,10 +209,12 @@ public class UserController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/update/{userId}")
 	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName
+			,@RequestParam(value="updateTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime updateTime  
 			,@RequestParam(value="departmentId")Departments id) {
+		
 		Positions positions= this.positionService.findByPositionName(positionName, id);
 		this.positionService.updatePosition(userId, positions);
-		
+		System.out.println("부서/직급 변경완료");
 		return "redirect:/user/list";
 	}
 	

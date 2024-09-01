@@ -100,9 +100,8 @@ public class NoticesController {
 	@GetMapping("/update/{noticeId}") 
 	public String update(Model model,@PathVariable("noticeId") Integer noticeId,NoticeForm noticeForm,Principal principal) {
 		
-		Notices notices1 = this.noticesService.getNotice(noticeId);
-		if(notices1.getUser().getUsername().equals(principal.getName())) {
-			Notices notices= this.noticesService.getNotice(noticeId);
+		Notices notices = this.noticesService.getNotice(noticeId);
+		if(notices.getUser().getUsername().equals(principal.getName())) {
 			model.addAttribute("notices",notices);
 			}else {
 				return "redirect:/notices/list";
@@ -113,13 +112,13 @@ public class NoticesController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/update/{noticeId}")	
-	public String update(Notices notices,@PathVariable("noticeId") Integer noticeId
+	public String update(@PathVariable("noticeId") Integer noticeId
 			,@Valid NoticeForm noticeForm,BindingResult bindingResult,Principal principal) {
 		if(bindingResult.hasErrors()) {
 			
 			return "notice/notices_update";
 		}
-		Notices notices2 = this.noticesService.getNotice(noticeId);
+		Notices notices = this.noticesService.getNotice(noticeId);
 		List<Files> fileList = new ArrayList<>();
 		if(noticeForm.getMultiPartFile()!=null&&!noticeForm.getMultiPartFile().isEmpty()) {
 			for(MultipartFile multipartFile : noticeForm.getMultiPartFile()) {
@@ -136,9 +135,8 @@ public class NoticesController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/delete/{noticeId}")
 	public String delete(@PathVariable("noticeId") Integer noticeId,Principal priclpal) {
-		Notices notices1 =this.noticesService.getNotice(noticeId);
-		if(notices1.getUser().getUsername().equals(priclpal.getName())) {
 		Notices notices =this.noticesService.getNotice(noticeId);
+		if(notices.getUser().getUsername().equals(priclpal.getName())) {
 		List<Files> files = notices.getFileList();
 		if(!files.isEmpty()) {
 			for(Files file : files) {
@@ -149,7 +147,6 @@ public class NoticesController {
 			}
 		}
 	}else {return "redirect:/notices/list";}
-		
 		return "redirect:/notices/list";
 	}
 	

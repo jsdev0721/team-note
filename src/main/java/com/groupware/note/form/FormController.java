@@ -96,12 +96,11 @@ public class FormController {
 	@GetMapping("/update/{formId}")
 	public String update(Model model,@PathVariable("formId") Integer formId,FormsForm formsForm,Principal principal) {
 		
-		Forms forms1 = this.formService.getForm(formId);
-		if(forms1.getUser().getUsername().equals(principal.getName())) {
 		Forms forms = this.formService.getForm(formId);
+		if(forms.getUser().getUsername().equals(principal.getName())) {	
 		model.addAttribute("forms",forms);
 		}else {
-			return "redirect:/notices/list";
+			return "redirect:/forms/list";
 		}
 		return "form/forms_update";
 	}
@@ -113,7 +112,6 @@ public class FormController {
 			return "form/forms_update";
 		}
 		Forms forms = this.formService.getForm(formId);
-		
 		List<Files> fileList = new ArrayList<>();
 		if(formsForm.getMultiPartFile()!=null&&!formsForm.getMultiPartFile().isEmpty()) {
 			for(MultipartFile multipartFile : formsForm.getMultiPartFile()) {
@@ -130,14 +128,13 @@ public class FormController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/delete/{formId}")
 	public String delete(@PathVariable("formId") Integer formId,Principal principal) {
-		Forms forms1 = this.formService.getForm(formId);
-		if(forms1.getUser().getUsername().equals(principal.getName())) {
 		Forms forms = this.formService.getForm(formId);
+		if(forms.getUser().getUsername().equals(principal.getName())) {
 		List<Files> files = forms.getFileList();
 		if(!files.isEmpty()) {
 			for(Files file : files) {
+				this.formService.deleteForms(forms);
 				this.fileService.delete(file);
-				this.formService.delete(forms);
 			}
 		}
 	}else {return "redirect:/forms/list";}

@@ -10,13 +10,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.DataNotFoundException;
 import com.groupware.note.files.FileRepository;
-import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
