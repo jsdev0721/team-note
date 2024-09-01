@@ -224,28 +224,6 @@ public class WelfareMallController {
 	@GetMapping("/viewCart")
 	public String viewCart(Model model , Principal principal , @RequestParam(value = "type" , defaultValue = "personal") String type) {
 		Users user = this.userService.getUser(principal.getName());
-		model.addAttribute("cartList", this.cartService.findByUserAndTypeAndStatus(user, type, "queue"));
-		model.addAttribute("type", type);
-		return "welfaremall/cartList";
-	}
-//	@PostMapping("/viewCart")
-//	public String viewCart(Model model , Principal principal , @RequestParam("productName")String productName , @RequestParam(value = "type" , defaultValue = "personal")String type) {
-//		List<Cart> cartList = new ArrayList<>();
-//		Users user = this.userService.getUser(principal.getName());
-//		for(WelfareMall welfareMall : this.welfareMallService.findByProductNameLike(productName , type)) {
-//			Cart cart = new Cart();
-//			cart = this.cartService.findByProductAndUser(welfareMall, user);
-//			if(cart.getCartId()!=null) {
-//				cartList.add(cart);	
-//			}
-//		}
-//		model.addAttribute("run", true);
-//		model.addAttribute("cartList", cartList);
-//		return "welfaremall/cartList";
-//	}
-	@GetMapping("/purchase")
-	public String purchase(Model model , Principal principal , @RequestParam(value = "type" , defaultValue = "personal")String type) {
-		Users user = this.userService.getUser(principal.getName());
 		List<Cart> cartList = this.cartService.findByUserAndTypeAndStatus(user, type, "queue");
 		model.addAttribute("cartList", cartList);
 		model.addAttribute("type", type);
@@ -265,8 +243,23 @@ public class WelfareMallController {
 		model.addAttribute("run", run);
 		model.addAttribute("totalPrice", sum);
 		model.addAttribute("quantity", quantity);
-		return "welfaremall/purchase";
+		return "welfaremall/cartList";
 	}
+//	@PostMapping("/viewCart")
+//	public String viewCart(Model model , Principal principal , @RequestParam("productName")String productName , @RequestParam(value = "type" , defaultValue = "personal")String type) {
+//		List<Cart> cartList = new ArrayList<>();
+//		Users user = this.userService.getUser(principal.getName());
+//		for(WelfareMall welfareMall : this.welfareMallService.findByProductNameLike(productName , type)) {
+//			Cart cart = new Cart();
+//			cart = this.cartService.findByProductAndUser(welfareMall, user);
+//			if(cart.getCartId()!=null) {
+//				cartList.add(cart);	
+//			}
+//		}
+//		model.addAttribute("run", true);
+//		model.addAttribute("cartList", cartList);
+//		return "welfaremall/cartList";
+//	}
 	@PostMapping("/purchase")
 	public String purchase(Principal principal , @RequestParam(value = "type")String type) {
 		Users user = this.userService.getUser(principal.getName());
@@ -293,16 +286,16 @@ public class WelfareMallController {
 				Departments departmenst = user.getPosition().getDepartment();
 				departmenst.setPoints(calc);
 				this.departmentService.save(departmenst);
-			}		
+			}
 		return "redirect:/welfaremall/viewCart";
 	}
-	@GetMapping("/purchaseRecord")
+	@GetMapping("/purchase")
 	public String purchaseRecord(Model model , Principal principal ,@RequestParam(value = "type" , defaultValue = "personal") String type) {
 		Users user = this.userService.getUser(principal.getName());
 		List<Cart> cartList = this.cartService.findByUserAndTypeAndStatusNotOrderByAddDate(user, type, "queue");
-		model.addAttribute("purchase", cartList);
+		model.addAttribute("cartList", cartList);
 		model.addAttribute("type", type);
-		return "welfaremall/purchaseRecord";
+		return "welfaremall/purchase";
 	}
 	@GetMapping("/cancelPurchase/{id}")
 	public String cancelPurchase(@PathVariable("id")Integer id , Principal principal) {
@@ -334,7 +327,7 @@ public class WelfareMallController {
 				department.setPoints(calc);
 				this.departmentService.save(department);
 			}
-		return "redirect:/welfaremall/list";
+		return "redirect:/welfaremall/purchase";
 	}
 
 }

@@ -46,10 +46,14 @@
 				</tr>
 			</tbody>
 		</table><!-- 카트 리스트 end -->
-		<div>
-			<a th:href="@{|/welfaremall/purchase?type=${type}|}" class="create">
-				<img src="/images/purchase.png" alt="카트">
-			</a>
-		</div>
+			<div> 총 갯수는 [[${quantity}]]개 입니다.</div>
+			<div> 총 결제금액은 [[${totalPrice}]]원 입니다.</div>
+			<form th:action="@{/welfaremall/purchase}" method="post">
+				<input type="hidden" name="type" th:value="${type}"/>
+				<input type="hidden" name="to" value="cart" />
+				<input class="cart" th:unless="${run} and ${!cartList.isEmpty}" type="image" src="/images/cart.png" disabled/>
+				<input class="cart" th:if="${run} and ${!cartList.isEmpty}" type="image" src="/images/cart.png" onclick="if(!confirm('정말로 결제하시겠습니까?')){return false;}" />
+			</form>
+		
 	</div>
 </html>
