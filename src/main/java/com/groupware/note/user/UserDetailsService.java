@@ -106,5 +106,7 @@ public class UserDetailsService {
 		this.userDetailsRepository.save(user);
 
 	}
-	
+	public UserDetails save(UserDetails userDetails) {
+		return this.userDetailsRepository.save(userDetails);
+	}
 }

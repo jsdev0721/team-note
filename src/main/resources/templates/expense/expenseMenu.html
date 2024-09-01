@@ -3,11 +3,33 @@
 		<title>회계</title>
 	</head>
 <div layout:fragment="content" class="container">
+	<p></p>
+	<div style="text-align: center;">
+		<button type="button" class="btn btn-outline-danger" style="width: 300px; height: 500px;" th:onclick="|location.href='@{/expense/list}'|">비용처리 리스트</button>
+		&nbsp;
+		&nbsp;
+		<button type="button" class="btn btn-outline-warning" style="width: 300px; height: 500px;" th:onclick="|location.href='@{/expense/purchaseList}'|">복지몰 구매 리스트</button>
+		&nbsp;
+		&nbsp;
+		<button type="button" class="btn btn-outline-success" style="width: 300px; height: 500px;" th:onclick="|location.href='@{/expense/wellfarePoint}'|">복지포인트 설정</button>
+	</div>
+	<style>
+		.btn-outline-danger {
+			--bs-btn-font-weight: 800;
+			--bs-btn-font-size: 30px;
+			--bs-btn-border-width: 4px;
+		  }
+		.btn-outline-warning {
+			--bs-btn-font-weight: 800;
+			--bs-btn-font-size: 30px;
+			--bs-btn-border-width: 4px;
+		}
+		.btn-outline-success {
+			--bs-btn-font-weight: 800;
+			--bs-btn-font-size: 30px;
+			--bs-btn-border-width: 3px;
+		}
+	</style>
 	
-	<p><a th:href="@{/expense/list}" >비용처리 리스트</a></p>
-	<p></p>
-	<p><a th:href="@{/expense/purchaseList}" >복지몰 구매 리스트</a></p>
-	<p></p>
-	<p><a th:href="@{/expense/wellfarePoint}">복지포인트 입력</a></p>
 </div>
 </html>

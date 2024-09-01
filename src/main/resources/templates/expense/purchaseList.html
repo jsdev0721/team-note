@@ -1,11 +1,79 @@
 <html layout:decorate="~{layout}">
 	<head>
-		<link rel="stylesheet" type="text/css" th:href="@{/expenseList.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/purchaseList.css}">
+		<script>
+			$(function(){
+				var status = $('#pt').val();
+				if(status === "group"){
+					$(".group").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}else {
+					$(".personal").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}
+			});
+		</script>
 		<title>회계</title>
 	</head>
-<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container">
+		
+	<style>
+	    .sc {width: 100%; height: 600px; overflow: auto;  overflow-x: hidden;}
+	</style>
 	
-확인
-
+	<style>
+		.tableWrapper{
+			max-height: 600px;
+			min-height: auto;
+			overflow: auto;
+			overflow-x: hidden;
+		}
+		#purchasel{
+			width: 100%;
+		}
+		#purshasel th {
+			position: sticky;
+			top: 0px;
+		}
+	</style>
+	<p></p>
+	<div style="text-align: center;"><h2>복지몰 구매내역</h2></div>
+	<p></p>
+	<p></p>
+		<div style="text-align: right;">
+			<button type="button" class="btn btn-info" th:onclick="|location.href='@{/expense/menu}'|">회계 메뉴</button>
+		</div>	
+	<p></p>	
+	<div class="list">
+		<input type="text" style="display: none;" th:value="${pt}" id="pt">
+	  	<ul> 
+	    	<li class="page-item"><a class="page-link group" th:href="@{?pt=group}">부서별</a></li>
+	    	<li class="page-item"><a class="page-link personal" th:href="@{?pt=personal}">사원별</a></li>
+	  	</ul>
+	</div>
+	
+	<div class="sc">
+		<table id="purchasel" class="table table-scriped-columns table-hover align-middle">
+			<thead>
+				<tr>
+					<th>날짜</th>
+					<th th:if="${pt=='personal'}">이름</th>
+					<th th:if="${pt=='group'}">부서</th>
+					<th>금액</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${pt=='personal'}" th:each="pd : ${purchaseList}" >
+					<td><a th:href="@{|/expense/purchaseList?year=${pd.year}&month=${pd.month}&pt=personal|}" th:text="|${pd.year}년 ${pd.month}월|"></a></td>
+					<td><a th:href="@{|/expense/purchaseList?id=${pd.userDetail.userId}&pt=personal |}" th:text="${pd.userDetail.name}"></a></td>
+					<td><a th:href="@{|/expense/purchaseDetail?year=${pd.year}&month=${pd.month}&id=${pd.userDetail.userId}&pType=personal|}" th:text="|￦ ${pd.totalPrice}|"></a></td>
+				</tr>
+				
+				<tr th:if="${pt=='group'}" th:each="pd : ${purchaseList}" >
+					<td><a th:href="@{|/expense/purchaseList?year=${pd.year}&month=${pd.month}&pt=group|}" th:text="|${pd.year}년 ${pd.month}월|"></a></td>
+					<td><a th:href="@{|/expense/purchaseList?id=${pd.dep.departmentId}&pt=group |}" th:text="${pd.dep.departmentName}"></a></td>
+					<td><a th:href="@{|/expense/purchaseDetail?year=${pd.year}&month=${pd.month}&id=${pd.dep.departmentId}&pType=personal|}" th:text="|￦ ${pd.totalPrice}|"></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
 </html>

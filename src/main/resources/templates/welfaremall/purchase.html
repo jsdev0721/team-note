@@ -1,4 +1,4 @@
-<html layout:decorate="~{layout}">
+<div layout:decorate="~{layout}">
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/approvalList.css}">
 		<script>
@@ -25,26 +25,30 @@
 		<table class="table table-scriped-columns table-hover align-middle">
 			<thead>
 				<tr>
-					<th>제목</th>
+					<th>제품</th>
+					<th>옵션</th>
 					<th>가격</th>
 					<th>수량</th>
 					<th>추가날짜</th>
 				</tr>
 			</thead>
-		<tbody>
-			<tr th:each="cart : ${cartList}">
-				<td><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
-				<td th:text="${cart.point}"></td>
-				<td th:text="${cart.quantity}"></td>
-				<td th:text="${#temporals.format(cart.addDate,'MM.dd HH:mm')}"></td>
-			</tr>
-		</tbody>
-	</table><!-- 카트 리스트 end -->
-	<div> 총 결제금액은 [[${purchase.totalPrice}]]원 입니다.</div>
-	<form th:action="@{|/welfaremall/purchase/${purchase.purchaseId}|}" method="post">
-		<input type="hidden" name="type" th:value="${type}"/>
-		<input th:unless="${run}" type="submit" value="결제하기" disabled/>
-		<input th:if="${run}" type="submit" value="결제하기" />
-	</form>
+			<tbody>
+				<tr th:each="cart : ${cartList}">
+					<td><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
+					<td th:text="${cart.option}"></td>
+					<td th:text="${cart.point}"></td>
+					<td th:text="${cart.quantity}"></td>
+					<td th:text="${#temporals.format(cart.addDate,'MM.dd HH:mm')}"></td>
+				</tr>
+			</tbody>
+		</table><!-- 카트 리스트 end -->
+		<div> 총 갯수는 [[${quantity}]]개 입니다.</div>
+		<div> 총 결제금액은 [[${totalPrice}]]원 입니다.</div>
+			<form th:action="@{/welfaremall/purchase}" method="post">
+				<input type="hidden" name="type" th:value="${type}"/>
+				<input th:unless="${run} and ${!cartList.isEmpty}" type="submit" value="결제하기" disabled/>
+				<input th:if="${run} and ${!cartList.isEmpty}" type="submit" value="결제하기" />
+			</form>
+		
 	</div>
 </html>

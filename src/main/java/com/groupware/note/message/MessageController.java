@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.groupware.note.message.MessageService.UserListForDep;
 import com.groupware.note.user.UserDetails;
 import com.groupware.note.user.UserDetailsService;
 import com.groupware.note.user.UserService;
@@ -31,11 +32,15 @@ public class MessageController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/message/list")
 	public String get(Model model, Principal principal) {
-		List<UserDetails> nameList = this.udService.userfindByAll();
-		UserDetails acessUser = this.udService.findByUser(this.uService.getUser(principal.getName()));
-		nameList.remove(acessUser);
-		model.addAttribute("sessionName", acessUser);
-		model.addAttribute("nameList", nameList);
+		List<UserListForDep> depList = this.mService.messageListForDep(model, principal);
+		model.addAttribute("depList", depList);
+		
+		
+//		List<UserDetails> nameList = this.udService.userfindByAll();
+//		UserDetails acessUser = this.udService.findByUser(this.uService.getUser(principal.getName()));
+//		nameList.remove(acessUser);
+//		
+//		model.addAttribute("nameList", nameList);
 		return "message";
 	}
 	

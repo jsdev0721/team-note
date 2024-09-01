@@ -31,9 +31,9 @@
 			</thead>
 			<tbody>
 				<tr th:each="list : ${purchase}">
-					<td th:text="${#temporals.format(list.purchaseDate,'yyyy-MM-dd HH:mm:ss')}"></td>
-					<td th:text="${list.purchaseStatus}"></td>
-					<td><a th:if="${list.purchaseStatus}!='complete'" th:href="@{|/welfaremall/cancelPurchase/${list.purchaseId}|}" type="button" class="btn btn-danger btn-sm" onclick="if(!confirm('정말로 취소하시겠습니까?')){return false;}">x</a></td>
+					<td th:text="${#temporals.format(list.addDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+					<td th:text="${list.status}"></td>
+					<td><a th:if="${list.status}!='complete'" th:href="@{|/welfaremall/cancelPurchase/${list.cartId}|}" type="button" class="btn btn-danger btn-sm" onclick="if(!confirm('정말로 취소하시겠습니까?')){return false;}">x</a></td>
 					
 				</tr>
 			</tbody>

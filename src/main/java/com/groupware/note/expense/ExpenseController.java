@@ -3,9 +3,7 @@ package com.groupware.note.expense;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.groupware.note.department.DepartmentRepository;
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
-import com.groupware.note.welfaremall.Purchase;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,22 +36,40 @@ public class ExpenseController {
 	private final WellfareInputService wfiService;
 	private final DepartmentService dService;
 	
+
+	
 	@GetMapping("/menu")
 	public String expenseMenu() {
 		return "expense/expenseMenu";
 	}
 	
-	@GetMapping("/purchaseList")
-	public String purchaseList(Model model, @RequestParam(value="pt" , defaultValue = "") String pt) {
-		List<Purchase> list = new ArrayList<>();
-		if(!pt.equals("")) {
-			list= this.pdService.ListByType(pt);
-		}else {
-			list = this.pdService.basicList();
-		}
-		model.addAttribute("purchaseList", list);
-		return "expense/purchaseList";
-	}
+//	@GetMapping("/purchaseList")
+//	public String purchaseList(Model model, @RequestParam(value="year", defaultValue = "0") int year, 
+//			@RequestParam(value = "month", defaultValue = "0") int month, @RequestParam(value = "id", defaultValue = "0") int id,  @RequestParam(value="pt" , defaultValue = "personal") String pt) {
+//		List<PData> list = new ArrayList<>();
+//		list = this.pdService.fpcList(pt);
+//		model.addAttribute("pt", pt);
+//		if(month!=0 && year!=0) {
+//			model.addAttribute("purchaseList", this.pdService.findByDateList(list, year, month));
+//		} else if(id!=0) {
+//			model.addAttribute("purchaseList", this.pdService.findByIdList(list, id, pt));
+//		} else {
+//			model.addAttribute("purchaseList", list);
+//		}
+//		
+//		return "expense/purchaseList";
+//	}
+//	
+//	@GetMapping("/purchaseDetail")
+//	public String purchaseDetail(Model model, @RequestParam(value = "year") int year, 
+//			@RequestParam(value = "month") int month, @RequestParam(value = "id") Integer id, @RequestParam(value="pType") String pType ) {
+//		List<Purchase> list = new ArrayList<>();
+//		list = this.pdService.findPurchaseDetailList(year, month, id, pType);
+//		model.addAttribute("pList", list);
+//		model.addAttribute("pType", pType);
+//		return "expense/purchaseDetail";
+//	}
+	
 	
 	@GetMapping("/wellfarePoint")
 	public String wellfarepointInput(Model model, PointInputForm pointInputForm) {
@@ -72,11 +86,9 @@ public class ExpenseController {
 	@PostMapping("/wellfarePoint")
 	public String wellfarepointInput(@Valid PointInputForm pointInputForm, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {
-			System.out.println("=======================================================");
 			return "expense/wellfarepoint";
 		}
 		this.wfiService.updatePoint(pointInputForm.getDepPointPer(), pointInputForm.getDepPointPlus(), pointInputForm.getIndividualPoint());
-		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		return "redirect:/expense/wellfarePoint";
 	}
 	

@@ -91,10 +91,6 @@ class NoteApplicationTests {
 		wf.setDepPointPer((long) 100);
 		wf.setDepPointPlus((long) 100);
 		wf.setIndividualPoint((long) 100);
-		wf.setDepPointThisDay((long) 0);
-		wf.setDepPointNext((long) 0 );
-		wf.setIndPointThisDay((long) 0 );
-		wf.setIndPointNext((long) 0 );
 		wfpi.save(wf);
 		
 //		Files _file = new Files();

@@ -32,7 +32,11 @@
 	<div style="text-align: center;"><h2>비용처리 목록</h2></div>
 	
 	<p></p>
+	<div style="text-align: right;">
+		<button type="button" class="btn btn-info" th:onclick="|location.href='@{/expense/menu}'|">회계 메뉴</button>
+	</div>
 	
+	<p></p>		
 	<div id="search-form">
 		<form th:action = "@{/expense/list}" method = "post" class="left">
 			<div class = "mb-3" align="center">
@@ -61,7 +65,7 @@
 	</div>
 	
 	<p></p>
-	<!--scrolltbody를 table class에 입력-->
+	
 	
 	<div class="sc">
 <table id = "expensel" class = "table">
@@ -160,7 +164,6 @@
     </div>
   </div>
 </div>	
-
 <!--dateSetModal_end-->
 <!--receiptModal-->
 

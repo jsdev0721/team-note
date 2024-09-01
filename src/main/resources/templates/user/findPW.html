@@ -4,50 +4,53 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" type="text/css" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/find.css}">
 		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
 		<script th:src="@{/bootstrap.min.js}"></script>
 		<script th:src="@{/show_password.js}"></script>
 		<title>비밀번호 찾기</title>
 	</head>
 	<body class="container">
-		<a th:href="@{/}"><img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;"></a>
-		<form th:action="@{/user/find/pw}" method="post" class="was-validated" th:if="${#bools.isFalse(check)}">
-			<input type="text" id="username" name="username" class="form-control" placeholder="아이디를 입력해 주세요" required>
-			
-			<button type="submit" class="btn btn-success mt-3">비밀번호 찾기</button>
+		<a th:href="@{/}" class="logo"><img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;"></a>
+		<form th:action="@{/user/find/pw}" method="post" id="findPW" class="was-validated" th:if="${#bools.isFalse(check)}">
+			<div class="input">
+				<i class="bi bi-person-exclamation"></i>
+				<input type="text" id="username" name="username" class="form-control" placeholder="아이디를 입력해 주세요" required>
+			</div>
+			<button type="submit" class="btn">비밀번호 찾기</button>
 		</form>
 		
 		<!-- 아이디가 존재할 때 -->
 		<div th:if="${#bools.isTrue(check)}">
-			<form th:action="@{/user/change/pw}" th:object="${userPasswordForm}" method="post">
+			<form th:action="@{/user/change/pw}" id="setting-form" th:object="${userPasswordForm}" method="post">
 				<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 				
 				<input type="hidden" th:field="*{username}" th:value="${users.username}">
-				<div>					
+				<div class="setPW">
 					<label for="password" class="form-label">비밀번호 재설정</label>
 					<div class="input password" style="position: relative;">
-						<div>
-							<i class="bi bi-person-lock"></i>
-							<input type="password" id="password" th:field="*{password}" class="form-control" placeholder="새로운 비밀번호를 입력해 주세요.">
-						</div>
-						<div class="eyes" style="position: absolute;right: 10px;top: 50%;transform: translateY(-50%);cursor: pointer;">
+						<i class="bi bi-person-lock"></i>
+						<input type="password" id="password" th:field="*{password}" class="form-control" placeholder="새로운 비밀번호를 입력해 주세요.">
+						<div class="eyes" style="position: absolute;right: 40px;top: 50%;transform: translateY(-50%);cursor: pointer;">
 							<i class="bi bi-eye-slash"></i>
 						</div>
 					</div>
 				</div>
 				
-				<div class="mt-3">					
+				<div class="setPW">					
 					<label for="passwordCheck" class="form-label">비밀번호 확인</label>
 					<div class="input passwordCheck" style="position: relative;">
-						<input type="password" id="passwordCheck" th:field="*{passwordCheck}" class="form-control" placeholder="새로운 비밀번호를 한 번 더 입력해 주세요.">
-						<div class="eyesCheck" style="position: absolute;right: 10px;top: 50%;transform: translateY(-50%);cursor: pointer;">
+						<i class="bi bi-check-circle"></i>
+						<input type="password" id="passwordCheck" th:field="*{passwordCheck}" class="form-control" placeholder="비밀번호를 한 번 더 입력해 주세요.">
+						<div class="eyesCheck" style="position: absolute;right: 40px;top: 50%;transform: translateY(-50%);cursor: pointer;">
 							<i class="bi bi-eye-slash"></i>
 						</div>
 					</div>
 				</div>
 				
-				<button type="submit" class="btn btn-success mt-3">비밀번호 변경</button>
+				<button type="submit" class="btn">비밀번호 변경</button>
 			</form>
 		</div>
 		<!-- 아이디가 존재할 때 -->
