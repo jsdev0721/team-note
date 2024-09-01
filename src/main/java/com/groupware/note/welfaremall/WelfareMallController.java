@@ -42,8 +42,8 @@ public class WelfareMallController {
 	
 	public boolean checkProduct(List<Cart> cartList , Cart product) {
 		for(Cart cart : cartList) {
-			if(cart==product) {
-				cart.setQuantity(cart.getQuantity()+1);
+			if(cart.getProduct()==product.getProduct()) {
+				cart.setQuantity(cart.getQuantity()+product.getQuantity());
 				this.cartService.save(cart);
 				this.cartService.delete(product);
 				return true;
@@ -281,7 +281,7 @@ public class WelfareMallController {
 					cart.setStatus("process");
 					this.cartService.save(cart);
 				}
-				long calc = user.getPosition().getDepartment().getPoints()-sum;
+				long calc = userDetail.getPoints()-sum;
 				userDetail.setPoints(calc);
 				this.userDetailsService.save(userDetail);
 			}else if(user.getPosition().getDepartment().getPoints()>=sum&&type.equals("group")) {
@@ -309,13 +309,18 @@ public class WelfareMallController {
 		Users user = this.userService.getUser(principal.getName());
 		Cart product = this.cartService.findById(id);
 		if(product.getStatus().equals("complete")) {
-			return "redirect:/welfaremall/list";
+			return String.format("redirect:/welfaremall/purchaseRecord?type=%s", product.getType());
 		}
 		List<Cart> cartList = this.cartService.findByUserAndTypeAndStatus(user, product.getType(), "queue");
-		for(Cart cart : cartList) {
-			if(!checkProduct(cartList, product)) {
-				product.setStatus("queue");
-				this.cartService.save(product);
+		if(cartList.isEmpty()) {
+			product.setStatus("queue");
+			this.cartService.save(product);
+		}else {
+			for(Cart cart : cartList) {
+				if(!checkProduct(cartList, product)) {
+					product.setStatus("queue");
+					this.cartService.save(product);
+				}
 			}
 		}
 			if(product.getType().equals("personal")) {
