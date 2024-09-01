@@ -28,7 +28,7 @@
 					<th>제품</th>
 					<th>옵션</th>
 					<th>가격</th>
-					<th>수량</th>
+					<th colspan="2">수량</th>
 					<th>추가날짜</th>
 				</tr>
 			</thead>
@@ -38,17 +38,10 @@
 					<td th:text="${cart.option}"></td>
 					<td th:text="${cart.point}"></td>
 					<td th:text="${cart.quantity}"></td>
+					<td><a th:if="${cart.status}!='complete'" th:href="@{|/welfaremall/cancelPurchase/${cart.cartId}|}" type="button" class="btn btn-danger btn-sm" onclick="if(!confirm('정말로 취소하시겠습니까?')){return false;}">x</a></td>
 					<td th:text="${#temporals.format(cart.addDate,'MM.dd HH:mm')}"></td>
 				</tr>
 			</tbody>
 		</table><!-- 카트 리스트 end -->
-		<div> 총 갯수는 [[${quantity}]]개 입니다.</div>
-		<div> 총 결제금액은 [[${totalPrice}]]원 입니다.</div>
-			<form th:action="@{/welfaremall/purchase}" method="post">
-				<input type="hidden" name="type" th:value="${type}"/>
-				<input th:unless="${run} and ${!cartList.isEmpty}" type="submit" value="결제하기" disabled/>
-				<input th:if="${run} and ${!cartList.isEmpty}" type="submit" value="결제하기" />
-			</form>
-		
 	</div>
 </html>
