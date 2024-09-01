@@ -39,4 +39,6 @@ public class Cart {
 	private String type;
 	
 	private String option;
+	
+	private String status;
 }

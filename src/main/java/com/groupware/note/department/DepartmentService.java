@@ -30,6 +30,7 @@ public class DepartmentService {
 		return _dep;
 	}
 	
-	
-	
+	public Departments save(Departments departments) {
+		return this.departmentRepository.save(departments);
+	}
 }

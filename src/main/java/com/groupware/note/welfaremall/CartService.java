@@ -49,9 +49,18 @@ public class CartService {
 				}
 			}else {throw new DataNotFoundException("데이터가 없습니다");}
 	}
-	public Cart findByUserAndProductAndOptionLike(WelfareMall product , Users user , String option) {
-		Optional<Cart> _cart = this.cartRepository.findByUserAndProductAndOptionLike(user, product, option);
+	public Cart findByUserAndProductAndStatusAndOptionLike(WelfareMall product , Users user , String status , String option) {
+		Optional<Cart> _cart = this.cartRepository.findByUserAndProductAndStatusAndOptionLike(user, product, status , option);
 		return _cart.isEmpty() ? new Cart() : _cart.get();
 	}
+	public List<Cart> findByUserAndTypeAndStatus(Users user , String type , String status) {
+		return this.cartRepository.findByUserAndTypeAndStatus(user, type, status);
+	}
 	
+	public List<Cart> findByUserAndTypeAndStatusNotOrderByAddDate(Users user , String type , String status) {
+		return this.cartRepository.findByUserAndTypeAndStatusNotOrderByAddDate(user, type, status);
+	}
+	public List<Cart> findByUserAndTypeAndStatusAndAddDate(Users user , String type , String status , LocalDateTime addDate) {
+		return this.cartRepository.findByUserAndTypeAndStatusAndAddDate(user, type, status, addDate);
+	}
 }

@@ -36,7 +36,6 @@ import com.groupware.note.notice.NoticesService;
 import com.groupware.note.position.PositionService;
 import com.groupware.note.position.Positions;
 import com.groupware.note.welfaremall.CartService;
-import com.groupware.note.welfaremall.PurchaseService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +56,6 @@ public class UserController {
 	private final CalendarService calendarService;
 	private final ExpenseDataService expenseDataService;
 	private final LeaveService leaveService;
-	private final PurchaseService purchaseService;
 	private final CartService cartService;
 	private final chatRoomService chatRoomService;
 	//private final MessageService messageService;
@@ -246,8 +244,6 @@ public class UserController {
 			System.out.println("userapprovalNull완료");
 			this.leaveService.deleteLeave(users);
 			System.out.println("userLeavNull완료");
-			this.purchaseService.deletePurchase(users);
-			System.out.println("userPurchaseNull완료");
 			this.cartService.deleteCart(users);
 			System.out.println("userCartNull완료");
 			//this.messageService.deleteMessage(users);
@@ -269,5 +265,5 @@ public class UserController {
 		
 		return "redirect:/user/list";
 	}
-
+	
 }
