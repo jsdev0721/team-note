@@ -1,17 +1,25 @@
 package com.groupware.note.message;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
-import com.groupware.note.DataNotFoundException;
+import com.groupware.note.department.DepartmentRepository;
+import com.groupware.note.department.Departments;
+import com.groupware.note.user.UserDetails;
+import com.groupware.note.user.UserDetailsRepository;
+import com.groupware.note.user.UserRepository;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +27,39 @@ public class MessageService {
 	private final MessageRepository mRepo;
 	private final ChatRoomRepository crRepo;
 	private final UserService uService;
+	private final DepartmentRepository dRepo;
+	private final UserDetailsRepository udRepo;
+	private final UserRepository uRepo;
+	
+	@Getter
+	@Setter
+	public class UserListForDep {
+		private Departments dep;
+		private List<UserDetails> udList;
+		
+	}
+	
+	
+	public List<UserListForDep> messageListForDep(Model model, Principal principal) {
+		List<UserListForDep> userListForDep = new ArrayList<>();
+		for(Departments d : this.dRepo.findAll()) {
+			List<UserDetails> udList = new ArrayList<>();
+			udList = this.udRepo.findByDepOrderByPositionAndName(d);
+			UserDetails acessUser = this.udRepo.findByUser(this.uRepo.findByUsername(principal.getName()).get()).get();
+			model.addAttribute("sessionName", acessUser);
+			if(acessUser.getUser().getPosition().getDepartment().equals(d)) {
+				udList.remove(acessUser);
+			}
+			UserListForDep ulfd = new UserListForDep();
+			ulfd.setDep(d);
+			ulfd.setUdList(udList);
+			userListForDep.add(ulfd);
+		}
+		
+		return userListForDep;
+	}
+	
+	
 	
 	//대화방 생성
 	private ChatRooms createChatRoom(Users user1, Users user2) {

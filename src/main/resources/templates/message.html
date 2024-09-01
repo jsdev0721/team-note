@@ -9,6 +9,7 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 		<!--Bootstrap js-->
 		<script th:src="@{/bootstrap.min.js}"></script>
+		<link rel="stylesheet" type="text/css" th:href="@{/message.css}">
 		<style>
 				#messages {
 					margin: auto;
@@ -22,52 +23,43 @@
 
 	</head>
 	
-	<body onload="noread()">
-			<div class="container my-3" style = "width: 600px;">
-			    <div class="row justify-content-center">
-			        <div class="col-2" style = "width: 200px;">
+	<body>
 
-			            <h4><div th:text="|${sessionName.name}의 메신저|"></div></h4>
-			            <hr>
-			            <table class="table table-striped">
-			                <thead class="table-primary">
-			                    <tr>
-			                        <th>#</th>
-			                        <th>유저목록</th>
-			                    </tr>
-			                </thead>
-			                <tbody>
-			                    <tr th:each="user, loop : ${nameList}">
-			                        <td th:text="${loop.index} + 1"></td>
-			                        <td><a href="#" th:text="${user.name}" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a>
-									</td>
-									
-			                    </tr>
-			                </tbody>
-			            </table>
-			        </div>
-			        <div class="col-3" style = "width: 400px;">
-
-			            <div id="messageRoom" class="d-none">
-							<h4><div id="test"></div></h4>
-							<hr>
-							<!--대화 입력-->
-			                <div id="messages" style="height: 350px; overflow-y: auto"></div>
-							
-							<div class="row justify-content-center my-3">
-								<div class="col-9">
-			                	<input class="form-control" type="text" id="messageInput" placeholder="메시지를 입력하세요">
-								</div>
-								<div class="col">
-								<button class="btn btn-primary" id="enterkey" onclick="sendMessage()">전송</button>
-								</div>
-							</div>
-			            </div>
-
-						
-			        </div>
-			    </div>
+    <div class="col-2" style = "width: 200px;">
+        <h4><div th:text="|${sessionName.name}의 메신저|"></div></h4>
+        <hr>
+		<ui class="mainMenu">
+			<div th:each="dep : ${depList}">
+			<li class="item" th:id="@{|li/${dep.dep.departmentName}|}">
+				<a th:href="@{|#li/${dep.dep.departmentName}|}" class="btn btn-a" th:text="${dep.dep.departmentName}"></a>
+				<div class="subMenu" th:each="user : ${dep.udList}">
+					<a href="#" th:text="|${user.user.position.positionName} ${user.name}|" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a>
+				</div>
+			</li>
 			</div>
+		</ui>
+    </div>
+	
+	<div class="col-3" style = "width: 400px;">
+	    <div id="messageRoom" class="d-none">
+			<h4><div id="test"></div></h4>
+			<hr>
+			<!--대화 입력-->
+	        <div id="messages" style="height: 350px; overflow-y: auto"></div>
+			
+			<div class="row justify-content-center my-3">
+				<div class="col-9">
+	        	<input class="form-control" type="text" id="messageInput" placeholder="메시지를 입력하세요">
+				</div>
+				<div class="col">
+				<button class="btn btn-primary" id="enterkey" onclick="sendMessage()">전송</button>
+				</div>
+			</div>
+	    </div>
+
+		
+    </div>
+
 
 	</body>
 	<script>
