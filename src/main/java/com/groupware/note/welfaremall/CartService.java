@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.groupware.note.DataNotFoundException;
@@ -49,6 +50,9 @@ public class CartService {
 				}
 			}else {throw new DataNotFoundException("데이터가 없습니다");}
 	}
+	public List<Cart> findAll() {
+		return this.cartRepository.findAll();
+	}
 	public Cart findByUserAndProductAndStatusAndOptionLike(WelfareMall product , Users user , String status , String option) {
 		Optional<Cart> _cart = this.cartRepository.findByUserAndProductAndStatusAndOptionLike(user, product, status , option);
 		return _cart.isEmpty() ? new Cart() : _cart.get();
@@ -62,5 +66,15 @@ public class CartService {
 	}
 	public List<Cart> findByUserAndTypeAndStatusAndAddDate(Users user , String type , String status , LocalDateTime addDate) {
 		return this.cartRepository.findByUserAndTypeAndStatusAndAddDate(user, type, status, addDate);
+	}
+	@Scheduled(cron = "0 0 0 1 * *")
+	public void updateStatus() {
+		List<Cart> cartList = findAll();
+		for(Cart cart : cartList) {
+			if(cart.getStatus().equals("process")) {
+				cart.setStatus("complete");
+				this.cartRepository.save(cart);
+			}
+		}
 	}
 }
