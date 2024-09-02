@@ -1,4 +1,4 @@
-package com.groupware.note.leave;
+package com.groupware.note.leaves;
 
 import java.time.LocalDate;
 import java.util.List;

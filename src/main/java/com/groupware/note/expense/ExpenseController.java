@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
+import com.groupware.note.expense.PurchaseDataService.PData;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
+import com.groupware.note.user.UserDetails;
+import com.groupware.note.welfaremall.Cart;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,32 +46,33 @@ public class ExpenseController {
 		return "expense/expenseMenu";
 	}
 	
-//	@GetMapping("/purchaseList")
-//	public String purchaseList(Model model, @RequestParam(value="year", defaultValue = "0") int year, 
-//			@RequestParam(value = "month", defaultValue = "0") int month, @RequestParam(value = "id", defaultValue = "0") int id,  @RequestParam(value="pt" , defaultValue = "personal") String pt) {
-//		List<PData> list = new ArrayList<>();
-//		list = this.pdService.fpcList(pt);
-//		model.addAttribute("pt", pt);
-//		if(month!=0 && year!=0) {
-//			model.addAttribute("purchaseList", this.pdService.findByDateList(list, year, month));
-//		} else if(id!=0) {
-//			model.addAttribute("purchaseList", this.pdService.findByIdList(list, id, pt));
-//		} else {
-//			model.addAttribute("purchaseList", list);
-//		}
-//		
-//		return "expense/purchaseList";
-//	}
-//	
-//	@GetMapping("/purchaseDetail")
-//	public String purchaseDetail(Model model, @RequestParam(value = "year") int year, 
-//			@RequestParam(value = "month") int month, @RequestParam(value = "id") Integer id, @RequestParam(value="pType") String pType ) {
-//		List<Purchase> list = new ArrayList<>();
-//		list = this.pdService.findPurchaseDetailList(year, month, id, pType);
-//		model.addAttribute("pList", list);
-//		model.addAttribute("pType", pType);
-//		return "expense/purchaseDetail";
-//	}
+	@GetMapping("/purchaseList")
+	public String purchaseList(Model model, @RequestParam(value="year", defaultValue = "0") int year, 
+			@RequestParam(value = "month", defaultValue = "0") int month, @RequestParam(value = "id", defaultValue = "0") int id,  @RequestParam(value="pt" , defaultValue = "personal") String pt) {
+		List<PData> list = new ArrayList<>();
+		list = this.pdService.fpcList(pt);
+		model.addAttribute("pt", pt);
+		if(month!=0 && year!=0) {
+			model.addAttribute("purchaseList", this.pdService.findByDateList(list, year, month));
+		} else if(id!=0) {
+			model.addAttribute("purchaseList", this.pdService.findByIdList(list, id, pt));
+		} else {
+			model.addAttribute("purchaseList", list);
+		}
+		
+		return "expense/purchaseList";
+	}
+	
+	@GetMapping("/purchaseDetail")
+	public String purchaseDetail(Model model, @RequestParam(value = "year") int year, 
+			@RequestParam(value = "month") int month, @RequestParam(value = "id") Integer id, @RequestParam(value="pType") String pType ) {
+		List<Cart> list = new ArrayList<>();
+		list = this.pdService.findPurchaseDetailList(model, year, month, id, pType);
+		model.addAttribute("pList", list);
+		model.addAttribute("pType", pType);
+		
+		return "expense/purchaseDetail";
+	}
 	
 	
 	@GetMapping("/wellfarePoint")

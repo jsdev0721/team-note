@@ -189,7 +189,7 @@ public class WelfareMallController {
 			cart.setQuantity(cart.getQuantity()+1);
 		}
 		else {
-			cart.setOption(option);
+			cart.setProductOption(option);
 			cart.setType(welfareMall.getType());
 			cart.setProduct(welfareMall);
 			cart.setUser(user);

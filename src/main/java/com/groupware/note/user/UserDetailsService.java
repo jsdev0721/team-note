@@ -24,7 +24,7 @@ public class UserDetailsService {
 		userDetails.setName(name);
 		userDetails.setBirthdate(brithdate);
 		userDetails.setEmail(email);
-		userDetails.setLeave(leave);
+		userDetails.setLeaves(leave);
 		this.userDetailsRepository.save(userDetails);
 	}
 	
@@ -32,14 +32,14 @@ public class UserDetailsService {
 	public void updateLeave() { //매년 1월 1일에 업데이트
 		List<UserDetails> userDetails = this.userDetailsRepository.findAll();
 		for(UserDetails user : userDetails) {
-			user.setLeave(15);
+			user.setLeaves(15);
 			this.userDetailsRepository.save(user);
 		}
 	}
 	
 	public void minusLeave(UserDetails user, Integer leaveDate) {
-		Integer leave = user.getLeave() - (leaveDate+1);
-		user.setLeave(leave);
+		Integer leave = user.getLeaves() - (leaveDate+1);
+		user.setLeaves(leave);
 		this.userDetailsRepository.save(user);
 	}
 	

@@ -5,23 +5,58 @@
 		<title>회계</title>
 	</head>
 	<div layout:fragment="content" class="container">
+		
+		<style>
+		    .sc {width: 100%; height: 600px; overflow: auto;  overflow-x: hidden;}
+		</style>
+		
+		<style>
+			.tableWrapper{
+				max-height: 600px;
+				min-height: auto;
+				overflow: auto;
+				overflow-x: hidden;
+			}
+			#purchasel{
+				width: 100%;
+				border: 0px;
+			}
+			
+			#purchasel th {
+				position: sticky;
+				top: 0px;
+			}
+		</style>
+		
 	<p></p>
 	<div style="text-align: center;"><h2>구매내역 상세보기</h2></div>
 	<p></p>
-	
-	
-	
-	개인
-	목록 : 이름, 총 구매금액, 연/월
-	상세보기
-	기준 : 이름, 날짜.
-	이름, 부서, 구매목록과 내용, 구매금액, 날짜
-
-
-	부서
-	목록: 부서명, 구매금액, 연/월
-	상세보기
-	기준: 부서, 날짜
-	구매목록과 내용, 구매금액, 날짜
+	<h3><div th:text="${titleName}"></div></h3>
+	<div th:if="${pType}=='personal'" th:text="${details}"></div>
+	<p></p>
+	<div class="sc">
+	<table id="purchasel">
+		<thead>
+			<tr>
+				<th>날짜</th>
+				<th>이름</th>
+				<th>옵션</th>
+				<th>갯수</th>
+				<th>금액</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="pData : ${pList}">
+				<td th:text="${#temporals.format(pData.addDate, 'yyyy-MM-dd')}"></td>
+				<td th:text="${pData.product.productName}"></td>
+				<td th:text="${pData.option}"></td>
+				<td th:text="${pData.quantity}"></td>
+				<td th:text="${'₩' + #numbers.formatInteger((pData.point * pData.quantity), 3, 'COMMA')}"></td>
+				
+			</tr>
+		</tbody>
+	</table>
+	</div>
 </div>
 </html>

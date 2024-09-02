@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import com.groupware.note.user.Users;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +33,7 @@ public class Messages {
 	private Users sender;
 	
 	private String content;
-	
+	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime sendTime;
 	
 	@ColumnDefault("0")

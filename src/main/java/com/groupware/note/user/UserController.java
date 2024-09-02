@@ -31,7 +31,7 @@ import com.groupware.note.expense.ExpenseDataService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.form.FormService;
-import com.groupware.note.leave.LeaveService;
+import com.groupware.note.leaves.LeaveService;
 import com.groupware.note.message.chatRoomService;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.position.PositionService;

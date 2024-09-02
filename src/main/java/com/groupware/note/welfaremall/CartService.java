@@ -53,8 +53,8 @@ public class CartService {
 	public List<Cart> findAll() {
 		return this.cartRepository.findAll();
 	}
-	public Cart findByUserAndProductAndStatusAndOptionLike(WelfareMall product , Users user , String status , String option) {
-		Optional<Cart> _cart = this.cartRepository.findByUserAndProductAndStatusAndOptionLike(user, product, status , option);
+	public Cart findByUserAndProductAndStatusAndOptionLike(WelfareMall product , Users user , String status , String productOption) {
+		Optional<Cart> _cart = this.cartRepository.findByUserAndProductAndStatusAndProductOptionLike(user, product, status, productOption);
 		return _cart.isEmpty() ? new Cart() : _cart.get();
 	}
 	public List<Cart> findByUserAndTypeAndStatus(Users user , String type , String status) {
