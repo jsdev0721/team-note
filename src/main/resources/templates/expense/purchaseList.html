@@ -11,7 +11,7 @@
 				}
 			});
 		</script>
-		<title>회계</title>
+		<title>복지몰 구매내역</title>
 	</head>
 	<div layout:fragment="content" class="container">
 		
@@ -34,8 +34,7 @@
 			top: 0px;
 		}
 	</style>
-	<p></p>
-	<div style="text-align: center;"><h2>복지몰 구매내역</h2></div>
+	
 	<p></p>
 	<p></p>
 		<div style="text-align: right;">
@@ -57,7 +56,7 @@
 	<div class="sc">
 		<table id="purchasel" class="table table-scriped-columns table-hover align-middle">
 			<thead>
-				<tr>
+				<tr class="table-light">
 					<th>날짜</th>
 					<th th:if="${pt=='personal'}">이름</th>
 					<th th:if="${pt=='group'}">부서</th>
