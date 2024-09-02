@@ -11,5 +11,5 @@ public interface PositionRepository extends JpaRepository<Positions, Integer>{
 	Optional<Positions> findByPositionName(String positionName);
 	Optional<Positions> findByPositionNameAndDepartment(String positionName,Departments id);
 	//Optional<Positions> findByUsers(Users user);
-	//List<Positions> findAllIsNotNull();
+	
 }

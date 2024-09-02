@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,6 +35,8 @@ import com.groupware.note.message.chatRoomService;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.position.PositionService;
 import com.groupware.note.position.Positions;
+import com.groupware.note.position.UpdateUserPositions;
+import com.groupware.note.position.UpdateUserPositionsService;
 import com.groupware.note.welfaremall.CartService;
 
 import jakarta.validation.Valid;
@@ -61,6 +62,7 @@ public class UserController {
 	private final chatRoomService chatRoomService;
 	//private final MessageService messageService;
 	private final DepartmentService departmentsService;
+	private final UpdateUserPositionsService updateUserPositionsService;
 	
 	@GetMapping("/login")
 	public String login(Principal principal) { // 0809 장진수 : 로그인 상태에서도 login.html 에 들어갈 수 있길래, 구분해둠
@@ -177,7 +179,9 @@ public class UserController {
 	@GetMapping("/list")
 	public String userList(Model model,SearchListForm searchListForm) {
 		List<UserDetails> userList = this.userDetailsService.userfindByAll();
+		List<UpdateUserPositions> positionsList =this.updateUserPositionsService.userfindByAll();
 		model.addAttribute("userList",userList);
+		model.addAttribute("positionsList",positionsList);
 		
 		return "HR/HR_list";
 		
@@ -207,14 +211,15 @@ public class UserController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/update/{userId}")
 	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName  
-			,@RequestParam(value="departmentId")String departmentName) {
+			,@RequestParam(value="departmentId")String departmentName
+			,@RequestParam(value="updateTime")LocalDateTime localDateTime) {
 
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		System.out.println(userId);
 		System.out.println(positionName);
 		Departments departments=this.departmentsService.findBydepartmentName(departmentName);
 		Positions positions= this.positionService.findByPositionNameAndDepartment(positionName, departments);
-		this.positionService.updatePosition(userId, positions);
+		this.positionService.updatePosition(userId, positions, localDateTime);
 		System.out.println("부서/직급 변경완료");
 		return "redirect:/user/list";
 	}

@@ -1,16 +1,13 @@
 package com.groupware.note.position;
 
 
-import java.time.Duration;
+
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.groupware.note.DataNotFoundException;
-import com.groupware.note.department.DepartmentRepository;
 import com.groupware.note.department.Departments;
 import com.groupware.note.user.UserRepository;
 import com.groupware.note.user.Users;
@@ -22,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class PositionService {
 	private final PositionRepository positionRepository;
 	private final UserRepository userRepository;
+	private final UpdatePositionsRepository updatePositionsRepository;
 
 	public Positions findById(Integer id) {
 		Optional<Positions> _position = this.positionRepository.findById(id);
@@ -30,12 +28,15 @@ public class PositionService {
 		}
 		return _position.get();
 	}
-	public  void updatePosition(Integer userId,Positions positions) {
+	public  void updatePosition(Integer userId,Positions positions,LocalDateTime localDateTime) {
 		Optional<Users> users = this.userRepository.findById(userId);
 		if(users.isPresent()) {
 			Users user =users.get();
-			user.setPosition(positions);
-			this.userRepository.save(user);
+			UpdateUserPositions updateUserPositions = new UpdateUserPositions();
+			updateUserPositions.setUser(user);
+			updateUserPositions.setPosition(positions);
+			updateUserPositions.setLocalDatetime(localDateTime);
+			this.updatePositionsRepository.save(updateUserPositions);
 		}else {throw new DataNotFoundException("데이터가 없습니다");}
 	}
 	public Positions findByPositionNameAndDepartment(String positioName,Departments id) {
@@ -43,12 +44,6 @@ public class PositionService {
 		if(positions.isPresent()) {
 			return positions.get();
 		}else {throw new DataNotFoundException("데이터가 없습니다");}
-	}
-	@Scheduled(cron = "0 0 9 * * *")
-	public void updatePosition() {
-		
-		
-		
 	}
 	
 }

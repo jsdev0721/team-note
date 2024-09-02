@@ -3,13 +3,14 @@
 		<br>
 		<h4>인사 페이지</h4>
 		<br>
-		<tbody>
+			<tbody>
 			<table class="table">
 				<thead class="table-success">
 					<tr>	
 						<th>name</th>
-						<th>birthdate</th>
+						<th>username</th>
 						<th>email</th>
+						<!--<th>birtdate</th>-->
 					</tr>
 				</thead>
 				<tbody>
@@ -17,16 +18,33 @@
 						<td>
 							<a th:href="@{|/user/detail/${users.userId}|}" th:text="${users.name}"></a>
 						</td>
-						<td th:text="${users.birthdate}"></td>
+						<td th:text="${users.user.username}"></td>
 						<td th:text="${users.email}"></td>
+						<!--<td th:text="${users.birthdate}"></td>-->
 					</tr>
 				</tbody>
 			</table>
+			
 			<form th:action="@{/user/list}" method="post" >
 					<label class="form-check-label"><input type="text" name="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" />
 					<input type="submit" value="검색" class="btn btn-success my-3" />
 			</form>
-			</tr>
-		</tbody>
+			<table class="table">
+							<thead class="table-success">
+								<tr>	
+									<th>username</th>
+									<th>updatePosition</th>
+									<th>updateDepartment</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="positions : ${positionsList}">
+									<td th:text="${positions.user.username}"></td>
+									<td th:text="${positions.position.positionName}"></td>
+									<td th:text="${positions.position.department.departmentName}"></td>
+								</tr>
+							</tbody>
+						</table>
+							</tbody>
 	</div>
 </html>
