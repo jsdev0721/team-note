@@ -70,6 +70,7 @@ public class ExpenseController {
 		list = this.pdService.findPurchaseDetailList(model, year, month, id, pType);
 		model.addAttribute("pList", list);
 		model.addAttribute("pType", pType);
+		System.out.println("==============================================================");
 		
 		return "expense/purchaseDetail";
 	}
