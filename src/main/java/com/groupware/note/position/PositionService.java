@@ -1,8 +1,12 @@
 package com.groupware.note.position;
 
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.groupware.note.DataNotFoundException;
@@ -18,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class PositionService {
 	private final PositionRepository positionRepository;
 	private final UserRepository userRepository;
-	private final DepartmentRepository departmentRepository;
 
 	public Positions findById(Integer id) {
 		Optional<Positions> _position = this.positionRepository.findById(id);
@@ -41,13 +44,12 @@ public class PositionService {
 			return positions.get();
 		}else {throw new DataNotFoundException("데이터가 없습니다");}
 	}
-	public Positions findByPositionsName(String positionsName) {
-		Optional<Positions> positions =this.positionRepository.findByPositionName(positionsName);
-		if(positions.isPresent()) {
-			return positions.get();
-		}else {throw new DataNotFoundException("데이터가 없습니다");}
+	@Scheduled(cron = "0 0 9 * * *")
+	public void updatePosition() {
+		
+		
+		
 	}
-	
 	
 }
 

@@ -3,34 +3,31 @@
 		<title>서식 게시판</title>
 		<style>
 			.test {
-				background-color:rgb(37, 37, 69);
+				background-color:darkcyan;
 				color: white;
-				
 			}
-			
-			
 		</style>
 	</head>
 	<div layout:fragment="content" class="container">
-	<br>
-	<div class="card">
-	    <div class="card-body">
-	        <div class="row">
-	            <div class="col">
-		<h2 for="title" class="form-label">제목</h2>
+		<br>
+		<div class="card">
+	   	 	<div class="card-body">
+	        	<div class="row">
+	            	<div class="col">
+			<h2 for="title" class="form-label">제목</h2>
 		<div class="card">
 			    <div class="card-body">
 			        <div class="row">
 			            <div class="col">
-		<h4 class="active" th:text="${forms.title}" ></h4>
+		<h4 class="card-header" th:text="${forms.title}" ></h4>
 						</div>
 					</div>
 				</div>
 			</div>
-	<br>
+		<br>
 		<div class="mb-4">
 	<table>
-			<h3 for="content" class="form-label" >내용</h3>
+		<h3 for="content" class="form-label" >내용</h3>
 			<div class="card">
 				    <div class="card-body">
 				        <div class="row">
@@ -40,23 +37,22 @@
 				        </div>
 					</div>
 				</div>
-	</table>
-		</div>
-			<br>
+			</table>
+				</div>
+					<br>
 			<label for="formFileMultiple" class="form-label"></label>
-		<div class="card-text" th:each="file : ${fileList}">
-				<a class="form-control btn my-3 test" id="formFileMultiple" th:text="${file.originFileName}"
-					th:href="@{|/forms/download/${file.fileId}|}"></a>	
-			<br>
-		</div>
+				<div class="card-text" th:each="file : ${fileList}">
+					<a class="form-control btn my-3 test" id="formFileMultiple" th:text="${file.originFileName}"
+					th:href="@{|/forms/download/${file.fileId}|}"></a>		
+					</div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
-			<a th:href="@{|/forms/update/${forms.formId}|}" class="btn my-3 test">글 수정</a>
-			<a th:href="@{|/forms/delete/${forms.formId}|}" class="btn my-3 test">글 삭제</a>
+		<a th:href="@{|/forms/update/${forms.formId}|}" class="btn my-3 test">글 수정</a>
+		<a th:href="@{|/forms/delete/${forms.formId}|}" class="btn my-3 test">글 삭제</a>
+				</div>
+			</div>
 		</div>
-		</div>
-	</div>
 	</div>	
 </html>
