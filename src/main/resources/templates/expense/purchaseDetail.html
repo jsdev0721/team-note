@@ -2,7 +2,7 @@
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/purchaseList.css}">
 		
-		<title>회계</title>
+		<title>구매내역 상세보기</title>
 	</head>
 	<div layout:fragment="content" class="container">
 		
@@ -29,15 +29,13 @@
 		</style>
 		
 	<p></p>
-	<div style="text-align: center;"><h2>구매내역 상세보기</h2></div>
-	<p></p>
 	<h3><div th:text="${titleName}"></div></h3>
 	<div th:if="${pType}=='personal'" th:text="${details}"></div>
 	<p></p>
 	<div class="sc">
-	<table id="purchasel">
+	<table id="purchasel" class="table table-striped table-hover">
 		<thead>
-			<tr>
+			<tr class="table-light">
 				<th>날짜</th>
 				<th>이름</th>
 				<th>옵션</th>
@@ -49,11 +47,10 @@
 		<tbody>
 			<tr th:each="pData : ${pList}">
 				<td th:text="${#temporals.format(pData.addDate, 'yyyy-MM-dd')}"></td>
-				<td th:text="${pData.product.productName}"></td>
+				<td><a th:href="@{|/welfaremall/detail/${pData.product.productId}|}"  th:text="${pData.product.productName}"></a></td>
 				<td th:text="${pData.option}"></td>
 				<td th:text="${pData.quantity}"></td>
 				<td th:text="${'₩' + #numbers.formatInteger((pData.point * pData.quantity), 3, 'COMMA')}"></td>
-				
 			</tr>
 		</tbody>
 	</table>

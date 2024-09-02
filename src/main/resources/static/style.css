@@ -70,3 +70,7 @@ li{list-style: none;}
 .address{display: block;text-align: center !important;color: #fff;}
 .copy{position: absolute;height: 50px;bottom: 0;border-top: 1px solid #aaa;}
 .copy p{color: #fff; text-align: center !important;line-height: 50px;font-size: 14px;}
+
+#swiper{width:100%; height: 100%;}
+.swiper-slide {text-align: center; font-size: 18px; background: #fff; display: flex; justify-content: center; align-items: center;}
+.swiper-slide img {display: block; width: 100%; height: 100%; object-fit: cover;}

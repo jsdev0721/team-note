@@ -1,18 +1,18 @@
 <html layout:decorate="~{layout}">
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/expenseList.css}">
-		<title>회계</title>
+		<title>비용처리</title>
 	</head>
 <div layout:fragment="content" class="container">
 	
 
 	<style>
-	    .sc {width: 100%; height: 600px; overflow: auto;  overflow-x: hidden;}
+	    .sc {width: 100%; height: 800px; overflow: auto;  overflow-x: hidden;}
 	</style>
 	
 	<style>
 		.tableWrapper{
-			max-height: 600px;
+			max-height: 800px;
 			min-height: auto;
 			overflow: auto;
 			overflow-x: hidden;
@@ -28,8 +28,7 @@
 		}
 	</style>
 	
-	<p></p>
-	<div style="text-align: center;"><h2>비용처리 목록</h2></div>
+	
 	
 	<p></p>
 	<div style="text-align: right;">
@@ -68,8 +67,8 @@
 	
 	
 	<div class="sc">
-<table id = "expensel" class = "table">
-	<thead class="table-dark">
+<table id = "expensel" class = "table table-striped table-hover">
+	<thead class="table-light">
 		<tr>
 			<th>번호</th>
 			<th>날짜</th>
@@ -89,7 +88,7 @@
 			
 			<td><a th:href="@{|/expense/list?st=${expense.writer.email}|}" th:text="${expense.writer.name}"></a></td>
 			
-			<td><button class="btn-open" th:popovertarget="@{|popup/${expense.file.fileId}|}" popovertargetaction="toggle">
+			<td><button class="btn btn-light" th:popovertarget="@{|popup/${expense.file.fileId}|}" popovertargetaction="toggle">
 				<div th:text="${'₩' + #numbers.formatInteger(expense.amount, 3, 'COMMA')}" ></div>
 				</button>
 			</td>

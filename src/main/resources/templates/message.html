@@ -24,36 +24,38 @@
 	</head>
 	
 	<body>
-
-    <div class="col-2" style = "height: 450px; overflow-y: auto; width: 200px;">
-        <h4><div th:text="|${sessionName.name}의 메신저|"></div></h4>
-        <hr>
+	
+	
+		
+		
+	<div class="col-2">
+		<h4><div th:text="|${sessionName.name}의 메신저|"></div></h4>
+		<hr>
+		<div id="viewname" class="col-22"><span class="col-1" id="unRMUser" ></span></div>
+		<p></p>
+		<div class="col-21" >
 		<div th:each="dep : ${depList}">
-								
 			<div class="accordion" id="accordionExample">
-			  <div class="accordion-item">
-			    <h2 class="accordion-header">
-			      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="@{|#collapse${dep.dep.departmentName}|}" 
-				  							aria-expanded="false" th:aria-controls="@{|collapse${dep.dep.departmentName}|}" th:text="${dep.dep.departmentName}">
-			      </button>
-			    </h2>
-			    <div th:id="@{|collapse${dep.dep.departmentName}|}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-					
-			      <div class="accordion-body">
-					<div  th:each="user : ${dep.udList}" style="text-align: start;">
-					  <div style="text-align: right">
-						<small><span th:text="${user.user.position.positionName}"></span></small>
-						<a href="#" th:text="|/ ${user.name}|" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a></div>
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="@{|#collapse${dep.dep.departmentName}|}"  aria-expanded="false" th:aria-controls="@{|collapse${dep.dep.departmentName}|}" th:text="${dep.dep.departmentName}">
+						</button>
+					</h2>
+					<div th:id="@{|collapse${dep.dep.departmentName}|}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+						<div class="accordion-body">
+							<div  th:each="user : ${dep.udList}" style="text-align: start;">
+								<div style="text-align: right">
+									<small><span th:text="${user.user.position.positionName}"></span></small>
+									<a class="nameclick" href="#" th:text="|/ ${user.name}|" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a>
+								</div>
+							</div>
+						</div>
 					</div>
-					
-			      </div>
-			    </div>
-			  </div>
-				
+				</div>
 			</div>
-			
 		</div>
-    </div>
+		</div>
+	</div>
 	
 	<div class="col-3">
 	    <div id="messageRoom" class="d-none">
@@ -71,23 +73,57 @@
 			</div>
 	    </div>
     </div>
-
-
-	</body>
 	<script>
-		   //스크롤 아래로
-		    let scrollableDiv = 
-		        document.getElementById('messages');
+		window.addEventListener('load', 
+		function userList(){	
+			let noRMbad = document.getElementById('unRMUser');
+			noRMbad.innerHTML = ''; // 기존 메시지 초기화
+			fetch(`/message/sendUser`)
+			.then((response)=>response.json())
+			.then(datas =>{
+				datas.forEach(data => {
+					userinfo(data);
+			
+				});
+			 });
+			
 
-
-		    function scrollToBottom() {
-		        scrollableDiv.scrollTop = scrollableDiv
-		            .scrollHeight;
-		    }
+			 setTimeout(userList, 5000);
+		});//function userList 끝
+		
+		function userinfo(data){
+			let userdata = document.getElementById('unRMUser');
+			let nameEl = document.createElement('span');
+			let infoEl = document.createElement('span');
+			
+			let nametxt = '/ ' + data.senderName + '\n'; 
+			let infotxt = data.positionName + ' ' + data.depName + ' ';
+			let font1 = nameEl.style.fontSize="small";
+			let font2 = infoEl.style.fontSize="small";
+			
+			nameEl.innerText = nametxt;
+			infoEl.innerText = infotxt;
+			userdata.appendChild(infoEl)
+			userdata.appendChild(nameEl);
+					
+			console.log(data);
+			
+		}
+		
+		
+			
 		</script>
 	
-	<!--엔터로 메세지 입력-->
+	</body>
 	<script>
+	   //스크롤 아래로
+    let scrollableDiv = 
+        document.getElementById('messages');
+    function scrollToBottom() {
+        scrollableDiv.scrollTop = scrollableDiv
+            .scrollHeight;
+    }
+	//<!--엔터로 메세지 입력-->
 		var input = document.getElementById("messageInput");
 		input.addEventListener("keypress", function(event){
 			if(event.key==="Enter"){
@@ -147,8 +183,7 @@
 			document.getElementById("messageInput").value = "";
 	    }
 		
-	    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬
-									
+	    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬	
 	        let messages = document.getElementById('messages');
 	        let messageElement = document.createElement('div');
 			let mess = document.createElement('div');
@@ -156,7 +191,7 @@
 			let messageTime = message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16);
 			let alignmentClass = (message.sender.username === selectedUsername) ? 'left-align' : 'right-align';
 			let font = mess.style.fontSize="small";
-			
+			//fetch로 메세지 데이터 1로 바꿔주기
 			messageElement.classList.add(alignmentClass);
 			messageElement.innerText =  '[ ' + message.content + ' ]' + '\n';
 			mess.classList.add(alignmentClass);
@@ -170,5 +205,5 @@
 		
 	    window.onload = connect;
 	</script>
-		
+	
 </html>

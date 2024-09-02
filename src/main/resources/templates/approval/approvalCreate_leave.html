@@ -1,5 +1,6 @@
 <html layout:decorate="~{layout}">
 	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/approvalCreate.css}">
 		<script>
 			function link() {
 				var select = document.getElementById('department').value;
@@ -11,34 +12,43 @@
 		<title>결재</title>
 	</head>
 	<div layout:fragment="content" class="container">
-		<form th:action="@{/approval/create/HR}" method="post" enctype="multipart/form-data">
-			<div class="card" th:object="${leaveForm}">
-				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
-				
-				
+		<form th:action="@{/approval/create/HR}" method="post" th:object="${leaveForm}" enctype="multipart/form-data">
+			<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
+			
+			<div class="select">
 				<div class="form-check">
 					<label class="form-check-label"><input class="form-check-input" type="radio" th:field="*{departmentName}" id="department"  value="General" oninput="link()"/>일반</label>
 				</div>
 				<div class="form-check">
 					<label class="form-check-label"><input class="form-check-input" type="radio" th:field="*{departmentName}"value="HR">휴가</label>
 				</div>
-				
-			
-				<h5 class="card-header"><input type="text" th:field="*{title}" placeholder="제목을 입력해 주세요" style="font-size: 16px;"/></h5>
-				<div class="card-body">
-					<h5 class="card-title"><textarea th:field="*{reason}" placeholder="사유를 입력해 주세요" style="font-size: 16px;"></textarea></h5>
-					
-					<label for="startDate" class="form-label">휴가 시작 날짜</label>
-					<input type="date" id="startDate" th:field="*{startDate}" class="form-control">
-					
-					<label for="endDate" class="form-label">휴가 종료 날짜</label>
-					<input type="date" id="endDate" th:field="*{endDate}" class="form-control">
-					
-					<label for="formFileMultiple" class="form-label">파일업로드</label>
-                    <input class="form-control" type="file" id="formFileMultiple" name="attachment" multiple>
-					<input class="btn btn-success" type="submit" value="등록하기" />
+				<div class="form-check">
+					<label class="form-check-label"><input class="form-check-input" type="radio" th:field="*{departmentName}"value="Accounting" oninput="link()">회계</label>
 				</div>
 			</div>
+			
+			<div class="input-form">
+				<div class="input">
+					<label class="form-label">제목</label>
+					<input type="text" class="form-control" th:field="*{title}" placeholder="제목을 입력해 주세요" style="font-size: 16px;"/>
+				</div>
+				<div class="input">
+					<label class="form-label">내용</label>
+					<textarea th:field="*{reason}" class="form-control" placeholder="사유를 입력해 주세요" style="font-size: 16px;"></textarea>
+				</div>
+				<div class="input">
+					<label for="startDate" class="form-label">휴가 시작 날짜</label>
+					<input type="date" id="startDate" th:field="*{startDate}" class="form-control">
+				</div>
+				<div class="input">
+					<label for="endDate" class="form-label">휴가 종료 날짜</label>
+					<input type="date" id="endDate" th:field="*{endDate}" class="form-control">
+				</div>
+				
+	            <input class="form-control" type="file" id="formFileMultiple" name="attachment" multiple><!-- 파일 -->
+				<input class="btn" type="submit" value="등록하기" />
+			</div><!-- input-form -->
 		</form>
+		<a th:href="@{/approval/list}" class="close">나가기</a>
 	</div>
 </html>

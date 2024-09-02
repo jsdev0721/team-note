@@ -1,4 +1,7 @@
 <html layout:decorate="~{layout}">
+	<head>
+		<title>결재 상세보기</title>
+	</head>
 	<div layout:fragment="content" class="container">
 		<div class="card">
 			<h5 class="card-header" th:text="${approval.title}"></h5>
@@ -16,10 +19,16 @@
 					</table>
 				</div>
 				<h5 class="card-title" th:text="${approval.content}"></h5>
-				
+				<div th:if="${#strings.equals(approval.department.departmentName, 'HR')}"><!-- 휴가 날짜 -->
+					<span th:text="${#temporals.format(approval.startDate, 'yyyy-MM-dd')}"></span>
+					<span th:text="${#temporals.format(approval.endDate, 'yyyy-MM-dd')}"></span>
+				</div>
 				<div class="card-text"  th:each="file : ${fileList}" th:if="${!fileList.isEmpty()}">
 					<label for="form" class="form-label">다운로드</label>
                		<a class="form-control btn btn-primary" id="form"th:text="${file.originFileName}" th:href="@{|/approval/download/${file.fileId}|}"></a>
+				<div class="card-text"  th:if="${!fileList.isEmpty()}">
+					<p class="text-body-secondary">다운로드</p>
+               		<a class="form-control btn btn-primary my-1"th:text="${file.originFileName}" th:each="file : ${fileList}" th:href="@{|/approval/download/${file.fileId}|}"></a>
 					<br/>
 				</div>
 				<br/>

@@ -5,16 +5,14 @@
     list-style: none;
     text-decoration: none;
 }
-body{
-    background-color: rgb(255, 255, 255);
-}
+
 
 .col-2{
-	
     position: absolute;
     top: 5%;
     left: 3%;
-    
+	height: 450px;
+	width: 250px;
 	
 }
 .col-3{
@@ -25,10 +23,22 @@ body{
 	
 }
 
-a{
+.col-21{
+	overflow-y: auto; 
+	height: 400px;
+}
+
+.col-22{
+	height:70px;
+	overflow: hidden;
+	border-radius: 5%;
+	border: 2px solid;
+	border-color: rgb(228, 228, 228);
+}
+
+.nameclick{
 	 text-decoration: none;
 	 color: midnightblue;
-	
 }
 
 .col-4{

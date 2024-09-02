@@ -1,5 +1,5 @@
 /* 공통 */
-.container{width: 500px;}
+.container{width: 600px;}
 .logo{margin-bottom: 50px;display: block;}
 .form-control{padding-left: 40px !important;border: 1px solid rgb(32, 62, 110);}
 .btn{width: 100%;background-color: rgb(32, 62, 110);color: #fff;height: 50px;}
@@ -10,6 +10,10 @@ input{height: 50px;}
 
 .input{position: relative;}
 .bi{position: absolute;top: 50%;transform: translateY(-50%);left: 10px;}
+
+.join{display: flex;justify-content: space-between;margin-top: 10px;padding: 0 30px 0 30px;}
+.join a{color: rgb(32, 62, 110);text-decoration: none;font-size: 14px;display: block;}
+.join a:last-child{text-decoration:underline;}
 
 /* find id */
 #mailSend{padding: 30px;border: 1px solid rgb(32, 62, 110);border-radius: 10px;}
@@ -22,9 +26,6 @@ input{height: 50px;}
 #mailCodeCheck #id_box{padding-top: 20px;border-top: 1px dashed rgb(32, 62, 110);margin-top: 20px;}
 #mailCodeCheck #username{margin-bottom: 0;}
 #id_box p{font-size: 0.8em;color: #777;}
-#id_box .join{display: flex;justify-content: space-between;margin-top: 10px;}
-.join a{color: rgb(32, 62, 110);text-decoration: none;font-size: 14px;display: block;}
-.join a:last-child{text-decoration:underline;}
 
 /* find pw */
 #findPW{padding: 30px;border: 1px solid rgb(32, 62, 110);border-radius: 10px;}
@@ -34,6 +35,6 @@ input{height: 50px;}
 
 .setPW{display: flex;}
 .setPW{margin-bottom: 5px;}
-.setPW label{line-height: 50px;flex: 0.3;margin: 0;}
+.setPW label{line-height: 50px;flex: 0.3;margin: 0;margin-right: 10px !important;border: 1px solid rgb(32, 62, 110);border-radius: 5px;text-align: center;}
 .setPW input::placeholder{font-size: 0.8em;}
 .setPW > div{flex: 0.7;}

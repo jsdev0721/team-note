@@ -116,11 +116,41 @@ public class MessageService {
 		return noRM;
 	}
 	
+	@Getter
+	@Setter
+	public class URMessageData {
+		private int no;
+		private String senderName;
+		private String positionName;
+		private String depName;
+	}
 	
 	//안읽은 대화 목록
-	public Integer getUnreadMessage(Users user, ChatRooms chatRoom) {
-		List<Messages> _list = null;
-		return null;
+	public List<URMessageData> getUnreadUser(Users user) {
+		List<URMessageData> urMsgDataList = new ArrayList<>();
+		List<ChatRooms> crListByUser = this.crRepo.allRoomList(user);
+		String userList = null;
+		int count = 0;
+		for(ChatRooms cr : crListByUser) {
+			for(Messages m : cr.getMessages()) {
+				if(!m.getSender().equals(user) && m.getSeenByR()==0) {
+					Optional<UserDetails> _ud1 = this.udRepo.findByUser( m.getSender());
+					if(_ud1.isPresent()) {
+						count++;
+						URMessageData _ur = new URMessageData();
+						_ur.setNo(count);
+						_ur.setSenderName(_ud1.get().getName());
+						_ur.setPositionName(m.getSender().getPosition().getPositionName());
+						_ur.setDepName(m.getSender().getPosition().getDepartment().getDepartmentName());
+						urMsgDataList.add(_ur);
+						break;
+					}
+					
+				}
+			}
+		}
+		
+		return urMsgDataList;
 	}
 	
 	//기존 대화내용 불러오기

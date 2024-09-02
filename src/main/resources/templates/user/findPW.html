@@ -10,6 +10,17 @@
 		<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
 		<script th:src="@{/bootstrap.min.js}"></script>
 		<script th:src="@{/show_password.js}"></script>
+		<script>
+			function setPassword(){
+				var password = $("#password").val();
+				var passwordCheck = $("#passwordCheck").val();
+				if(password || passwordCheck){
+					if(password === passwordCheck){
+						alert("비밀번호 변경이 완료되었습니다.");
+					}
+				}
+			}
+		</script>
 		<title>비밀번호 찾기</title>
 	</head>
 	<body class="container">
@@ -39,7 +50,7 @@
 					</div>
 				</div>
 				
-				<div class="setPW">					
+				<div class="setPW" style="margin-bottom: 20px;">					
 					<label for="passwordCheck" class="form-label">비밀번호 확인</label>
 					<div class="input passwordCheck" style="position: relative;">
 						<i class="bi bi-check-circle"></i>
@@ -50,10 +61,14 @@
 					</div>
 				</div>
 				
-				<button type="submit" class="btn">비밀번호 변경</button>
+				<button type="submit" class="btn" onclick="setPassword()">비밀번호 변경</button>
 			</form>
 		</div>
 		<!-- 아이디가 존재할 때 -->
 		
+		<div class="join">
+			<a th:href="@{/user/find/id}">아이디 찾기</a>
+			<a th:href="@{/user/login}">로그인</a>
+		</div>
 	</body>
 </html>
