@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.groupware.note.message.MessageService.URMessageData;
 import com.groupware.note.message.MessageService.UserListForDep;
 import com.groupware.note.user.UserDetails;
 import com.groupware.note.user.UserDetailsService;
@@ -78,6 +81,23 @@ public class MessageController {
 		Users user = this.uService.getUser(principal.getName());
 		int noReadMessages = this.mService.getAllUnreadMessage(user);
 		return noReadMessages;
+	}
+	
+	@GetMapping("/message/sendUser")
+	@ResponseBody
+	public String getSendUser(Principal principal) {
+		Users user = this.uService.getUser(principal.getName());
+		List<URMessageData> list = this.mService.getUnreadUser(user);
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonStr = null;
+		try {
+			jsonStr = mapper.writeValueAsString(list);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return jsonStr;
 	}
 	
 }

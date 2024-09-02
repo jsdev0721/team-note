@@ -28,10 +28,17 @@
 	height: 400px;
 }
 
-a{
+.col-22{
+	height:70px;
+	overflow: hidden;
+	border-radius: 5%;
+	border: 2px solid;
+	border-color: rgb(228, 228, 228);
+}
+
+.nameclick{
 	 text-decoration: none;
 	 color: midnightblue;
-	
 }
 
 .col-4{

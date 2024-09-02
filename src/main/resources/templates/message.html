@@ -24,10 +24,15 @@
 	</head>
 	
 	<body>
-
+	
+	
+		
+		
 	<div class="col-2">
 		<h4><div th:text="|${sessionName.name}의 메신저|"></div></h4>
 		<hr>
+		<div id="viewname" class="col-22"><span class="col-1" id="unRMUser" ></span></div>
+		<p></p>
 		<div class="col-21" >
 		<div th:each="dep : ${depList}">
 			<div class="accordion" id="accordionExample">
@@ -41,7 +46,7 @@
 							<div  th:each="user : ${dep.udList}" style="text-align: start;">
 								<div style="text-align: right">
 									<small><span th:text="${user.user.position.positionName}"></span></small>
-									<a href="#" th:text="|/ ${user.name}|" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a>
+									<a class="nameclick" href="#" th:text="|/ ${user.name}|" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a>
 								</div>
 							</div>
 						</div>
@@ -68,23 +73,57 @@
 			</div>
 	    </div>
     </div>
+	<script>
+		window.addEventListener('load', 
+		function userList(){	
+			let noRMbad = document.getElementById('unRMUser');
+			noRMbad.innerHTML = ''; // 기존 메시지 초기화
+			fetch(`/message/sendUser`)
+			.then((response)=>response.json())
+			.then(datas =>{
+				datas.forEach(data => {
+					userinfo(data);
+			
+				});
+			 });
+			
 
-
+			 setTimeout(userList, 5000);
+		});//function userList 끝
+		
+		function userinfo(data){
+			let userdata = document.getElementById('unRMUser');
+			let nameEl = document.createElement('span');
+			let infoEl = document.createElement('span');
+			
+			let nametxt = '/ ' + data.senderName + '\n'; 
+			let infotxt = data.positionName + ' ' + data.depName + ' ';
+			let font1 = nameEl.style.fontSize="small";
+			let font2 = infoEl.style.fontSize="small";
+			
+			nameEl.innerText = nametxt;
+			infoEl.innerText = infotxt;
+			userdata.appendChild(infoEl)
+			userdata.appendChild(nameEl);
+					
+			console.log(data);
+			
+		}
+		
+		
+			
+		</script>
+	
 	</body>
 	<script>
 	   //스크롤 아래로
     let scrollableDiv = 
         document.getElementById('messages');
-
-
     function scrollToBottom() {
         scrollableDiv.scrollTop = scrollableDiv
             .scrollHeight;
     }
-	</script>
-	
-	<!--엔터로 메세지 입력-->
-	<script>
+	//<!--엔터로 메세지 입력-->
 		var input = document.getElementById("messageInput");
 		input.addEventListener("keypress", function(event){
 			if(event.key==="Enter"){
@@ -144,8 +183,7 @@
 			document.getElementById("messageInput").value = "";
 	    }
 		
-	    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬
-									
+	    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬	
 	        let messages = document.getElementById('messages');
 	        let messageElement = document.createElement('div');
 			let mess = document.createElement('div');
@@ -153,7 +191,7 @@
 			let messageTime = message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16);
 			let alignmentClass = (message.sender.username === selectedUsername) ? 'left-align' : 'right-align';
 			let font = mess.style.fontSize="small";
-			
+			//fetch로 메세지 데이터 1로 바꿔주기
 			messageElement.classList.add(alignmentClass);
 			messageElement.innerText =  '[ ' + message.content + ' ]' + '\n';
 			mess.classList.add(alignmentClass);
@@ -167,5 +205,5 @@
 		
 	    window.onload = connect;
 	</script>
-		
+	
 </html>
