@@ -28,6 +28,10 @@ public class WelfareMallService {
 		Pageable pageable = getPageable(page, quantity);
 		return this.welfareMallRepository.findByType(type, pageable);
 	}
+	public Page<WelfareMall> findAll(int page , int quantity) {
+		Pageable pageable = getPageable(page, quantity);
+		return this.welfareMallRepository.findAll(pageable);
+	}
 	public Page<WelfareMall> findByProductNameLike(String _productName , String type , int page , int quantity) {
 		String productName = "%"+_productName+"%";
 		Pageable pageable = getPageable(page, quantity);

@@ -14,6 +14,7 @@ import com.groupware.note.form.FormService;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
+import com.groupware.note.welfaremall.WelfareMallService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,7 @@ public class NoteController {
 	private final NoticesService noticesService;
 	private final ApprovalService approvalService;
 	private final UserService userService;
+	private final WelfareMallService welfareMallService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/")
@@ -34,6 +36,7 @@ public class NoteController {
 		Departments department = user.getPosition().getDepartment();
 		model.addAttribute("approvalList", this.approvalService.ApprovalList(user, department, status, page , 10));
 		model.addAttribute("status", status);
+		model.addAttribute("welfaremallList", this.welfareMallService.findAll(page, 3));
 		if(!user.getStatus().equals("출근")) {
 			return "attendance/attendanceButton";
 		}else {			
