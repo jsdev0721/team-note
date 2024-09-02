@@ -6,6 +6,7 @@ import java.util.List;
 import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,9 +31,9 @@ public class Leaves {
 	private Users user;
 	
 	private String title;
-	
+	@Column(columnDefinition = "DATE")
 	private LocalDate startDate;
-	
+	@Column(columnDefinition = "DATE")
 	private LocalDate endDate;
 	
 	private String reason;

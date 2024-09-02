@@ -21,9 +21,9 @@ public class WellfareInputService {
 	private final UserDetailsRepository udRepo;
 	private final DepartmentRepository dRepo;
 	private final WellfarePointInputRepositiory wpiRepo;
-	
-	//매 날짜마다 부서당 인원수 체크해서 해당 숫자만큼 입력
+
 	//@Scheduled(cron = " * * 10 1W 3,9 * " )
+	@Scheduled(cron = " 0 0 10 1W 3,9 * " )
 	public void pointInputToDep() {
 		for(Departments dep : this.dRepo.findAll()) {
 			
@@ -34,8 +34,9 @@ public class WellfareInputService {
 			this.dRepo.save(dep);
 		}
 	}
-	//매 날짜마다 각 사원에게 입력
+
 	//@Scheduled(cron = " * 10 9 1W * * " )
+	@Scheduled(cron = " 0 10 9 1W * * " )
 	public void pointInputToWorker() {
 		for(UserDetails ud : this.udRepo.findAll()) {
 			Long pByWor = this.wpiRepo.findById(1).get().getIndividualPoint();

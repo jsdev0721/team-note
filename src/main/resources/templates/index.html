@@ -1,6 +1,7 @@
 <html layout:decorate="~{layout}">
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/index.css}">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 		<script>
 			$(function(){
 				var status = $('#status').val();
@@ -62,6 +63,15 @@
 				<div class="txt d-flex justify-content-between">
 					<h3>복지몰</h3>
 					<a th:href="@{/welfaremall/list}"><img src="/images/plus_site.png"></a>
+				</div>
+				<div class="swiper mySwiper">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" th:each="product : ${welfaremallList}">
+							<img th:if="${product.mainImage!=null}" th:src="@{|/welfaremall/photo/${product.mainImage.fileId}|}">
+							<img th:unless="${product.mainImage!=null}" src="/images/sub_logo.png">
+						</div>
+					</div>
+					<div class="swiper-pagination"></div>
 				</div>
 			</div> <!-- welfaremall end -->
 			<div id="publicForm">
@@ -144,5 +154,21 @@
 			</div>
 			<!-- 회계 -->
 		</div><!-- sidebar end -->
+		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+		<script>
+			var swiper = new Swiper(".mySwiper", {
+				slidesPerView: "auto",
+				spaceBetween: 30,
+				pagination: {
+					el: ".swiper-pagination",
+					clickable: true,
+				},
+				autoplay: {
+					delay: 2500,
+					disableOnInteraction: false,
+				},
+				loop:true
+			});
+		</script>
 	</div><!-- container end -->
 </html>

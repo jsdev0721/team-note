@@ -13,7 +13,6 @@ import lombok.Setter;
 public class Files {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private Integer fileId;
 	private String originFileName;
 	private String storeFileName;

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import com.groupware.note.files.Files;
 import com.groupware.note.user.UserDetails;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,6 +33,7 @@ public class Expense {
 	
 	private String expenseType;
 	private double amount;
+	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime useDate;
 	private String description;
 	@ManyToOne
