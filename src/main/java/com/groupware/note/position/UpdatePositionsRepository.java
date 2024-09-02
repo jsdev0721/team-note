@@ -1,0 +1,9 @@
+package com.groupware.note.position;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UpdatePositionsRepository extends JpaRepository<UpdateUserPositions, Integer>{
+
+}
