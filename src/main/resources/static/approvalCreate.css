@@ -1,0 +1,28 @@
+/* 공통 */
+.select{display: flex;justify-content: space-evenly;margin-bottom: 20px;margin-top: 50px;}
+.input-form{border: 1px solid rgb(32, 62, 110);padding: 30px;border-radius: 10px;}
+
+input[type=radio]{background: url(/images/check.png);background-size: 100% 100%;font-size: 20px;}
+input:checked[type=radio]{background: url(/images/checked.png);background-size: 100% 100%;border: none !important;}
+
+.input{display: flex;margin-bottom: 20px;}
+.input:nth-child(1){height: 40px;}
+.input:nth-child(2){height: 60px;}
+.input label{flex: 0.1;margin-right: 10px !important;border-radius: 5px;margin: 0;border: 1px solid #ddd;text-align: center;}
+.input:nth-child(1) label{line-height: 38px;}
+.input:nth-child(2) label{line-height: 60px;}
+.input input{flex: 0.9;}
+.input textarea{flex: 0.9;}
+
+.btn{width: 100%;background-color: rgb(32, 62, 110);color: #fff;height: 50px;margin-top: 30px;}
+.btn:hover{background-color: rgb(32, 62, 110);color: #fff;}
+.btn:focus{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
+.btn:active{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
+
+.close{text-decoration: underline;display: block;text-align: right;margin-top: 10px;}
+
+/* 휴가 */
+.input:nth-child(3){height: 40px;}
+.input:nth-child(4){height: 40px;}
+.input:nth-child(3) label{line-height: 38px;}
+.input:nth-child(4) label{line-height: 38px;}

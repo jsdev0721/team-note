@@ -36,7 +36,7 @@ public class UserDetails {
 	@OneToOne
 	private Files photo;
 	
-	private Integer leave;
+	private Integer leaves;
 	
 	private long points;
 }

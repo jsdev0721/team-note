@@ -9,6 +9,7 @@ import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -42,7 +43,7 @@ public class Approval {
 	private LocalDate startDate;
 	
 	private LocalDate endDate;
-
+	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime updateTime; //0729 추가생성
 	
 	private String[] userSign;

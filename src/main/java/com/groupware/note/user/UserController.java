@@ -31,7 +31,7 @@ import com.groupware.note.expense.ExpenseDataService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.form.FormService;
-import com.groupware.note.leave.LeaveService;
+import com.groupware.note.leaves.LeaveService;
 import com.groupware.note.message.chatRoomService;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.position.PositionService;
@@ -208,10 +208,10 @@ public class UserController {
 	@PostMapping("/update/{userId}")
 	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName  
 			,@RequestParam(value="departmentId")String departmentName) {
+
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		System.out.println(userId);
 		System.out.println(positionName);
-		
 		Departments departments=this.departmentsService.findBydepartmentName(departmentName);
 		Positions positions= this.positionService.findByPositionNameAndDepartment(positionName, departments);
 		this.positionService.updatePosition(userId, positions);

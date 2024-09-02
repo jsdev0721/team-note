@@ -1,4 +1,4 @@
-package com.groupware.note.leave;
+package com.groupware.note.leaves;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +19,7 @@ public class LeaveService {
 	private final LeaveRepository leaveRepository;
 	
 	public void create(Users users, String title, String reason, LocalDate startDate, LocalDate endDate, String status, List<Files> files) {
-		Leave leave = new Leave();
+		Leaves leave = new Leaves();
 		leave.setUser(users);
 		leave.setTitle(title);
 		leave.setReason(reason);
@@ -32,9 +32,9 @@ public class LeaveService {
 		this.leaveRepository.save(leave);
 	}
 	public void deleteLeave(Users user) {
-		Optional<Leave> optional = this.leaveRepository.findByUser(user);
+		Optional<Leaves> optional = this.leaveRepository.findByUser(user);
 		if(optional.isPresent()) {
-			Leave leave=optional.get();
+			Leaves leave=optional.get();
 			leave.setUser(null);
 		}
 	}

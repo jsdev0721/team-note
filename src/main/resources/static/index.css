@@ -26,7 +26,7 @@ a{text-decoration: none;color: #000;}
 
 /* sidebar */
 #sidebar{position: fixed;right: 0;top: 150px;display: flex;flex-direction: column;}
-.icon-wrap{border: 1px solid rgb(32, 62, 110);border-bottom-left-radius: 20px;border-top-left-radius: 20px;border-right: none;display: block;margin-bottom: 10px;}
+.icon-wrap{border: 1px solid rgb(32, 62, 110);border-bottom-left-radius: 20px;border-top-left-radius: 20px;border-right: none;display: block;margin-bottom: 10px;background-color: #fff;}
 .icon{width: 60px;margin: 20px 10px;}
 
 /* calendar */

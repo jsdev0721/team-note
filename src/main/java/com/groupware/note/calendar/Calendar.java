@@ -32,9 +32,10 @@ public class Calendar {
 	private Users user;
 	
 	private String title;
+	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime start;
 	
-	@Column(name = "end_time")
+	@Column(name = "end_time" , columnDefinition = "DATETIME")
 	private LocalDateTime end;
 	private String color;
 	
