@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.groupware.note.user.Users;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,12 +34,12 @@ public class Cart {
 	private Integer quantity;
 	//가격
 	private Integer point;
-	
+	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime addDate;
 	//개인/부서
 	private String type;
 	//옵션(템 종류)
-	private String option;
+	private String productOption;
 	//queue/process/complete
 	private String status;
 }

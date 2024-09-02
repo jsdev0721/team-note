@@ -31,8 +31,8 @@ import com.groupware.note.department.Departments;
 import com.groupware.note.expense.ExpenseDataService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
-import com.groupware.note.leave.LeaveForm;
-import com.groupware.note.leave.LeaveService;
+import com.groupware.note.leaves.LeaveForm;
+import com.groupware.note.leaves.LeaveService;
 import com.groupware.note.user.UserDetails;
 import com.groupware.note.user.UserDetailsService;
 import com.groupware.note.user.UserService;
@@ -155,7 +155,7 @@ public class ApprovalController {
 		Users users = this.userService.getUser(principal.getName());
 		UserDetails userDetails = this.userDetailsService.findByUser(users);
 		Period leaveDate = Period.between(leaveForm.getStartDate(), leaveForm.getEndDate());
-		if(0 > (userDetails.getLeave() - (leaveDate.getDays()+1))) {
+		if(0 > (userDetails.getLeaves() - (leaveDate.getDays()+1))) {
 			bindingResult.reject("HRcreateFailed", "남은 휴가 일수가 선택한 휴가 일수보다 짧습니다.");
 			return "approval/approvalCreate_leave";
 		}
