@@ -1,4 +1,4 @@
-package com.groupware.note.leave;
+package com.groupware.note.leaves;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +19,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-public class Leave {
+public class Leaves {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
