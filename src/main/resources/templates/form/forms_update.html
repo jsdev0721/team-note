@@ -1,4 +1,13 @@
 <html layout:decorate="~{layout}">
+	<head>
+		<script>
+			function update(){
+				$("#fileName").css("display", "none");
+				$("#formfileMultiple").css("display", "block");
+			}
+		</script>
+		<title>서식 게시판 수정</title>
+	</head>
 	<div layout:fragment="content" class="container my-3">
 		<div class="my-3 border-bottom">
 			<h4>서식게시판 수정</h4>
@@ -15,7 +24,12 @@
 			</div>
 			<div class="mb-4">
 				<label for="formfileMultiple" class="form-label">첨부파일</label>
-				<input type="file" class="form-control" id="formfileMultiple" name="multiPartFile" multiple>
+					<button type="button" onclick="update()">파일 수정</button>
+						<div th:each="file : ${fileList}">
+							<p class="form-control" id="fileName" th:text="${file.originFileName}"></p>
+								<input type="file" class="form-control" id="formfileMultiple" name="multiPartFile" multiple th:value="${file.originFileName}" style="display: none;">
+					<!--<input type="file" class="form-control" id="formfileMultiple" name="multiPartFile" multiple>-->
+						</div>
 			</div>
 			<input type="submit" class="btn btn-success" value="등록하기">				
 		</form>

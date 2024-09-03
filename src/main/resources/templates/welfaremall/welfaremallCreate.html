@@ -19,7 +19,7 @@
 				</div>
 				<div class="card-body">
 					<div class="form-control" th:if="${optionList!=null}" th:text="${optionList}"></div>
-					<button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#exampleModal">옵션 추가</button>
+					<button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#exampleModal">옵션 수정</button>
 					<h5 class="card-text"> <textarea name="desciption" placeholder="내용을 입력해 주세요" style="font-size: 16px;"></textarea></h5>
 				</div>
 				<div>
@@ -41,7 +41,7 @@
 		</form>
 		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
-				<form class="modal-content" th:action="@{/welfaremall/optionInput}" method="post" th:object="${welfareMallForm}">
+				<form class="modal-content" th:action="@{|/welfaremall/optionInput|}" method="post" th:object="${welfareMallForm}">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5" id="exampleModalLabel">옵션 추가</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

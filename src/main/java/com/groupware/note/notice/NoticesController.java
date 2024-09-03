@@ -103,6 +103,7 @@ public class NoticesController {
 		Notices notices = this.noticesService.getNotice(noticeId);
 		if(notices.getUser().getUsername().equals(principal.getName())) {
 			model.addAttribute("notices",notices);
+			model.addAttribute("fileList",notices.getFileList());
 			}else {
 				return "redirect:/notices/list";
 				}
@@ -119,13 +120,13 @@ public class NoticesController {
 			return "notice/notices_update";
 		}
 		Notices notices = this.noticesService.getNotice(noticeId);
-		List<Files> fileList = new ArrayList<>();
+		List<Files> fileList = notices.getFileList();
 		if(noticeForm.getMultiPartFile()!=null&&!noticeForm.getMultiPartFile().isEmpty()) {
 			for(MultipartFile multipartFile : noticeForm.getMultiPartFile()) {
 				Files file = new Files();
 				file = this.fileService.uploadFile(multipartFile);
 				fileList.add(file);
-			}
+			}	
 		}
 		Users users = this.userService.getUser(principal.getName());
 		this.noticesService.updateNotice(notices , noticeForm.getTitle(), noticeForm.getContent(),users,fileList);

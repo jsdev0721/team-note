@@ -98,10 +98,11 @@ public class FormController {
 		
 		Forms forms = this.formService.getForm(formId);
 		if(forms.getUser().getUsername().equals(principal.getName())) {	
-		model.addAttribute("forms",forms);
-		}else {
-			return "redirect:/forms/list";
-		}
+			model.addAttribute("forms",forms);
+			model.addAttribute("fileList",forms.getFileList());
+			}else {
+				return "redirect:/forms/list";
+				}
 		return "form/forms_update";
 	}
 	@PreAuthorize("isAuthenticated()")
@@ -112,7 +113,7 @@ public class FormController {
 			return "form/forms_update";
 		}
 		Forms forms = this.formService.getForm(formId);
-		List<Files> fileList = new ArrayList<>();
+		List<Files> fileList = forms.getFileList();
 		if(formsForm.getMultiPartFile()!=null&&!formsForm.getMultiPartFile().isEmpty()) {
 			for(MultipartFile multipartFile : formsForm.getMultiPartFile()) {
 				Files file = new Files();
