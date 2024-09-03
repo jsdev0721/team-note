@@ -1,10 +1,26 @@
 <html layout:decorate="~{layout}">
-	<div layout:fragment="content" class="container">
-		<br>
-		<h4>인사 페이지</h4>
-		<br>
-			<tbody>
-			<table class="table">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/noticeForm.css}">
+		<title>인사 페이지</title>
+	</head>
+	<div layout:fragment="content" class="container my-3">
+		<div class="d-flex justify-content-center">
+			<h5>유저 목록</h5>
+		</div>
+		<div  class="my-3 border-bottom pb-2"></div>
+			<div class="searchAndCreate">
+				<div class="search-box">
+		<form th:action="@{/user/list}" method="post" >
+			<input type="text" name="searchKeyword" class="search-txt" placeholder="검색어를 입력하세요" />
+				<!--<input type="submit" value="검색" class="btn btn-success my-3" />-->
+				<button type="submit" class="search">
+					<img src="/images/search.png" alt="검색">
+				</button>	
+		</form>
+				</div>
+			</div>
+		<div style="display: flex;justify-content: space-between;">
+			<table class="table" style="flex: 0.4;margin-right: 20px;">
 				<thead class="table-success">
 					<tr>	
 						<th>name</th>
@@ -25,26 +41,23 @@
 				</tbody>
 			</table>
 			
-			<form th:action="@{/user/list}" method="post" >
-					<label class="form-check-label"><input type="text" name="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" />
-					<input type="submit" value="검색" class="btn btn-success my-3" />
-			</form>
-			<table class="table">
-							<thead class="table-success">
-								<tr>	
-									<th>username</th>
-									<th>updatePosition</th>
-									<th>updateDepartment</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="positions : ${positionsList}">
-									<td th:text="${positions.user.username}"></td>
-									<td th:text="${positions.position.positionName}"></td>
-									<td th:text="${positions.position.department.departmentName}"></td>
-								</tr>
-							</tbody>
-						</table>
-							</tbody>
+			
+			<table class="table" style="flex: 0.4;">
+				<thead class="table-success">
+					<tr>	
+						<th>username</th>
+						<th>updatePosition</th>
+						<th>updateDepartment</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="positions : ${positionsList}">
+						<td th:text="${positions.user.username}"></td>
+						<td th:text="${positions.position.positionName}"></td>
+						<td th:text="${positions.position.department.departmentName}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </html>

@@ -136,7 +136,7 @@ public class AttendanceService {
 				attendance.setUser(null);
 				this.attendanceRepository.save(attendance);
 			}
-		}else {throw new DataNotFoundException("데이터가 없습니다");}
+		}
 	}
 	
 	
