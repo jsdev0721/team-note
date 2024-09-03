@@ -35,12 +35,12 @@ a{text-decoration: none;color: #000;}
 .swiper-pagination-bullet-active{background-color: rgb(32, 62, 110) !important;border: 1px solid #fff;}
 
 /* sidebar */
-#sidebar{position: fixed;right: 0;top: 150px;display: flex;flex-direction: column;}
+#sidebar{position: fixed;right: 0;top: 150px;display: flex;flex-direction: column;z-index: 500;}
 .icon-wrap{border: 1px solid rgb(32, 62, 110);border-bottom-left-radius: 20px;border-top-left-radius: 20px;border-right: none;display: block;margin-bottom: 10px;background-color: #fff;}
 .icon{width: 60px;margin: 20px 10px;}
 
 /* calendar */
-.offcanvas.offcanvas-end{width: 40% !important;height: 50%;top: 70px;}
+.offcanvas.offcanvas-end{width: 40% !important;height: 70%;top: 70px;box-shadow: 0 0 10px rgba(0,0,0,0.5);}
 .fc-day-sun a{
     color: red !important;
 }
