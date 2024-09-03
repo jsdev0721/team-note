@@ -241,7 +241,7 @@ public class UserController {
 		UserDetails userDetails= this.userDetailsService.getUser(userId);
 		if(!users.getUsername().equals(principal.getName())) {
 		try {
-			this.expenseDataService.deleteExpense(userDetails);
+			//this.expenseDataService.deleteExpense(userDetails);
 			System.out.println("userExpenseNull완료");
 			this.attendanceService.deleteAttendance(users);
 			System.out.println("userattendanceNull완료");

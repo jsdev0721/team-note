@@ -48,7 +48,6 @@ public class CalendarService {
 				calendar.setUser(null);
 				this.calendarRepository.save(calendar);
 				}
-			}else {throw new DataNotFoundException("데이터가 없습니다");}
-		
+			}
 	}
 }

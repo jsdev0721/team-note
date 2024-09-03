@@ -71,13 +71,13 @@ public class ApprovalService {
 	}
 
 	public void deleteApproval(Users users) {
-		List<Approval> optional = this.approvalRepository.findByUser(users);
-		if(!optional.isEmpty() || optional.isEmpty()) {
-			for(Approval approval : optional) {
+		List<Approval> list = this.approvalRepository.findByUser(users);
+		if(!list.isEmpty() || list.isEmpty()) {
+			for(Approval approval : list) {
 				approval.setUser(null);
 				this.approvalRepository.save(approval);
 			}
-		}else {throw new DataNotFoundException("데이터가 없습니다");}
+		}
 	}
 
 	

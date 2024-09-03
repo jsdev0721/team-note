@@ -94,6 +94,6 @@ public class ExpenseDataService {
 				expense.setWriter(null);
 				this.eRepository.save(expense);	
 			}
-		}else {throw new DataNotFoundException("데이터가 없습니다");}
 		}
+	}
 }

@@ -38,5 +38,4 @@ public class LeaveService {
 			leave.setUser(null);
 		}
 	}
-
 }
