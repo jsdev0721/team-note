@@ -16,10 +16,11 @@
 				min-height: auto;
 				overflow: auto;
 				overflow-x: hidden;
+				border: 1px whitesmoke;
 			}
 			#purchasel{
 				width: 100%;
-				border: 0px;
+				
 			}
 			
 			#purchasel th {
@@ -48,7 +49,7 @@
 			<tr th:each="pData : ${pList}">
 				<td th:text="${#temporals.format(pData.addDate, 'yyyy-MM-dd')}"></td>
 				<td th:text="${pData.product.productName}"></td>
-				<td th:text="${pData.option}"></td>
+				<td th:text="${pData.productOption}"></td>
 				<td th:text="${pData.quantity}"></td>
 				<td th:text="${'₩' + #numbers.formatInteger((pData.point * pData.quantity), 3, 'COMMA')}"></td>
 			</tr>

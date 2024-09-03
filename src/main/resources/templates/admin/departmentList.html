@@ -1,0 +1,108 @@
+<html layout:decorate="~{layout}">
+	<head>
+		
+		<title>부서 목록</title>
+	</head>
+<div layout:fragment="content" class="container">
+	
+
+	<style>
+	    .sc {width: 100%; height: 800px; overflow: auto;  overflow-x: hidden;}
+	</style>
+	
+	<style>
+		.tableWrapper{
+			max-height: 800px;
+			min-height: auto;
+			overflow: auto;
+			overflow-x: hidden;
+			border: 1px whitesmoke;
+		}
+		#departmentl{
+			width: 100%;
+			
+		}
+		
+		#departmentl th {
+			position: sticky;
+			top: 0px;
+		}
+	</style>
+	
+	
+	
+	
+	<p></p>
+	<div th:if="${OX=='fail'}" >부서명을 다시 입력해주세요</div>
+	<p></p>
+	<div style="text-align: right;">
+		<button type="button" class="btn btn-secondary" th:if="${deleteOn=='false'}" th:onclick="|location.href='?deleteOn=true'|">부서 삭제</button>
+		<button type="button" class="btn btn-secondary" th:if="${deleteOn=='true'}" th:onclick="|location.href='?deleteOn=false'|">삭제 끝</button>
+			&nbsp;
+			
+	</div>
+	<p></p>
+	<div class="sc">
+<table id = "departmentl" class = "table table-striped table-hover">
+	<thead class="table-light">
+		<tr>
+			<th>번호</th>
+			<th>부서명</th>
+			<th th:if="${deleteOn=='true'}">삭제</th>
+		</tr>
+	</thead>	
+	<tbody>
+		
+		<tr th:each = "dep, loop : ${depList}">
+			<td th:text="${loop.index + 1}"></td>
+			<td th:text="${dep.departmentName}"></td>
+			<td th:if="${deleteOn=='true'} and ${dep.departmentName != 'Marketing'} 
+			and ${dep.departmentName != 'accounting'}
+			and ${dep.departmentName != 'temp'}
+			and ${dep.departmentName != 'HR'} ">
+				<a th:href="@{|/department/list?deleteOn=true&deleteId=${dep.departmentId}|}" >삭제</a>
+			</td>
+			<td	th:if="${deleteOn=='true'} and (${dep.departmentName == 'Marketing'} 
+						or ${dep.departmentName == 'accounting'}
+						or ${dep.departmentName == 'temp'}
+						or ${dep.departmentName == 'HR'} )"></td>
+			
+		</tr>
+	</tbody>
+	
+</table>
+</div>	
+<p></p>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#depCreateModal">부서 새로 만들기</button>
+				
+
+
+<!-- dataUploadModal_start-->
+<div class="modal fade" id="depCreateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">데이터 업로드</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+	  <form th:action="@{/department/create}" method="post" >
+      <div class="modal-body">
+		<h4>새 부서</h4>
+			<input class="form-control" type="text" id="createDep" name="createDep" />
+			<br>
+			<small>새로운 부서의 이름을 입력해주세요. 이미 존재하는 부서 이름은 사용할 수 없습니다.</small>
+			
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="submit" class="btn btn-primary">등록</button>
+      </div>
+	  </form>
+    </div>
+  </div>
+</div>	
+<!-- dataUploadModal_end-->
+
+</div>
+</html>
