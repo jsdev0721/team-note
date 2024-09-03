@@ -77,7 +77,7 @@ public class WelfareMallController {
 		if(!option.isBlank()&&!option.isEmpty()) {
 			optionList.add(0, option);
 		}
-		model.addAttribute("optionList" , optionList.toString().replaceAll("[\\[\\[\\]]",""));
+		model.addAttribute("optionList" , optionList.toString().replaceAll("[\\[\\[\\]]"," "));
 		return "welfaremall/welfaremallCreate";
 	}
 	@PostMapping("/create")
@@ -86,7 +86,7 @@ public class WelfareMallController {
 			return "welfaremall/welfaremallCreate";
 		}
 		WelfareMall welfareMall = new WelfareMall();
-		if(welfareMallForm.getOptionList()!=null) {
+		if(welfareMallForm.getOptionList()!=null&&!welfareMallForm.getOptionList().isEmpty()&&!welfareMallForm.getOptionList().get(0).isBlank()) {
 			welfareMall.setOptionList(welfareMallForm.getOptionList());			
 		}
 		welfareMall.setProductName(welfareMallForm.getProductName());

@@ -69,8 +69,7 @@ public class ExpenseController {
 		List<Cart> list = new ArrayList<>();
 		list = this.pdService.findPurchaseDetailList(model, year, month, id, pType);
 		model.addAttribute("pList", list);
-		model.addAttribute("pType", pType);
-		
+		model.addAttribute("pType", pType);		
 		return "expense/purchaseDetail";
 	}
 	
@@ -78,10 +77,10 @@ public class ExpenseController {
 	@GetMapping("/wellfarePoint")
 	public String wellfarepointInput(Model model, PointInputForm pointInputForm) {
 		List<String> depList = new ArrayList<>();
-		depList = this.wfiService.calDepPoint();
-		model.addAttribute("DeppList", depList);
 		WellfarePointInput wfpi = this.wfiService.wellfarePointInput();
 		model.addAttribute("wfPointInput", wfpi);
+		depList = this.wfiService.calDepPoint();
+		model.addAttribute("DeppList", depList);
 		List<Departments> dep = this.dService.findAll();
 		model.addAttribute("dep", dep);
 		return "expense/wellfarepoint";

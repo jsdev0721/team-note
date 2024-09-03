@@ -25,6 +25,7 @@
 			min-height: auto;
 			overflow: auto;
 			overflow-x: hidden;
+			border: 1px whitesmoke;
 		}
 		#purchasel{
 			width: 100%;
@@ -57,10 +58,10 @@
 		<table id="purchasel" class="table table-scriped-columns table-hover align-middle">
 			<thead>
 				<tr class="table-light">
-					<th>날짜</th>
-					<th th:if="${pt=='personal'}">이름</th>
-					<th th:if="${pt=='group'}">부서</th>
-					<th>금액</th>
+					<th style="width: 200px;">날짜</th>
+					<th th:if="${pt=='personal'}" style="width: 300px;">이름</th>
+					<th th:if="${pt=='group'}" style="width: 300px;">부서</th>
+					<th style="width: 200px;">금액</th>
 				</tr>
 			</thead>
 			<tbody>

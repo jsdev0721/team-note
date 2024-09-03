@@ -10,6 +10,7 @@
 		</div>
 		
 		<p></p>	
+		<div style="width: 300px;">
 	<form th:action="@{/expense/wellfarePoint}" method="post" th:object="${pointInputForm}" >
 		<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 		<p></p>
@@ -30,15 +31,20 @@
 		<input type="submit" value="저장하기" class="btn btn-primary my-2" />
 		
 	</form>
+	</div>
+	
+	
 	<p></p>
 	<table>
-		<tr><th>각 부서별 포인트</th></tr>
+		<tr><th>각 부서별 입력될 포인트 (입력시간 : 매3/9월 첫째 주 월요일) </th></tr>
 		<tr th:each="point : ${DeppList}">
 			<td th:text="${point}"></td>
 		</tr>
-		<tr><td text="  "></td></tr>
+	</table>
+	<table>
+		<tr><th>현재 부서별 포인트</th></tr>
 		<tr th:each="d : ${dep}">
-			<td th:text="|현재 ${d.departmentName} 포인트 : ${d.points}|"></td>
+			<td th:text="|${d.departmentName} : ${d.points} p|"></td>
 		</tr>
 	</table>
 	

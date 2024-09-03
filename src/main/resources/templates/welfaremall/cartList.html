@@ -34,12 +34,12 @@
 			<tbody>
 				<tr th:each="cart : ${cartList}">
 					<td scope="row"><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
-					<td th:text="${cart.option}"></td>
+					<td th:text="${cart.productOption}"></td>
 					<td th:text="${cart.point}"></td>
 					
-					<td><a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/deleteCart/${cart.product.productId}?to=cart&type=${type}&option=${cart.option}|}">-</a></td>
+					<td><a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/deleteCart/${cart.product.productId}?to=cart&type=${type}&option=${cart.productOption}|}">-</a></td>
 					<td th:text="${cart.quantity}"></td>
-					<td><a class="btn btn-success btn-sm" th:href="@{|/welfaremall/addCart/${cart.product.productId}?to=cart&type=${type}&option=${cart.option}|}">+</a></td>
+					<td><a class="btn btn-success btn-sm" th:href="@{|/welfaremall/addCart/${cart.product.productId}?to=cart&type=${type}&option=${cart.productOption}|}">+</a></td>
 					
 					<td th:text="${#temporals.format(cart.addDate,'MM.dd HH:mm')}"></td>
 					

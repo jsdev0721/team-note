@@ -35,7 +35,7 @@
 			<tbody>
 				<tr th:each="cart : ${cartList}">
 					<td><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
-					<td th:text="${cart.option}"></td>
+					<td th:text="${cart.productOption}"></td>
 					<td th:text="${cart.point}"></td>
 					<td th:text="${cart.quantity}"></td>
 					<td><a th:if="${cart.status}!='complete'" th:href="@{|/welfaremall/cancelPurchase/${cart.cartId}|}" type="button" class="btn btn-danger btn-sm" onclick="if(!confirm('정말로 취소하시겠습니까?')){return false;}">x</a></td>
