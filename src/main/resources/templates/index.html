@@ -17,6 +17,21 @@
 		<title>note</title>
 	</head>
 	<div layout:fragment="content" class="container my-3" id="main">
+		
+		<!-- 캘린더 -->
+		<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+			<div class="offcanvas-header">
+				<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">캘린더</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body">
+				<div class="container">
+					<div id='calendar'></div> <!--캘린더-->
+				</div>
+			</div>
+		</div>
+		<!-- 캘린더 -->
+		
 		<!-- 결재 -->
 		<div id="approval">
 			<div class="txt d-flex justify-content-between">
@@ -64,14 +79,16 @@
 					<h3>복지몰</h3>
 					<a th:href="@{/welfaremall/list}"><img src="/images/plus_site.png"></a>
 				</div>
-				<div class="swiper mySwiper">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide" th:each="product : ${welfaremallList}">
-							<img th:if="${product.mainImage!=null}" th:src="@{|/welfaremall/photo/${product.mainImage.fileId}|}">
-							<img th:unless="${product.mainImage!=null}" src="/images/sub_logo.png">
+				<div class="slider">
+					<div class="swiper mySwiper">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide" th:each="product : ${welfaremallList}">
+								<img th:if="${product.mainImage!=null}" th:src="@{|/welfaremall/photo/${product.mainImage.fileId}|}">
+								<img th:unless="${product.mainImage!=null}" src="/images/sub_logo.png">
+							</div>
 						</div>
+						<div class="swiper-pagination"></div>
 					</div>
-					<div class="swiper-pagination"></div>
 				</div>
 			</div> <!-- welfaremall end -->
 			<div id="publicForm">
@@ -125,17 +142,6 @@
 			<a href="#" class="calendar icon-wrap" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
 				<img src="/images/calendar_icons.png" alt="캘린더 아이콘" class="icon">
 			</a>
-			<div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-				<div class="offcanvas-header">
-					<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">캘린더</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-				</div>
-				<div class="offcanvas-body">
-					<div class="container">
-						<div id='calendar'></div> <!--캘린더-->
-					</div>
-				</div>
-			</div>
 			<!--캘린더-->
 			
 			<!-- 인사 -->
@@ -158,13 +164,13 @@
 		<script>
 			var swiper = new Swiper(".mySwiper", {
 				slidesPerView: "auto",
-				spaceBetween: 30,
+				spaceBetween: 10,
 				pagination: {
 					el: ".swiper-pagination",
 					clickable: true,
 				},
 				autoplay: {
-					delay: 2500,
+					delay: 3000,
 					disableOnInteraction: false,
 				},
 				loop:true
