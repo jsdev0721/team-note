@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.groupware.note.position.Positions;
+
 
 
 
@@ -19,5 +21,7 @@ public interface UserRepository extends JpaRepository<Users, Integer>{
 	
 	@Query("select u from Users u where u.position.department.departmentName = :depName")
 	List<Users> findByDep(@Param("depName") String depName);
+	
+	List<Users> findAllByPosition(Positions position);
 
 }

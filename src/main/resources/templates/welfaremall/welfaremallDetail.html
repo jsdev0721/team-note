@@ -15,7 +15,7 @@
 						<div class="card-text mt-3 mb-4" th:text="${welfaremall.description}"></div>
 					</div>
 					<div class="card-footer">
-						<div th:if="${!welfaremall.optionList.isEmpty}">
+						<div th:if="${welfaremall.optionList!=null}">
 							<form th:action="@{|/welfaremall/addCart/${welfaremall.productId}|}" method="get" class="d-grid gap-2 col-6 mx-auto">
 								<input type="hidden" name="to" value="list" />
 								<input type="hidden" name="type" th:value="${welfaremall.type}" />
@@ -29,7 +29,7 @@
 							</form>
 						</div>
 						
-						<div class="d-grid gap-2 col-6 mx-auto" th:unless="${!welfaremall.optionList.isEmpty}">
+						<div class="d-grid gap-2 col-6 mx-auto" th:unless="${welfaremall.optionList!=null}">
 							<a  th:href="@{|/welfaremall/addCart/${welfaremall.productId}?to=list&type=${welfaremall.type}|}" type="button" class="btn btn-outline-success" onclick="alert('장바구니추가');" >+</a>
 						</div>
 						<div class="text-end">
@@ -44,8 +44,8 @@
 		</div>
 		<div class="btn-group" role="group" aria-label="Basic mixed styles example">
 			<a type="button" class="btn btn-outline-primary" th:href="@{/welfaremall/list}" >목록</a>
-			<th:block><a type="button" class="btn btn-outline-primary" th:href="@{|/welfaremall/edit/${welfaremall.productId}|}">수정</a></th:block>
-			<th:block ><a type="button" class="btn btn-outline-danger" th:href="@{|/welfaremall/delete/${welfaremall.productId}|}">삭제</a></th:block>
+			<th:block sec:authorize="hasAuthority('ROLE_ACCOUNTING')"><a type="button" class="btn btn-outline-primary" th:href="@{|/welfaremall/edit/${welfaremall.productId}|}">수정</a></th:block>
+			<th:block sec:authorize="hasAuthority('ROLE_ACCOUNTING')"><a type="button" class="btn btn-outline-danger" th:href="@{|/welfaremall/delete/${welfaremall.productId}|}">삭제</a></th:block>
 		</div>
 	</div>
 </html>

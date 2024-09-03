@@ -159,6 +159,13 @@
 				</a>
 			</div>
 			<!-- 회계 -->
+			<!-- 부서 생성 -->
+			<div sec:authorize="hasAuthority('ROLE_ADMIN')">
+				<a th:href="@{/department/list}" class="depManage icon-wrap">
+					부서관리 입장
+				</a>
+			</div>
+			<!-- 부서 생성 -->
 		</div><!-- sidebar end -->
 		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 		<script>
