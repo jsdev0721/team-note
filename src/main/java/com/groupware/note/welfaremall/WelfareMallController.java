@@ -86,7 +86,7 @@ public class WelfareMallController {
 			return "welfaremall/welfaremallCreate";
 		}
 		WelfareMall welfareMall = new WelfareMall();
-		if(welfareMallForm.getOptionList()!=null) {
+		if(welfareMallForm.getOptionList()!=null&&!welfareMallForm.getOptionList().isEmpty()&&!welfareMallForm.getOptionList().get(0).isBlank()) {
 			welfareMall.setOptionList(welfareMallForm.getOptionList());			
 		}
 		welfareMall.setProductName(welfareMallForm.getProductName());
