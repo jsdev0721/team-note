@@ -1,0 +1,56 @@
+<html layout:decorate="~{layout}">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/approvalList.css}">
+		<script>
+			$(function(){
+				var type = $('#type').val();
+				if(type === "personal"){
+					$(".personal").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}else if(type === "group"){
+					$(".group").css({"background-color":"rgb(32, 62, 110)","color":"#fff"});
+				}
+			});
+		</script>
+		<title>카트 리스트</title>
+	</head>
+	<div layout:fragment="content" class="container">
+		<div class="list">
+			<input type="text" style="display: none;" th:value="${type}" id="type">
+		  	<ul> 
+		    	<li class="page-item"><a class="page-link personal" th:href="@{?type=personal}">개인별</a></li>
+		    	<li class="page-item"><a class="page-link group" th:href="@{?type=group}">부서별</a></li>
+		  	</ul>
+		</div><!-- tab end -->
+		<table class="table table-scriped-columns table-hover align-middle">
+			<thead>
+				<tr>
+					<th scope="col">제목</th>
+					<th scope="col">옵션</th>
+					<th scope="col">가격</th>
+					<th scope="col" align="middle" colspan="3" width="10%" >수량</th>
+					<th scope="col">추가날짜</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cart : ${cartList}">
+					<td scope="row"><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
+					<td th:text="${cart.option}"></td>
+					<td th:text="${cart.point}"></td>
+					
+					<td><a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/deleteCart/${cart.product.productId}?to=cart&type=${type}&option=${cart.option}|}">-</a></td>
+					<td th:text="${cart.quantity}"></td>
+					<td><a class="btn btn-success btn-sm" th:href="@{|/welfaremall/addCart/${cart.product.productId}?to=cart&type=${type}&option=${cart.option}|}">+</a></td>
+					
+					<td th:text="${#temporals.format(cart.addDate,'MM.dd HH:mm')}"></td>
+					
+				</tr>
+			</tbody>
+		</table><!-- 카트 리스트 end -->
+		<div class="button-group">
+			<a th:href="@{|/welfaremall/purchase?type=${type}|}" class="create">
+				<img src="/images/purchase.png" alt="카트">
+			</a>
+			<a th:href="@{|/welfaremall/list|}" class="create">리스트</a>
+		</div>
+	</div>
+</html>

@@ -16,6 +16,7 @@ import com.groupware.note.leave.LeaveForm;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
+import com.groupware.note.welfaremall.WelfareMallService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +27,7 @@ public class NoteController {
 	private final NoticesService noticesService;
 	private final ApprovalService approvalService;
 	private final UserService userService;
+	private final WelfareMallService welfareMallService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/")
@@ -34,8 +36,19 @@ public class NoteController {
 		model.addAttribute("formList", this.formService.formsList(page,4));
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
+<<<<<<< Updated upstream
 		model.addAttribute("approvalList", this.approvalService.ApprovalList(department, status, page , 10));
 		return "index";
+=======
+		model.addAttribute("approvalList", this.approvalService.ApprovalList(user, department, status, page , 10));
+		model.addAttribute("status", status);
+		model.addAttribute("welfaremallList", this.welfareMallService.findAll(page, 5));
+		if(!user.getStatus().equals("출근")) {
+			return "attendance/attendanceButton";
+		}else {			
+			return "index";
+		}
+>>>>>>> Stashed changes
 	}
 
 	
