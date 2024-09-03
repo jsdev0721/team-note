@@ -3,6 +3,7 @@ package com.groupware.note.position;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -46,5 +47,23 @@ public class PositionService {
 		}else {throw new DataNotFoundException("데이터가 없습니다");}
 	}
 	
+	public void insertPositionIntoNewDep(Departments dep) {
+		String[] positionset = {"section chief", "deputy", "worker" , "intern"};
+		
+		for(String position : positionset) {
+			Positions pos = new Positions();
+			pos.setDepartment(dep);
+			pos.setPositionName(position);
+			positionRepository.save(pos);
+			
+		}
+	}
+	
+	public void deletePositionOfDep(Departments dep) {
+		List<Positions> _pList = this.positionRepository.findAllByDepartment(dep);
+		for(Positions p : _pList) {
+			this.positionRepository.delete(p);
+		}
+	}
 }
 

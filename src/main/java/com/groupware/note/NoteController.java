@@ -36,7 +36,7 @@ public class NoteController {
 		Departments department = user.getPosition().getDepartment();
 		model.addAttribute("approvalList", this.approvalService.ApprovalList(user, department, status, page , 10));
 		model.addAttribute("status", status);
-		model.addAttribute("welfaremallList", this.welfareMallService.findAll(page, 3));
+		model.addAttribute("welfaremallList", this.welfareMallService.findAll(page, 4));
 		if(!user.getStatus().equals("출근")) {
 			return "attendance/attendanceButton";
 		}else {			
