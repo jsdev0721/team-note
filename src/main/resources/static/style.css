@@ -23,6 +23,7 @@ li{list-style: none;}
 
 /* 마이페이지 팝업 */
 .offcanvas-top{width: 350px;top: 65px !important;left: auto !important;right: 10px !important;height: 230px !important;z-index: 600;}
+.offcanvas-top{width: 350px;top: 65px !important;left: auto !important;right: 10px !important;height: 230px !important;z-index: 500; position: absolute;}
 .offcanvas-body{padding: 0 !important;height: 100%;}
 
 .my{box-shadow: 0 0 10px rgba(0,0,0,0.8);}
@@ -72,5 +73,5 @@ li{list-style: none;}
 .copy p{color: #fff; text-align: center !important;line-height: 50px;font-size: 14px;}
 
 #swiper{width:100%; height: 100%;}
-.swiper-slide {text-align: center; font-size: 18px; background: #fff; display: flex; justify-content: center; align-items: center;}
-.swiper-slide img {display: block; width: 100%; height: 100%; object-fit: cover;}
+.swiper-slide {text-align: center; font-size: 18px; background: #fff; display: flex; justify-content: center; align-items: center; }
+.swiper-slide img {display: block; width: 100%; height: 100%; object-fit: scale-down;}

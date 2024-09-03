@@ -231,7 +231,7 @@ public class UserController {
 		model.addAttribute("userList",userList);
 		System.out.println("검색을 합니다");
 		
-		return "HR_list";
+		return "HR/HR_list";
 	}
 	
 	@GetMapping("/delete/{userId}")

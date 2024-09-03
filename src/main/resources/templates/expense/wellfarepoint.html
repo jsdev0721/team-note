@@ -4,13 +4,12 @@
 	</head>
 <div layout:fragment="content" class="container">
 	
-	<p></p>
-	<div style="text-align: right;">
-			<button type="button" class="btn btn-info" th:onclick="|location.href='@{/expense/menu}'|">회계 메뉴</button>
-		</div>
+	
 		
-		<p></p>	
-		<div style="width: 300px;">
+		<p></p>
+
+		<div class="d-flex justify-content-between" >
+		<div style="width: 450px;">
 	<form th:action="@{/expense/wellfarePoint}" method="post" th:object="${pointInputForm}" >
 		<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 		<p></p>
@@ -31,22 +30,36 @@
 		<input type="submit" value="저장하기" class="btn btn-primary my-2" />
 		
 	</form>
+	
+	
+	<div><strong>포인트 입력시기</strong></div>
+	<div>부서 : 3월과 9월 1일 이후 첫 번째 평일 <br> 사원 : 매달 1일 이후 첫 번째 평일</div>
+	<p></p>
+	<div>포인트 계산식 : 부서 인원 x 인당 포인트 + 플러스 포인트</div>
 	</div>
 	
 	
 	<p></p>
-	<table>
-		<tr><th>각 부서별 입력될 포인트 (입력시간 : 매3/9월 첫째 주 월요일) </th></tr>
-		<tr th:each="point : ${DeppList}">
-			<td th:text="${point}"></td>
-		</tr>
-	</table>
-	<table>
-		<tr><th>현재 부서별 포인트</th></tr>
-		<tr th:each="d : ${dep}">
-			<td th:text="|${d.departmentName} : ${d.points} p|"></td>
-		</tr>
-	</table>
-	
+		<div style="text-align: left; width: 500px;">
+			<p></p>	
+		<table>
+			<tr><th>각 부서별 입력될 포인트</th></tr>
+			<tr th:each="point : ${DeppList}">
+				<td th:text="${point}"></td>
+			</tr>
+		</table>
+		<p></p>
+		<table>
+			<tr><th>현재 부서별 포인트</th></tr>
+			<tr th:each="d : ${dep}">
+				<td th:text="|${d.departmentName} : ${d.points} p|"></td>
+			</tr>
+		</table>
+		<p></p>
+		<div><strong>사원에게 입력되는 포인트 : </strong><span th:text="|${wfPointInput.individualPoint} p|"></span> </div>
+		
+	</div>
+
+</div>
 </div>
 </html>

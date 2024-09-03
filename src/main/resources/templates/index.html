@@ -83,8 +83,8 @@
 					<div class="swiper mySwiper">
 						<div class="swiper-wrapper">
 							<div class="swiper-slide" th:each="product : ${welfaremallList}">
-								<img th:if="${product.mainImage!=null}" th:src="@{|/welfaremall/photo/${product.mainImage.fileId}|}">
-								<img th:unless="${product.mainImage!=null}" src="/images/sub_logo.png">
+								<a th:if="${product.mainImage!=null}" th:href="@{|/welfaremall/detail/${product.productId}|}"><img th:src="@{|/welfaremall/photo/${product.mainImage.fileId}|}"></a>
+								<a th:unless="${product.mainImage!=null}" th:href="@{|/welfaremall/detail/${product.productId}|}"><img src="/images/sub_logo.png"></a>
 							</div>
 						</div>
 						<div class="swiper-pagination"></div>

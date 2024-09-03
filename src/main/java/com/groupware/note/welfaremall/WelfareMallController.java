@@ -73,7 +73,7 @@ public class WelfareMallController {
 	}
 	@PostMapping("/optionInput")
 	public String optionInput(Model model , WelfareMallForm welfareMallForm , @RequestParam(value = "option") String option) {
-		List<String> optionList = welfareMallForm.getOptionList().isEmpty() ? new ArrayList<>() : new ArrayList<>(welfareMallForm.getOptionList());
+		List<String> optionList = welfareMallForm.getOptionList()==null ? new ArrayList<>() : welfareMallForm.getOptionList();
 		if(!option.isBlank()&&!option.isEmpty()) {
 			optionList.add(0, option);
 		}
@@ -132,6 +132,9 @@ public class WelfareMallController {
 		welfareMallForm.setProductName(welfareMall.getProductName());
 		welfareMallForm.setDesciption(welfareMall.getDescription());
 		welfareMallForm.setPrice(welfareMall.getPrice());
+		List<String>optionList = welfareMall.getOptionList()==null ? null : welfareMall.getOptionList();
+		welfareMallForm.setOptionList(optionList);
+		model.addAttribute("optionList", optionList);
 		model.addAttribute("welfaremall", welfareMall);
 		model.addAttribute("fileList", welfareMall.getPhotos());
 		return "welfaremall/welfaremallEdit";
@@ -167,6 +170,42 @@ public class WelfareMallController {
 		welfareMall.getPhotos().remove(file);
 		this.fileService.delete(file);
 		return String.format("redirect:/welfaremall/edit/%s", id);
+	}
+	@GetMapping("/edit/{id}/optionEdit")
+	public String editOption(Model model , WelfareMallForm welfareMallForm , @PathVariable("id")Integer id , @RequestParam("existOption")String existOption) {
+		WelfareMall welfareMall = this.welfareMallService.findById(id);
+		welfareMallForm.setProductName(welfareMall.getProductName());
+		welfareMallForm.setDesciption(welfareMall.getDescription());
+		welfareMallForm.setPrice(welfareMall.getPrice());
+		List<String>optionList = welfareMall.getOptionList();
+		if(!existOption.isBlank()&&!existOption.isEmpty()) {
+			optionList.remove(existOption);
+			welfareMall.setOptionList(optionList);
+			this.welfareMallService.save(welfareMall);
+		}
+		welfareMallForm.setOptionList(optionList);
+		model.addAttribute("optionList", optionList);
+		model.addAttribute("welfaremall", welfareMall);
+		model.addAttribute("fileList", welfareMall.getPhotos());
+		return "welfaremall/welfaremallEdit";
+	}
+	@PostMapping("/edit/{id}/optionEdit")
+	public String editOption(Model model , WelfareMallForm welfareMallForm ,@RequestParam("option")String option , @PathVariable("id")Integer id) {
+		WelfareMall welfareMall = this.welfareMallService.findById(id);
+		welfareMallForm.setProductName(welfareMall.getProductName());
+		welfareMallForm.setDesciption(welfareMall.getDescription());
+		welfareMallForm.setPrice(welfareMall.getPrice());
+		List<String>optionList = welfareMall.getOptionList()==null ? new ArrayList<>() : welfareMall.getOptionList();
+		if(!option.isBlank()&&!option.isEmpty()) {
+			optionList.add(0, option);
+			welfareMall.setOptionList(optionList);
+			this.welfareMallService.save(welfareMall);
+		}
+		welfareMallForm.setOptionList(optionList);
+		model.addAttribute("optionList",optionList);
+		model.addAttribute("welfaremall", welfareMall);
+		model.addAttribute("fileList", welfareMall.getPhotos());
+		return "welfaremall/welfaremallEdit";
 	}
 	@GetMapping("/delete/{id}")
 	public String deleteWelfaremall(@PathVariable("id") Integer id) {
