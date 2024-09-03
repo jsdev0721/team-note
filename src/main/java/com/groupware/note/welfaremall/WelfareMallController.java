@@ -77,7 +77,7 @@ public class WelfareMallController {
 		if(!option.isBlank()&&!option.isEmpty()) {
 			optionList.add(0, option);
 		}
-		model.addAttribute("optionList" , optionList.toString().replaceAll("[\\[\\[\\]]",""));
+		model.addAttribute("optionList" , optionList.toString().replaceAll("[\\[\\[\\]]"," "));
 		return "welfaremall/welfaremallCreate";
 	}
 	@PostMapping("/create")
