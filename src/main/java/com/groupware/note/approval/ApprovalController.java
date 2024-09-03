@@ -104,7 +104,7 @@ public class ApprovalController {
 			if(approvalForm.getMultipartFiles()!=null&&!approvalForm.getMultipartFiles().isEmpty()) {
 				
 				List<Files> fileList = new ArrayList<>();
-				if(_approval.getDepartment().getDepartmentName().equals("accounting")) {
+				if(!user.getPosition().getDepartment().getDepartmentName().equals("accounting") &&_approval.getDepartment().getDepartmentName().equals("accounting")) {
 					for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
 						String fileExtension = this.fileService.extendsFile(multipartFile.getOriginalFilename());
 						if(this.fileService.validExcelFileExtension(fileExtension)||this.fileService.validFileExtension(fileExtension)) {
