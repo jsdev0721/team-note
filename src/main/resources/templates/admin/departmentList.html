@@ -71,10 +71,11 @@
 	</tbody>
 	
 </table>
-</div>	
 <p></p>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#depCreateModal">부서 새로 만들기</button>
-				
+<button type="button" class="btn btn-primary" th:if="${deleteOn=='false'}" data-bs-toggle="modal" data-bs-target="#depCreateModal">부서 새로 만들기</button>
+</div>	
+
+<p></p>				
 
 
 <!-- dataUploadModal_start-->
