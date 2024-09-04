@@ -72,6 +72,7 @@ public class ApprovalController {
 		if(bindingResult.hasErrors()) {
 			return "approvalCreate";
 		}
+		
 		try {
 			Approval _approval = new Approval();
 			Users user = this.userService.getUser(principal.getName());
@@ -81,14 +82,50 @@ public class ApprovalController {
 				_approval.setDepartment(department);
 			}
 			else {
-				Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
+				Departments department = user.getPosition().getDepartment();
 				_approval.setDepartment(department);
 			}
 			_approval.setTitle(approvalForm.getTitle());
 			_approval.setContent(approvalForm.getContent());
 			_approval.setUserSign(new String[3]);
+<<<<<<< Updated upstream
 			if(!approvalForm.getMultipartFiles().isEmpty()) {
 				_approval.setFileList(this.fileService.uploadFile(approvalForm.getMultipartFiles()));
+=======
+			if(approvalForm.getMultipartFiles()!=null&&!approvalForm.getMultipartFiles().isEmpty()) {
+				System.out.println("======================================================================================="+approvalForm.getMultipartFiles().get(0).getOriginalFilename());
+				List<Files> fileList = new ArrayList<>();
+				if(!user.getPosition().getDepartment().getDepartmentName().equals("accounting")&&_approval.getDepartment().getDepartmentName().equals("accounting")) {
+					for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
+						System.out.println("22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
+						String fileExtension = this.fileService.extendsFile(multipartFile.getOriginalFilename());
+						if(this.fileService.validExcelFileExtension(fileExtension)||this.fileService.validFileExtension(fileExtension)) {
+							Files file = new Files();
+							file = this.fileService.uploadFile(multipartFile);
+							fileList.add(file);
+						}else {
+							if(fileList!=null&&!fileList.isEmpty()) {
+								for(Files file : fileList) {
+									this.fileService.delete(file);
+								}
+							}
+							bindingResult.reject("파일형식인식불가", "파일 종류를 다시 확인해주세요");
+							return "approval/approvalCreate";
+						}
+					}
+					_approval.setFileList(fileList);
+					this.approvalService.save(_approval);
+					return "redirect:/approval/list";
+				}else {
+					for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
+						System.out.println("33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333");
+						Files file = new Files();
+						file = this.fileService.uploadFile(multipartFile);
+						fileList.add(file);
+					}
+					_approval.setFileList(fileList);					
+				}
+>>>>>>> Stashed changes
 			}
 			Approval approval = this.approvalService.save(_approval);
 		} catch (Exception e) {

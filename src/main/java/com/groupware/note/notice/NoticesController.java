@@ -1,11 +1,10 @@
 package com.groupware.note.notice;
 
 import java.security.Principal;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +22,6 @@ import com.groupware.note.files.Files;
 import com.groupware.note.user.UserService;
 import com.groupware.note.user.Users;
 
-import org.springframework.core.io.Resource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -82,8 +80,19 @@ public class NoticesController {
 			return "notices_form";
 		}
 		
+<<<<<<< Updated upstream
 		List<Files> files = new ArrayList<>();
 		files = this.fileService.uploadFile(noticeForm.getMultiPartFile());
+=======
+		List<Files> fileList = new ArrayList<>();
+		if(noticeForm.getMultiPartFile()!=null&&noticeForm.getMultiPartFile().size()>1) {
+			for(MultipartFile multipartFile : noticeForm.getMultiPartFile()) {
+				Files file = new Files();
+				file = this.fileService.uploadFile(multipartFile);
+				fileList.add(file);
+			}
+		}
+>>>>>>> Stashed changes
 		Users users = this.userService.getUser(principal.getName());
 		this.noticesService.create(noticeForm.getTitle(), noticeForm.getContent(), users,files);
 		
