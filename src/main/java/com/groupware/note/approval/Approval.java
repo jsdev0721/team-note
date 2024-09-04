@@ -39,9 +39,9 @@ public class Approval {
 	private String title;
 	
 	private String content;
-	
+	@Column(columnDefinition = "DATE")
 	private LocalDate startDate;
-	
+	@Column(columnDefinition = "DATE")
 	private LocalDate endDate;
 	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime updateTime; //0729 추가생성

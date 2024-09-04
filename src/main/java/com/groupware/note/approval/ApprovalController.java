@@ -90,12 +90,15 @@ public class ApprovalController {
 			Approval _approval = new Approval();
 			Users user = this.userService.getUser(principal.getName());
 			_approval.setUser(user);
-			if(!approvalForm.getDepartmentName().equals("General")) {
-				Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
+			if(approvalForm.getDepartmentName().equals("General")) {
+				Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
+				_approval.setDepartment(department);
+			}else if(approvalForm.getDepartmentName().equals("expense")) {
+				Departments department = this.departmentService.findBydepartmentName("accounting");
 				_approval.setDepartment(department);
 			}
 			else {
-				Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
+				Departments department = this.departmentService.findBydepartmentName(approvalForm.getDepartmentName());
 				_approval.setDepartment(department);
 			}
 			_approval.setTitle(approvalForm.getTitle());
@@ -104,7 +107,7 @@ public class ApprovalController {
 			if(approvalForm.getMultipartFiles()!=null&&!approvalForm.getMultipartFiles().isEmpty()) {
 				
 				List<Files> fileList = new ArrayList<>();
-				if(!user.getPosition().getDepartment().getDepartmentName().equals("accounting") &&_approval.getDepartment().getDepartmentName().equals("accounting")) {
+				if(approvalForm.getDepartmentName().equals("expense")) {
 					for(MultipartFile multipartFile : approvalForm.getMultipartFiles()) {
 						String fileExtension = this.fileService.extendsFile(multipartFile.getOriginalFilename());
 						if(this.fileService.validExcelFileExtension(fileExtension)||this.fileService.validFileExtension(fileExtension)) {
@@ -120,6 +123,20 @@ public class ApprovalController {
 							bindingResult.reject("파일형식인식불가", "파일 종류를 다시 확인해주세요");
 							return "approval/approvalCreate";
 						}
+					}
+					int excelCount =0;
+					int imageCount =0;
+					for(Files file : fileList) {
+						String fileExtension = this.fileService.extendsFile(file.getOriginFileName());
+						excelCount = this.fileService.validExcelFileExtension(fileExtension) ? ++excelCount : excelCount;
+						imageCount = this.fileService.validFileExtension(fileExtension) ? ++imageCount : imageCount;
+					}
+					if(excelCount<=0||imageCount<=0) {
+						for(Files file : fileList) {
+							this.fileService.delete(file);
+						}
+							bindingResult.reject("파일세트인식불가", "파일은 엑셀파일과 이미지 파일을 함께 올려주세요.");
+							return "approval/approvalCreate";
 					}
 					_approval.setFileList(fileList);
 					this.approvalService.save(_approval);
@@ -227,29 +244,34 @@ public class ApprovalController {
 			}
 			approval.setCommentList(null);			
 		}
-
-		if(approval.getDepartment().getDepartmentName().equals("HR")&&status.equals("complete")) {
+		int excelCount =0;
+		int imageCount =0;
+		for(Files file : approval.getFileList()) {
+			String fileExtension = this.fileService.extendsFile(file.getOriginFileName());
+			excelCount = this.fileService.validExcelFileExtension(fileExtension) ? ++excelCount : excelCount;
+			imageCount = this.fileService.validFileExtension(fileExtension) ? ++imageCount : imageCount;
+		}
+		if(approval.getStartDate()!=null&&approval.getEndDate()!=null&&status.equals("complete")) {
 			UserDetails userDetails = this.userDetailsService.findByUser(approval.getUser());
 			Users users = userDetails.getUser();
 			Period leaveDate = Period.between(approval.getStartDate(), approval.getEndDate());
 			this.userDetailsService.minusLeave(userDetails, leaveDate.getDays());
 			this.leaveService.create(users, approval.getTitle(), approval.getContent(), approval.getStartDate(), approval.getEndDate(), status, approval.getFileList());
 		}
-		
-		else if(approval.getDepartment().getDepartmentName().equals("accounting")&&status.equals("complete")) {
+		else if(excelCount>0&&imageCount>0&&status.equals("complete")) {
 			try {
 				Files image = new Files();
-				FileInputStream fileInputStream = null;
+				File _file =null;
 				for(Files file : approval.getFileList()) {
 					String fileExtension = this.fileService.extendsFile(file.getOriginFileName());
 					if(this.fileService.validExcelFileExtension(fileExtension)) {
-						File _file = new File(this.fileService.getFilePath(file.getOriginFileName(), file.getStoreFileName()));
-						fileInputStream = new FileInputStream(_file);
+						_file = new File(this.fileService.getFilePath(file.getOriginFileName(), file.getStoreFileName()));
+						
 					}else if(this.fileService.validFileExtension(fileExtension)) {
 						image = file;
 					}
 				}
-				XSSFWorkbook excelworkbook = new XSSFWorkbook(fileInputStream);
+				XSSFWorkbook excelworkbook = new XSSFWorkbook(_file);
 				XSSFSheet worksheet = excelworkbook.getSheetAt(0);
 				this.expenseDataService.uploadExpenseData(worksheet, image, approval.getUser());
 			} catch (Exception e) {
