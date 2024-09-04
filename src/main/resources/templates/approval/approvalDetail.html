@@ -52,7 +52,6 @@
 					<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn user-btn" th:href="@{|/approval/update/${id}?status=process|}">제출</a></th:block>
 	
 					<th:block th:if="${approval.status.equals('process')} and ${approval.userSign[1]==null}" sec:authorize="hasAuthority('ROLE_DEPUTY')"><a type="button" class="btn btn-outline-primary"th:href="@{|/approval/update/${id}?status=process|}">진행</a></th:block>
-					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
 	
 					<th:block th:if="${approval.status.equals('process')} and ${approval.userSign[1]==null}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}" onclick="if(!confirm('전결로 처리됩니다. \n진행하시겠습니까?')){return false;}">진행</a></th:block>
 					<th:block th:if="${approval.status.equals('process')} and ${approval.userSign[1]!=null}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
