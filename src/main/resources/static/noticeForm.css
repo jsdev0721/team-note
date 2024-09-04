@@ -1,3 +1,4 @@
+/* 공통 */
 .searchAndCreate{display: flex;justify-content: space-between;margin-top: 40px !important;margin-bottom: 20px;}
 .search-box{width: 50%;position: relative;}
 
@@ -9,3 +10,25 @@
 
 .create{border: 1px solid rgb(32, 62, 110);border-radius: 5px;}
 .create img{width: 35px;margin: 5px 15px;}
+
+/* 리스트 */
+.txt{text-align: center;margin-top: 50px;padding-bottom: 20px;color: rgb(32, 62, 110);}
+table th,td{text-align: center;}
+.title th{background-color: #eee;}
+
+/* 새글 생성 */
+.tit{text-align: center;margin-top: 50px;padding-bottom: 20px;color: #777;}
+
+.input-form{border: 1px solid rgb(32, 62, 110);padding: 30px;border-radius: 10px;}
+
+.input{display: flex;margin-bottom: 20px;height: 40px;}
+.input label{flex: 0.1;margin-right: 10px !important;border-radius: 5px;margin: 0;border: 1px solid #ddd;text-align: center;line-height: 38px;}
+.input input{flex: 0.9;}
+.input textarea{flex: 0.9;}
+
+.btn{width: 100%;background-color: rgb(32, 62, 110);color: #fff;height: 50px;margin-top: 30px;}
+.btn:hover{background-color: rgb(32, 62, 110);color: #fff;}
+.btn:focus{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
+.btn:active{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
+
+.close{text-decoration: underline;display: block;text-align: right;margin-top: 10px;}

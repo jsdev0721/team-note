@@ -1,25 +1,29 @@
 <html layout:decorate="~{layout}">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/noticeForm.css}">
+		<title>공지 생성</title>
+	</head>
 	<div layout:fragment="content" class="container my-3">
-		<div class="my-3 border-bottom">
-			<h4>공지사항</h4>
+		<div class="tit">
+			<h4>공지사항 등록</h4>
 		</div>
 		<form th:action="@{/notices/create}" th:object="${noticeForm}" method="post" enctype="multipart/form-data">
 			<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
 			
-			<div class="mb-4">
-				<lable for="title" class="form-label">제목</lable>
-				<input type="text" class="form-control" name="title">
-			</div>
-			<div class="mb-4">
-				<label for="content" class="form-label">내용</label>
-				<input type="text" class="form-control" name="content">
-			</div>
-			<div class="mb-4">
-				<label for="formfileMultiple" class="form-label">첨부파일</label>
+			<div class="input-form">
+				<div class="input">
+					<label for="title" class="form-label">제목</label>
+					<input type="text" class="form-control" name="title">
+				</div>
+				<div class="input">
+					<label for="content" class="form-label">내용</label>
+					<input type="text" class="form-control" name="content">
+				</div>
 				<input type="file" class="form-control" id="formfileMultiple" name="multiPartFile" multiple>
-			</div>
-			<input type="submit" class="btn btn-success" value="등록하기">				
+				<input type="submit" class="btn" value="등록하기">		
+			</div>		
 		</form>
+		<a th:href="@{/notices/list}" class="close">나가기</a>
 	</div>
 	<br>
 </html>

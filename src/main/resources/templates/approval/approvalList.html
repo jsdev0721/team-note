@@ -44,16 +44,12 @@
 			</a>
 		</div><!-- search, create end -->
 		<table class="table table-scriped-columns table-hover align-middle">
-			<thead>
-				<tr>
-					<th>제목</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="approval : ${approvalList}">
-					<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
-				</tr>
-			</tbody>
+			<tr class="title">
+				<th>제목</th>
+			</tr>
+			<tr th:each="approval : ${approvalList}">
+				<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
+			</tr>
 		</table><!-- 결재 리스트 end -->
 		<div th:if="${!approvalList.isEmpty()}">
 			<ul class="pagination justify-content-center">

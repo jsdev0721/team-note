@@ -3,6 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="_csrf_header" th:content="${_csrf.headerName}">
+		<meta name="_csrf" th:content="${_csrf.token}">
 		<link rel="stylesheet" type="text/css" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
@@ -11,7 +13,76 @@
 		<script th:src="@{/bootstrap.min.js}"></script>
 		<script th:src="@{/show_password.js}"></script>
 		<script>
-			function setPassword(){
+			var time = 180; //이메일 코드 유효 시간 3분
+			var btn = document.getElementById('button');
+			var setTime = null;
+			function limit() {
+				if(time > 0) {
+					time = time - 1;
+					var min = parseInt(time / 60);
+					var sec = time % 60;
+					min = checkTime(min);
+					sec = checkTime(sec);
+					document.getElementById('limit').innerHTML = min + ":" + sec;
+					setTime = setTimeout(limit, 1000);
+				}else {
+					clearTimeout(setTime);
+					time = 180;
+					var timeLimit = confirm("이메일 인증 코드 유효시간이 초과되었습니다.\n\n이메일 인증 코드를 다시 받으시겠습니까?");
+					if(timeLimit) {
+						$.ajax({
+							type: "POST",
+							url: "/email/mailSend",
+							beforeSend: function(xhr){
+						        xhr.setRequestHeader(header, token);
+						    },
+							crossDomain: true,
+							data: {"email" : $("#email").val()},
+							success: function(data){
+								alert("이메일 코드가 다시 발송되었습니다.\n이메일 코드를 확인하신 후 이메일 인증을 완료해 주세요.");
+								limit();
+								$("#mailCode").attr("value",data);
+							}
+						});
+					}else {
+						location.href = "/user/login";
+					}
+				}
+			}//limit end
+			function checkTime(i) {
+			    if (i < 10) {i = "0" + i}; 
+			    return i;
+			}
+			
+			var header = $("meta[name='_csrf_header']").attr('content');
+			var token = $("meta[name='_csrf']").attr('content');
+			function mailSend(){ //이메일 발송
+				var username = $("#username").val();
+				if(!username){
+					alert("아이디를 입력해 주세요.");
+				}else {
+					$.ajax({
+						type: "POST",
+						url: "/user/find/pw",
+						beforeSend: function(xhr){
+						    xhr.setRequestHeader(header, token);
+						},
+						data: {"username": username},
+						success: function(data){
+							$("#checkEmail").css("display","block");
+							$("#findPW").css("display","none");
+							alert("해당 아이디로 이메일을 찾아 인증 번호를 발송하였습니다.\n\n이메일 메일함을 확인해 인증을 완료해 주시기 바랍니다.");
+							limit();
+							$("#mailCode").attr("value",data);
+						},
+						error: function(){
+							$("#username").val("");
+							alert("해당 아이디를 통한 이메일 발송에 실패하였습니다.\n정확한 아이디를 입력 후 인증을 완료해 주시기 바랍니다.");
+						}
+					});
+				}
+			}
+			function setPassword(){ //비밀번호 변경
 				var password = $("#password").val();
 				var passwordCheck = $("#passwordCheck").val();
 				if(password || passwordCheck){
@@ -20,25 +91,76 @@
 					}
 				}
 			}
+			
+			function codeCheck() {
+				var number = document.getElementById("number").value;
+				var mailCode = document.getElementById("mailCode").value;
+				if(!number){
+					alert("인증 코드를 입력해 주세요.");
+				}else {
+					if(number === mailCode) {
+						alert("이메일 인증이 완료되었습니다.")
+						$("#changePW").css("display","block");
+						$("#checkEmail").css("display","none");
+						var username = $("#username").val();
+						$("#hideUsername").attr("value",username);
+						clearTimeout(setTime);
+						time = 180;
+					}else {
+						$('#number').val("");
+						var confirmFlag = confirm("이메일 인증에 실패하였습니다.\n\n이메일 인증 코드를 다시 받으시겠습니까?")
+						clearTimeout(setTime);
+						time = 180;
+						if(confirmFlag){
+							$.ajax({
+								type: "POST",
+								url: "/user/find/pw",
+								beforeSend: function(xhr){
+							        xhr.setRequestHeader(header, token);
+							    },
+								crossDomain: true,
+								data: {"username" : $("#username").val()},
+								success: function(data){
+									alert("이메일 코드가 다시 발송되었습니다.\n이메일 코드를 확인하신 후 이메일 인증을 완료해 주세요.");
+									limit();
+									$("#mailCode").attr("value",data);
+								}
+							});
+						}else {
+							location.href = "/user/login";
+						}
+					}
+				} //else end
+			}//codeCheck end
 		</script>
 		<title>비밀번호 찾기</title>
 	</head>
 	<body class="container">
 		<a th:href="@{/}" class="logo"><img src="/images/sub_logo.png" class="mx-auto d-block mt-5" style="width: 300px;"></a>
-		<form th:action="@{/user/find/pw}" method="post" id="findPW" class="was-validated" th:if="${#bools.isFalse(check)}">
+		<div id="findPW">
 			<div class="input">
 				<i class="bi bi-person-exclamation"></i>
-				<input type="text" id="username" name="username" class="form-control" placeholder="아이디를 입력해 주세요" required>
+				<input type="text" id="username" name="username" class="form-control" placeholder="아이디를 입력해 주세요">
 			</div>
-			<button type="submit" class="btn">비밀번호 찾기</button>
-		</form>
+			<button type="button" class="btn" onclick="mailSend()">비밀번호 찾기</button>
+		</div>
 		
-		<!-- 아이디가 존재할 때 -->
-		<div th:if="${#bools.isTrue(check)}">
+		<input type="text" id="mailCode" value="" style="display: none;">
+		<div id="checkEmail" style="display: none;">
+			<div class="input">
+				<i class="bi bi-person-lock"></i>
+				<input type="text" id="number" name="number" class="form-control" placeholder="인증 코드를 입력해 주세요">
+				<p id="limit"></p>
+			</div>
+			<button type="button" id="button" class="btn" onclick="codeCheck()">인증하기</button>
+		</div>
+		
+		<!-- 이메일 인증 완료 후 -->
+		<div style="display: none;" id="changePW">
 			<form th:action="@{/user/change/pw}" id="setting-form" th:object="${userPasswordForm}" method="post">
 				<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 				
-				<input type="hidden" th:field="*{username}" th:value="${users.username}">
+				<input type="hidden" th:field="*{username}" id="hideUsername">
 				<div class="setPW">
 					<label for="password" class="form-label">비밀번호 재설정</label>
 					<div class="input password" style="position: relative;">
