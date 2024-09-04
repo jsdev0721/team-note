@@ -115,7 +115,7 @@
 						    url: "/calendar/save",
 						    data: eventData,
 						    success: function(response) {
-						        calendar.addEvent(eventData);
+						        calendar.refetchEvents();
 						        $("#exampleModal").modal("hide");
 						        $("#title").val("");
 						        $("#start").val("");
