@@ -58,7 +58,8 @@
 	
 	<p></p>
 	
-	
+	<div style="text-align: right;" th:if="${totalPrice}!=0" th:text="${'총액 : ₩' + #numbers.formatInteger(totalPrice, 3, 'COMMA')}|"></div>
+	<p></p>
 	<div class="sc">
 <table id = "expensel" class = "table table-striped table-hover">
 	<thead class="table-light">
@@ -67,6 +68,7 @@
 			<th>날짜</th>
 			<th>부서</th>
 			<th>이름</th>
+			<th>비목</th>
 			<th>금액</th>
 			
 		</tr>
@@ -77,9 +79,11 @@
 			<td th:text="${loop.index + 1}"></td>
 			<td><a th:href="@{|/expense/lists?date=${expense.useDate}|}" th:text="${#temporals.format(expense.useDate, 'yy-MM-dd')}"></a></td>
 			
-			<td><a th:href="@{|/expense/list?st=${expense.writer.user.position.department.departmentName}|}" th:text="${expense.writer.user.position.department.departmentName}"></a></td>
+			<td><a th:href="@{|/expense/list?dn=${expense.writer.user.position.department.departmentName}|}" th:text="${expense.writer.user.position.department.departmentName}"></a></td>
 			
-			<td><a th:href="@{|/expense/list?st=${expense.writer.email}|}" th:text="${expense.writer.name}"></a></td>
+			<td><a th:href="@{|/expense/list?userId=${expense.writer.userId}|}" th:text="${expense.writer.name}"></a></td>
+			
+			<td><a th:href="@{|/expense/list?et=${expense.expenseType} |}" th:text="${expense.expenseType}" ></td>
 			
 			<td><button class="btn btn-light" th:popovertarget="@{|popup/${expense.file.fileId}|}" popovertargetaction="toggle">
 				<div th:text="${'₩' + #numbers.formatInteger(expense.amount, 3, 'COMMA')}" ></div>
@@ -88,7 +92,8 @@
 			
 			<div th:id="@{|popup/${expense.file.fileId}|}" popover>
 				<dl>
-					<dt><div th:text="|항목 : ${expense.expenseType}|"></div></dt>
+					<dt><div th:text="|거래처 : ${expense.account}|"></div></dt>
+					<dt><div th:text="|내역 : ${expense.breakDown}|"></div></dt>
 					<dt><div th:text="|비고 : ${expense.description}|"></dt>
 					<dt><p></p></dt>
 					<dt><img th:src="@{|/expense/photo/${expense.file.fileId}|}" style="width: 600px;"></dt>	
@@ -101,6 +106,7 @@
 </table>
 </div>	
 <p></p>
+
 
 <!--dateSetModal_start-->
 <div class="modal fade" id="dateSetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

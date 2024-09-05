@@ -21,8 +21,8 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 	List<Expense> findByDepOrderByDate(@Param("departmentName") String departmentName );
 	
 	
-	@Query("select e from Expense e where e.writer.email = :email order by e.useDate desc")
-	List<Expense> findByEmailOrderByDate(@Param("email") String email); 
+	@Query("select e from Expense e where e.writer.userId = :userId order by e.useDate desc")
+	List<Expense> findByUserIdOrderByDate(@Param("userId") Integer userId); 
 	
 	@Query("select e from Expense e where e.writer.user.position.department.departmentName = :departmentName order by e.useDate desc, e.writer.name asc ")
 	List<Expense> findByDepOrderByDateandName(@Param("departmentName") String departmentName);
@@ -34,4 +34,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 	List<Expense> findBetDate(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 	
 	List<Expense> findByWriter(UserDetails user);
+	
+	@Query("select e from Expense e where e.expenseType = :expenseType order by e.useDate desc ")
+	List<Expense> findByExpenseTypeOrderByDate(@Param("expenseType") String expenseType);
 }
