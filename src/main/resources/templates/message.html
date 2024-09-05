@@ -89,7 +89,7 @@
 			<div class="row justify-content-center my-3">
 				<div class="input-group col-9" style="width: 400px;">
 	        	<input class="form-control" type="text" id="messageInput" placeholder="메시지를 입력하세요" />
-					<button class="btn btn-primary" id="enterkey" onclick="sendMessage()">전송</button>
+					<button class="btn-a" id="enterkey" onclick="sendMessage()">전송</button>
 				</div>
 				
 			</div>
@@ -211,13 +211,13 @@
 			let mess = document.createElement('div');
 			let empty  = document.createElement('br');
 			
-			let messageTime =  ' '+ message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16) + ' ';
+			let messageTime = message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16);
 			let alignmentClass = (message.sender.username === selectedUsername) ? 'left-align' : 'right-align';
 			let font = mess.style.fontSize="small";
 			let efont = empty.style.fontSize = "small";
 			//fetch로 메세지 데이터 1로 바꿔주기
 			messageElement.classList.add(alignmentClass);
-			messageElement.innerText =  ' ' + message.content + ' ' ;
+			messageElement.innerText =  message.content ;
 			mess.classList.add(alignmentClass);
 			mess.innerText = messageTime;
 			messages.appendChild(messageElement);

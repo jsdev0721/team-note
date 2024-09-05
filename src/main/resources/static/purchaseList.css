@@ -3,3 +3,12 @@
 .list ul li{flex: 1;border-right: 1px solid rgb(32, 62, 110);}
 .list ul li:last-child{border: none;}
 .page-link{display: block;height: 40px;line-height: 40px;text-align: center;}
+
+.btn-a{
+	background-color:ghostwhite;
+		color: slategray;
+		border: 0px;
+		border-radius: 5px;
+		width: 120px;
+		height: 30px;
+}

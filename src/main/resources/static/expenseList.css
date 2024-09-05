@@ -12,3 +12,23 @@
 .create{border: 1px solid rgb(32, 62, 110);border-radius: 5px;}
 .create img{width: 35px;margin: 5px 15px;}
 .cart{width: 35px;margin:5px 15px;}
+
+
+.btn-a{
+	background-color:ghostwhite;
+		color: slategray;
+		border: 0px;
+		border-radius: 5px;
+		width: 120px;
+		height: 30px;
+}
+
+
+.btn-b{
+	background-color:  rgb(32, 62, 110);
+	color: whitesmoke;
+	border: 0px;
+	border-radius: 5px;
+	width: 90px;
+	height: 30px;
+}

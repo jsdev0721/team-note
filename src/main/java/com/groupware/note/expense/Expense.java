@@ -27,15 +27,28 @@ public class Expense {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long expenseDataId;
 	
+	//작성자
 	@ManyToOne
 	@JoinColumn(name="writer")
 	private UserDetails writer;
 	
-	private String expenseType;
-	private double amount;
+	
 	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime useDate;
+	//거래처
+	
+	//내역
+	
+	//금액
+	private double amount;
+	
+	//비목
+	private String expenseType;
+	
+	//비고
 	private String description;
+	
+	//파일(영수증)
 	@ManyToOne
 	private Files file;
 	
