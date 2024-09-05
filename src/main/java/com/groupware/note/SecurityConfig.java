@@ -22,8 +22,8 @@ public class SecurityConfig {
 		http
 		.authorizeHttpRequests((authorizeHttpRequest) -> authorizeHttpRequest
 				.requestMatchers("/user/list").hasRole("HR")
-				.requestMatchers("/expense/").hasRole("accounting")
-				.requestMatchers("/department/list").hasRole("admin")
+				.requestMatchers("/expense/").hasRole("ACCOUNTING")
+				.requestMatchers("/department/list").hasRole("ADMIN")
 				.requestMatchers("/**").permitAll())
 		.csrf((csrf) -> csrf
 				.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
