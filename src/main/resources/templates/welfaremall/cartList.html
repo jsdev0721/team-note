@@ -1,6 +1,7 @@
 <html layout:decorate="~{layout}">
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/approvalList.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/welfaremall.css}">
 		<script>
 			$(function(){
 				var type = $('#type').val();
@@ -11,7 +12,7 @@
 				}
 			});
 		</script>
-		<title>카트 리스트</title>
+		<title>복지몰 | 장바구니</title>
 	</head>
 	<div layout:fragment="content" class="container">
 		<div class="list">
@@ -23,7 +24,7 @@
 		</div><!-- tab end -->
 		<table class="table table-scriped-columns table-hover align-middle">
 			<thead>
-				<tr>
+				<tr class="title">
 					<th scope="col">제목</th>
 					<th scope="col">옵션</th>
 					<th scope="col">가격</th>
@@ -31,6 +32,7 @@
 					<th scope="col">추가날짜</th>
 				</tr>
 			</thead>
+
 			<tbody>
 				<tr th:each="cart : ${cartList}">
 					<td th:if="${cart.product!=null}" scope="row"><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
@@ -46,15 +48,15 @@
 					
 				</tr>
 			</tbody>
+
 		</table><!-- 카트 리스트 end -->
-			<div> 총 갯수는 [[${quantity}]]개 입니다.</div>
-			<div> 총 결제금액은 [[${totalPrice}]]원 입니다.</div>
-			<form th:action="@{/welfaremall/purchase}" method="post">
-				<input type="hidden" name="type" th:value="${type}"/>
-				<input type="hidden" name="to" value="cart" />
-				<input class="cart" th:unless="${run} and ${!cartList.isEmpty}" type="image" src="/images/cart.png" disabled/>
-				<input class="cart" th:if="${run} and ${!cartList.isEmpty}" type="image" src="/images/cart.png" onclick="if(!confirm('정말로 결제하시겠습니까?')){return false;}" />
-			</form>
-		
-	</div>
+		<div> 총 갯수는 [[${quantity}]]개 입니다.</div>
+		<div> 총 결제금액은 [[${totalPrice}]]원 입니다.</div>
+		<form th:action="@{/welfaremall/purchase}" method="post" class="cart-form">
+			<input type="hidden" name="type" th:value="${type}"/>
+			<input type="hidden" name="to" value="cart" />
+			<input class="buy-btn" th:unless="${run} and ${!cartList.isEmpty}" type="text" value="구매하기" disabled/>
+			<input class="buy-btn" th:if="${run} and ${!cartList.isEmpty}" type="text" value="구매하기" style="cursor: pointer;" onclick="if(!confirm('정말로 결제하시겠습니까?')){return false;}" />
+		</form>
+	</div><!-- container end -->
 </html>
