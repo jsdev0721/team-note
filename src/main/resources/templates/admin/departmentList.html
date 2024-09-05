@@ -36,9 +36,11 @@
 	<div th:if="${OX=='fail'}" >부서명을 다시 입력해주세요</div>
 	<p></p>
 	<div style="text-align: right;">
+		<button type="button" class="btn btn-primary" th:if="${deleteOn=='false'}" data-bs-toggle="modal" data-bs-target="#depCreateModal">부서 새로 만들기</button>
+		&nbsp;
 		<button type="button" class="btn btn-secondary" th:if="${deleteOn=='false'}" th:onclick="|location.href='?deleteOn=true'|">부서 삭제</button>
 		<button type="button" class="btn btn-secondary" th:if="${deleteOn=='true'}" th:onclick="|location.href='?deleteOn=false'|">삭제 끝</button>
-			&nbsp;
+		&nbsp;
 			
 	</div>
 	<p></p>
@@ -72,7 +74,6 @@
 	
 </table>
 <p></p>
-<button type="button" class="btn btn-primary" th:if="${deleteOn=='false'}" data-bs-toggle="modal" data-bs-target="#depCreateModal">부서 새로 만들기</button>
 </div>	
 
 <p></p>				
