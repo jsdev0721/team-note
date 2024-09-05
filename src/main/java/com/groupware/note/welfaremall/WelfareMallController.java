@@ -211,6 +211,13 @@ public class WelfareMallController {
 	public String deleteWelfaremall(@PathVariable("id") Integer id) {
 		WelfareMall welfareMall = this.welfareMallService.findById(id);
 		List<Files> fileList = welfareMall.getPhotos();
+		List<Cart> cartList = this.cartService.findByProduct(welfareMall);
+		for(Cart cart : cartList) {
+			if(cart.getStatus().equals("queue")) {
+				this.cartService.delete(cart);
+			}
+			cart.setProduct(null);
+		}
 		this.welfareMallService.delete(welfareMall);
 		if(!fileList.isEmpty()) {
 			for(Files file : fileList) {
@@ -270,7 +277,7 @@ public class WelfareMallController {
 		int quantity = 0;
 		for(Cart cart : cartList) {
 			quantity += cart.getQuantity();
-			sum += cart.getQuantity()*cart.getProduct().getPrice();
+			sum += cart.getQuantity()*cart.getPoint();
 		}
 		UserDetails userDetail = this.userDetailsService.findByUser(user);
 		boolean run = false;

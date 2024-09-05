@@ -21,7 +21,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 	List<Cart> findByUser(Users user);
 	List<Cart> findByUserAndTypeAndStatusNotOrderByAddDate(Users user , String type , String status);
 	List<Cart> findByUserAndTypeAndStatusAndAddDate(Users user , String type , String status , LocalDateTime addDate);
-	
+	List<Cart> findByProduct(WelfareMall product);
 	
 	//회계
 	@Query("select c from Cart c where c.status= :status and c.type= :type and c.user.position.department= :department order by c.addDate desc")

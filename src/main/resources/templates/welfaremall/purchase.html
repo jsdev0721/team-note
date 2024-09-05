@@ -34,7 +34,8 @@
 			</thead>
 			<tbody>
 				<tr th:each="cart : ${cartList}">
-					<td><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
+					<td th:if="${cart.product!=null}"><a th:href="@{|/welfaremall/detail/${cart.product.productId}|}" th:text="${cart.product.productName}"></a></td>
+					<td th:unless="${cart.product!=null}">삭제된 항목</td>
 					<td th:text="${cart.productOption}"></td>
 					<td th:text="${cart.point}"></td>
 					<td th:text="${cart.quantity}"></td>

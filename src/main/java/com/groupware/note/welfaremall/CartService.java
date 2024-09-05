@@ -53,6 +53,9 @@ public class CartService {
 	public List<Cart> findAll() {
 		return this.cartRepository.findAll();
 	}
+	public List<Cart> findByProduct(WelfareMall product) {
+		return this.cartRepository.findByProduct(product);
+	}
 	public Cart findByUserAndProductAndStatusAndOptionLike(WelfareMall product , Users user , String status , String productOption) {
 		Optional<Cart> _cart = this.cartRepository.findByUserAndProductAndStatusAndProductOptionLike(user, product, status, productOption);
 		return _cart.isEmpty() ? new Cart() : _cart.get();
