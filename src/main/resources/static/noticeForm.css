@@ -1,4 +1,3 @@
-/* 공통 */
 .searchAndCreate{display: flex;justify-content: space-between;margin-top: 40px !important;margin-bottom: 20px;}
 .search-box{width: 50%;position: relative;}
 
@@ -11,12 +10,12 @@
 .create{border: 1px solid rgb(32, 62, 110);border-radius: 5px;}
 .create img{width: 35px;margin: 5px 15px;}
 
-/* 리스트 */
+/* list */
 .txt{text-align: center;margin-top: 50px;padding-bottom: 20px;color: rgb(32, 62, 110);}
 table th,td{text-align: center;}
 .title th{background-color: #eee;}
 
-/* 새글 생성 */
+/* create */
 .tit{text-align: center;margin-top: 50px;padding-bottom: 20px;color: #777;}
 
 .input-form{border: 1px solid rgb(32, 62, 110);padding: 30px;border-radius: 10px;}
@@ -32,3 +31,24 @@ table th,td{text-align: center;}
 .btn:active{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
 
 .close{text-decoration: underline;display: block;text-align: right;margin-top: 10px;}
+
+/* detail */
+.detail{border: 1px solid rgb(32, 62, 110);border-radius: 5px;padding: 20px;margin-top: 50px;}
+.detail-input{display: flex;}
+.detail-input p{height: 40px;line-height: 40px;border: 1px solid #ddd;border-radius: 5px;}
+.detail-input p:nth-child(1){flex: 0.3;margin-right: 10px;text-align: center;background-color: #eee;}
+.detail-input p:nth-child(2){flex: 0.7;padding-left: 10px;}
+
+.download{display: flex;width: 100%;}
+.download p{flex: 0.3;height: 40px;line-height: 40px;text-align: center;border: 1px solid #ddd;background-color: #eee;
+	border-top-left-radius: 5px;border-bottom-left-radius: 5px;margin-bottom: 0;}
+.download a{flex: 0.7;display: inline-block;border: 1px solid #ddd;border-top-right-radius: 5px;border-bottom-right-radius: 5px;
+	height: 40px;line-height: 40px;text-align: center;border-left: none;background-color: rgb(223, 227, 238);transition: all 0.3s;}
+.download a:hover{background-color: rgb(91, 128, 187);color: #fff;}
+
+.other-btn{margin-top: 10px;display: flex;justify-content: space-between;}
+.btn-group .button{padding: 0 15px;border-radius: 5px;height: 40px;line-height: 40px;transition: all 0.3s;}
+.btn-group .button:nth-child(1){margin-right: 5px;border: 1px solid rgb(32, 62, 110);}
+.btn-group .button:nth-child(1):hover{background-color: rgb(32, 62, 110);color: #fff;}
+.btn-group .button:nth-child(2){border: 1px solid #dc3545;}
+.btn-group .button:nth-child(2):hover{background-color: #dc3545;color: #fff;}
