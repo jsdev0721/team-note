@@ -1,51 +1,62 @@
 <html layout:decorate="~{layout}">
+	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/welfaremall.css}">
+		<title>복지몰 | 상세페이지</title>
+	</head>
 	<div layout:fragment="content" class="container">
-		<div class="row">
-			<div class="col" th:if="${welfaremall.mainImage!=null}">
+		<div class="detail">
+			<div class="product_img" th:if="${welfaremall.mainImage!=null}">
 				<img th:src="@{|/welfaremall/photo/${welfaremall.mainImage.fileId}|}" class="card-img-middle" width="100%">
 			</div>
-			<div class="col" th:unless="${welfaremall.mainImage!=null}">
-				<img src="/images/sub_logo.png" class="card-img-middle" width="100%">
+			<div class="product_img" th:unless="${welfaremall.mainImage!=null}">
+				<img src="/images/no_image.jpg" class="card-img-middle" width="100%">
 			</div>
-			<div class="col">
-				<div class="card">
-					<div class="card-header py-3 text-center" th:text="${welfaremall.productName}"></div>
-					<div class="card-body text-center">
-						<div class="card-title pricing-car">가격 : [[${welfaremall.price}]]</div>
-						<div class="card-text mt-3 mb-4" th:text="${welfaremall.description}"></div>
-					</div>
-					<div class="card-footer">
-						<div th:if="${welfaremall.optionList!=null}">
-							<form th:action="@{|/welfaremall/addCart/${welfaremall.productId}|}" method="get" class="d-grid gap-2 col-6 mx-auto">
-								<input type="hidden" name="to" value="list" />
-								<input type="hidden" name="type" th:value="${welfaremall.type}" />
-							<select name="option">
+			<div class="product_info">
+				<div class="text-center" style="margin-bottom: 10px;">
+					<p class="text-body-secondary text-center" >구분 : [[${welfaremall.type}]]</p>						
+				</div>
+				<div class="input">
+					<p>상품명</p>
+					<p th:text="${welfaremall.productName}"></p>
+				</div>
+				<div class="input">
+					<p>설명</p>
+					<p th:text="${welfaremall.description}"></p>
+				</div>
+				<div class="input" style="margin-bottom: 20px;">
+					<p class="card-title pricing-car">가격<span style="color: #999;">(points)</span></p>
+					<p style="color: #dc3545;font-weight: 600;">[[${welfaremall.price}]]</p>
+				</div>
+				<div class="card-footer">
+					<div th:if="${welfaremall.optionList!=null}"><!-- 옵션 있을 경우 -->
+						<form th:action="@{|/welfaremall/addCart/${welfaremall.productId}|}" method="get">
+							<input type="hidden" name="to" value="list" />
+							<input type="hidden" name="type" th:value="${welfaremall.type}" />
+							<select name="option" class="form-select form-select-sm" aria-label="Small select example">
 								<option th:each="option : ${welfaremall.optionList}" th:value="${option}" th:text="${option}"></option>
 							</select>
-							
-								<div class="d-grid gap-2">
-									<input type="submit" class="btn btn-outline-success" value="+" onclick="alert('장바구니추가');"/>
-								</div>
-							</form>
-						</div>
 						
-						<div class="d-grid gap-2 col-6 mx-auto" th:unless="${welfaremall.optionList!=null}">
-							<a  th:href="@{|/welfaremall/addCart/${welfaremall.productId}?to=list&type=${welfaremall.type}|}" type="button" class="btn btn-outline-success" onclick="alert('장바구니추가');" >+</a>
-						</div>
-						<div class="text-end">
-							<small class="text-body-secondary text-end" >구분 : [[${welfaremall.type}]]</small>						
-						</div>
+							<div class="d-grid gap-2">
+								<input type="submit" class="btn" value="장바구니 담기" onclick="alert('상품이 장바구니에 추가되었습니다.');"/>
+							</div>
+						</form>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row" th:each="photo : ${welfaremall.photos}" th:if="${!welfaremall.photos.isEmpty}">
+					
+					<div class="d-grid gap-2 col-6 mx-auto" th:unless="${welfaremall.optionList!=null}">
+						<a  th:href="@{|/welfaremall/addCart/${welfaremall.productId}?to=list&type=${welfaremall.type}|}" type="button" class="btn" onclick="alert('상품이 장바구니에 추가되었습니다.');">장바구니 담기</a>
+					</div>
+				</div><!-- card-footer end -->
+			</div><!-- product_info end -->
+		</div><!-- detail end -->
+		<div class="detail_img" th:each="photo : ${welfaremall.photos}" th:if="${!welfaremall.photos.isEmpty}"><!-- 상세 이미지 -->
 			<img th:src="@{|/welfaremall/photo/${photo.fileId}|}" class="card-img-middle">
 		</div>
-		<div class="btn-group" role="group" aria-label="Basic mixed styles example">
-			<a type="button" class="btn btn-outline-primary" th:href="@{/welfaremall/list}" >목록</a>
-			<th:block sec:authorize="hasAuthority('ROLE_ACCOUNTING')"><a type="button" class="btn btn-outline-primary" th:href="@{|/welfaremall/edit/${welfaremall.productId}|}">수정</a></th:block>
-			<th:block sec:authorize="hasAuthority('ROLE_ACCOUNTING')"><a type="button" class="btn btn-outline-danger" th:href="@{|/welfaremall/delete/${welfaremall.productId}|}">삭제</a></th:block>
+		<div class="button">
+			<div class="btn-group" role="group" aria-label="Basic mixed styles example">
+				<th:block sec:authorize="hasAuthority('ROLE_ACCOUNTING')"><a type="button" class="btn btn-outline-primary" th:href="@{|/welfaremall/edit/${welfaremall.productId}|}">수정</a></th:block>
+				<th:block sec:authorize="hasAuthority('ROLE_ACCOUNTING')"><a type="button" class="btn btn-outline-danger" th:href="@{|/welfaremall/delete/${welfaremall.productId}|}">삭제</a></th:block>
+			</div>
+			<a type="button" class="close" th:href="@{/welfaremall/list}">나가기</a>
 		</div>
 	</div>
 </html>

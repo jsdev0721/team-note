@@ -53,9 +53,11 @@ public class FormController {
 		return "form/forms_list";
 	}
 	@GetMapping("/detail/{formId}")
-	public String detail(Model model,@PathVariable("formId") Integer formId) {
+	public String detail(Model model,@PathVariable("formId") Integer formId,Principal principal) {
 		Forms forms = this.formService.getForm(formId);
+		Users users=this.userService.getUser(principal.getName());
 		model.addAttribute("fileList",forms.getFileList());
+		model.addAttribute("users",users);
 		model.addAttribute("forms",forms);
 		
 		return "form/forms_detail";

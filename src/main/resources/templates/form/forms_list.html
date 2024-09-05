@@ -24,14 +24,14 @@
 			<tr class="title">
 				<th>번호</th>
 				<th>제목</th>
-				<th>글쓴이</th>
+				<th>부서</th>
 				<th>작성일시</th>
 			</tr>
 			<tr th:each = "forms , loop : ${paging}">
 				<td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
 				<!--<td th:text="${loop.count}"></td>-->
 				<td><a th:href="@{|/forms/detail/${forms.formId}|}" th:text="${forms.title}"></a></td>
-				<td><span th:if="${forms.user != null}" th:text="${forms.user.username}"></span></td>
+				<td><span th:if="${forms.user != null}" th:text="${forms.user.position.department.departmentName}"></span></td>
 				<td th:text="${#temporals.format(forms.createDate , 'yyyy-MM-dd HH:mm')}"></td>
 			</tr>
 		</table>

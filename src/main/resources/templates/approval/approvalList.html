@@ -44,9 +44,11 @@
 			</a>
 		</div><!-- search, create end -->
 		<table class="table table-scriped-columns table-hover align-middle">
-			<tr class="title">
-				<th>제목</th>
-			</tr>
+			<thead>
+				<tr class="title">
+					<th>제목</th>
+				</tr>
+			</thead>
 			<tr th:each="approval : ${approvalList}">
 				<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
 			</tr>

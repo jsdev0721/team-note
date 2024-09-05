@@ -55,10 +55,12 @@ public class NoticesController {
 		return "notice/notices_list";
 	}
 	@GetMapping("/detail/{noticeId}")
-	public String detail(Model model,@PathVariable("noticeId") Integer noticeId) {
+	public String detail(Model model,@PathVariable("noticeId") Integer noticeId,Principal priclpal) {
 		Notices notices = this.noticesService.getNotice(noticeId);
+		Users users =this.userService.getUser(priclpal.getName());
 		model.addAttribute("fileList",notices.getFileList());
 		model.addAttribute("notices" ,notices);
+		model.addAttribute("users",users);
 		
 		return "notice/notices_detail";
 	}
@@ -132,8 +134,7 @@ public class NoticesController {
 				file = this.fileService.uploadFile(multipartFile);
 				System.out.println(file+"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 				fileList.add(file);
-				System.out.println("파일 추가됨"+file+"db에 등록+++++++++++++++++++++++++++++++++++++++++++++++++");
-				
+				System.out.println("파일 추가됨"+file+"db에 등록+++++++++++++++++++++++++++++++++++++++++++++++++");	
 			}	
 		}
  		Users users = this.userService.getUser(principal.getName());
