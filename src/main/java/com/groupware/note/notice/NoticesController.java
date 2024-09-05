@@ -103,6 +103,7 @@ public class NoticesController {
 		Notices notices = this.noticesService.getNotice(noticeId);
 		if(notices.getUser().getUsername().equals(principal.getName())) {
 			model.addAttribute("notices",notices);
+			
 			model.addAttribute("fileList",notices.getFileList());
 			}else {
 				return "redirect:/notices/list";
@@ -120,16 +121,23 @@ public class NoticesController {
 			return "notice/notices_update";
 		}
 		Notices notices = this.noticesService.getNotice(noticeId);
+		
 		List<Files> fileList = notices.getFileList();
-		if(noticeForm.getMultiPartFile()!=null&&!noticeForm.getMultiPartFile().isEmpty()) {
+		System.out.println("파일 가져오기++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+ 		if(noticeForm.getMultiPartFile()!=null&&!noticeForm.getMultiPartFile().isEmpty()) {
+ 			System.out.println("실행==============================================================");
 			for(MultipartFile multipartFile : noticeForm.getMultiPartFile()) {
 				Files file = new Files();
+				System.out.println("새파일 업로드하기++++++++++++++++++++++++++++++++++++++++++++++++");
 				file = this.fileService.uploadFile(multipartFile);
+				System.out.println(file+"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 				fileList.add(file);
+				System.out.println("파일 추가됨"+file+"db에 등록+++++++++++++++++++++++++++++++++++++++++++++++++");
+				
 			}	
 		}
-		Users users = this.userService.getUser(principal.getName());
-		this.noticesService.updateNotice(notices , noticeForm.getTitle(), noticeForm.getContent(),users,fileList);
+ 		Users users = this.userService.getUser(principal.getName());
+ 		this.noticesService.updateNotice(notices , noticeForm.getTitle(), noticeForm.getContent(),users,fileList);
 		
 		return "redirect:/notices/list";
 	}
@@ -149,6 +157,16 @@ public class NoticesController {
 		}
 	}else {return "redirect:/notices/list";}
 		return "redirect:/notices/list";
+	}
+	@GetMapping("/delete/{noticeId}/{fileId}")
+	public String  fileDelete(@PathVariable("noticeId")Integer noticeId, @PathVariable("fileId")Integer fileId) {
+		Notices notices = this.noticesService.getNotice(noticeId);
+		List<Files> fileList = notices.getFileList();
+		Files file = this.fileService.findByFiles(fileId);
+		fileList.remove(file);
+		this.fileService.delete(file);
+		return String.format("redirect:/notices/update/%s",noticeId);
+		
 	}
 	
 	

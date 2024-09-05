@@ -1,7 +1,7 @@
 package com.groupware.note.position;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,8 +23,8 @@ public class UpdateUserPositionsService {
 	public void updatePositions() {
 		List<UpdateUserPositions> list = this.updatePositionsRepository.findAll();
 		for(UpdateUserPositions updateUserPositions : list) {
-			 LocalDateTime localDateTime = LocalDateTime.now();
-			  Duration duration = Duration.between(localDateTime,updateUserPositions.getLocalDatetime());
+			 LocalDate localDate = LocalDate.now();
+			  Duration duration = Duration.between(localDate,updateUserPositions.getLocalDate());
 			 if(duration.isNegative()) {
 				 Users users = updateUserPositions.getUser();
 				 users.setPosition(updateUserPositions.getPosition());
