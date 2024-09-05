@@ -20,11 +20,11 @@
 			</div>
 		</div>
 		<div class="other-btn">
-			<div class="btn-group">
+			<div class="btn-group" th:if="${#strings.equals(notices.user.username, users.username)}">
 				<a th:href="@{|/forms/update/${forms.formId}|}" class="button">수정</a>
 				<a th:href="@{|/forms/delete/${forms.formId}|}" class="button">삭제</a>
 			</div>
-			<a th:href="@{/forms/list}" class="close">나가기</a>
+			<a th:href="@{/forms/list}" class="close button">나가기</a>
 		</div>
 	</div>	
 </html>
