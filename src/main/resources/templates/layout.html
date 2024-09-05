@@ -258,15 +258,15 @@
 						<ul>
 							<li>
 								<span th:text="${#lists.size(queue)}"></span>
-								<span class="dot"></span>
+								<a th:href="@{|/approval/mylist?status=queue|}"><span class="dot"></span></a>
 							</li>
 							<li>
 								<span th:text="${#lists.size(process)}"></span>
-								<span class="dot"></span>
+								<a th:href="@{|/approval/mylist?status=process|}"><span class="dot"></span></a>
 							</li>
 							<li>
 								<span th:text="${#lists.size(complete)}"></span>
-								<span class="dot"></span>
+								<a th:href="@{|/approval/mylist?status=complete|}"><span class="dot"></span></a>
 							</li>
 						</ul>
 					</div><!-- 나의 결재 end -->

@@ -66,14 +66,21 @@ public class ApprovalController {
 		return "approval/approvalList";
 	}
 	@PostMapping("/list")
-	public String serch(Model model , @RequestParam(value = "status") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal , @RequestParam(value = "search")String search) {
+	public String search(Model model , @RequestParam(value = "status") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal , @RequestParam(value = "search")String search) {
 		Users user = this.userService.getUser(principal.getName());
 		Departments department = user.getPosition().getDepartment();
 		Page<Approval> approvalList =  this.approvalService.findByLike(user, search , department , status , page , 10);
 		model.addAttribute("approvalList" , approvalList);
 		return "approval/approvalList";
 	}
-	
+	@GetMapping("/mylist")
+	public String myApprovalList(Model model , @RequestParam(value = "status" , defaultValue = "queue")String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal) {
+		Users user = this.userService.getUser(principal.getName());
+		Page<Approval> approvalList = this.approvalService.myApprovalList(user, status, page, 10);
+		model.addAttribute("approvalList", approvalList);
+		model.addAttribute("status", status);
+		return "approval/myApprovalList";
+	}
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/create")
 	public String approvalCreate(ApprovalForm approvalForm) {
