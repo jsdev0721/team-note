@@ -97,8 +97,10 @@ public class ExpenseController {
 	
 	@GetMapping("/lists")
 	public String dateList(Model model, @RequestParam(value="date", defaultValue = "") LocalDateTime dt) {
+		Long totalPrice = (long) 0;
 		List<Expense> list = new ArrayList<>();
 		list = this.edService.dateList(dt);
+		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("expenseList", list);
 		return "expense/expenseList";
 	}
@@ -118,15 +120,28 @@ public class ExpenseController {
 
 	
 	@GetMapping("/list")
-	public String expenseList(Model model, @RequestParam(value="st" , defaultValue = "") String st) {
+	public String expenseList(Model model, @RequestParam(value="dn" , defaultValue = "") String dn, @RequestParam(value="userId", defaultValue = "0") Integer userId, @RequestParam(value="et", defaultValue = "") String et) {
+		Long totalPrice = (long) 0;
 		List<Expense>list = new ArrayList<>();
-		if(st.contains("@")) {
-			list = edService.nameList(st);
-		} else if(!st.equals("")) {
-			list = edService.depList(st);
-		}else {
-			list = edService.list();	
+		if(!dn.equals("")) {
+			list = edService.depList(dn);
+			for(Expense e : list) {
+				totalPrice = (long) e.getAmount() + totalPrice;
+			}
+		} else if(userId!=0) {
+			list = edService.nameList(userId);
+			for(Expense e : list) {
+				totalPrice = (long) e.getAmount() + totalPrice;
+			}
+		} else if(!et.equals("")) {
+			list = edService.expenseTypeList(et);
+			for(Expense e : list) {
+				totalPrice = (long) e.getAmount() + totalPrice;
+			}
+		} else {
+			list = edService.list();
 		}
+		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("expenseList", list);
 		return "expense/expenseList";
 	}

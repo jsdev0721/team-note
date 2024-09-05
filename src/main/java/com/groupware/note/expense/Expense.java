@@ -36,9 +36,9 @@ public class Expense {
 	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime useDate;
 	//거래처
-	
+	private String account;
 	//내역
-	
+	private String breakDown;
 	//금액
 	private double amount;
 	
