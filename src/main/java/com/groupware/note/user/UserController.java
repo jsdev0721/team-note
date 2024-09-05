@@ -2,6 +2,7 @@ package com.groupware.note.user;
 
 import java.net.MalformedURLException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -215,15 +216,22 @@ public class UserController {
 	@PostMapping("/update/{userId}")
 	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName  
 			,@RequestParam(value="departmentId")String departmentName
-			,@RequestParam(value="updateTime")LocalDateTime localDateTime) {
+			,@RequestParam(value="updateTime")LocalDate localDate) {
 
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		System.out.println(userId);
 		System.out.println(positionName);
 		Departments departments=this.departmentsService.findBydepartmentName(departmentName);
 		Positions positions= this.positionService.findByPositionNameAndDepartment(positionName, departments);
-		this.positionService.updatePosition(userId, positions, localDateTime);
-		System.out.println("부서/직급 변경완료");
+		
+		LocalDate now = LocalDate.now();
+		if(localDate.isAfter(now)) {
+			this.positionService.updatePosition(userId, positions, localDate);
+			System.out.println("부서/직급 변경완료");
+		}else {
+			this.positionService.updatePosition(userId, positions);
+			System.out.println("부서/직급 즉시변경완료");
+		}
 		return "redirect:/user/list";
 	}
 	
@@ -244,7 +252,7 @@ public class UserController {
 		UserDetails userDetails= this.userDetailsService.getUser(userId);
 		if(!users.getUsername().equals(principal.getName())) {
 		try {
-			//this.expenseDataService.deleteExpense(userDetails);
+			this.expenseDataService.deleteExpense(userDetails);
 			System.out.println("userExpenseNull완료");
 			this.attendanceService.deleteAttendance(users);
 			System.out.println("userattendanceNull완료");
