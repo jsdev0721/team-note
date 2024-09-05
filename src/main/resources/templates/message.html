@@ -15,9 +15,31 @@
 					margin: auto;
 					}
 					.left-align {
-						text-align: left;}
+						position: relative;
+						margin: 0px;
+						padding-left: 10px;
+						left: 10px;
+						height: auto;
+						width: 200px;
+						text-align: left;
+						background-color: gainsboro;
+						border-radius: 5px;
+						white-space: normal;
+						word-wrap: break-word;		
+					}
 					.right-align {
-					    text-align: right;}
+						position: relative;
+						left: 175px;
+						margin: 0px;
+						padding-right: 10px;
+						width: 200px;
+						height: auto;
+					    text-align: right;
+						background-color: lightsteelblue;
+						border-radius: 5px;
+						white-space: normal;
+						word-wrap: break-word;						
+					}
 		</style>
 		
 
@@ -137,7 +159,7 @@
 		var test_id = document.getElementById("test");
 		test_id.innerHTML = '대화';
 	</script>
-	
+	<!--대화-->
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
@@ -187,17 +209,27 @@
 	        let messages = document.getElementById('messages');
 	        let messageElement = document.createElement('div');
 			let mess = document.createElement('div');
+			let empty  = document.createElement('br');
 			
-			let messageTime = message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16);
+			let messageTime =  ' '+ message.sendTime.substring(2,10) +'  ' + message.sendTime.substring(11, 16) + ' ';
 			let alignmentClass = (message.sender.username === selectedUsername) ? 'left-align' : 'right-align';
 			let font = mess.style.fontSize="small";
+			let efont = empty.style.fontSize = "small";
 			//fetch로 메세지 데이터 1로 바꿔주기
 			messageElement.classList.add(alignmentClass);
-			messageElement.innerText =  '[ ' + message.content + ' ]' + '\n';
+			messageElement.innerText =  ' ' + message.content + ' ' ;
 			mess.classList.add(alignmentClass);
-			mess.innerText = messageTime + 	'\n\n' ;
+			mess.innerText = messageTime;
 			messages.appendChild(messageElement);
 			messages.appendChild(mess);
+			messages.appendChild(empty);
+			
+			
+			messageElement.style.borderBottomLeftRadius = "0%";
+			messageElement.style.borderBottomRightRadius = "0%";
+			mess.style.borderTopLeftRadius = "0%";
+			mess.style.borderTopRightRadius = "0%";
+			
 			scrollToBottom();
 	    }
 		

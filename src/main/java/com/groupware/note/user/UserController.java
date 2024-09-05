@@ -2,6 +2,7 @@ package com.groupware.note.user;
 
 import java.net.MalformedURLException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.DataNotFoundException;
@@ -26,6 +28,7 @@ import com.groupware.note.attendance.AttendanceService;
 import com.groupware.note.calendar.CalendarService;
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
+import com.groupware.note.email.EmailService;
 import com.groupware.note.expense.ExpenseDataService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
@@ -49,6 +52,7 @@ public class UserController {
 	
 	private final UserService userService;
 	private final UserDetailsService userDetailsService;
+	private final EmailService emailService;
 	private final FileService fileService;
 	private final AttendanceService attendanceService;
 	private final PositionService positionService;
@@ -120,13 +124,13 @@ public class UserController {
 		return "user/findPW";
 	}
 	
+	@ResponseBody
 	@PostMapping("/find/pw")
-	public String findPW(Model model, @RequestParam(value = "username") String username, UserPasswordForm userPasswordForm) {
-		Users users = this.userService.findPW(username);
-		Boolean check = this.userService.checkPW(username);
-		model.addAttribute("check", check);
-		model.addAttribute("users", users);
-		return "user/findPW";
+	public String findPW(@RequestParam(value = "username") String username) {
+		Users users = this.userService.getUser(username);
+        int number = emailService.sendMail(this.userDetailsService.findByUser(users).getEmail());
+        String code = "" + number;
+        return code;
 	}
 	
 	@PostMapping("/change/pw")
@@ -212,15 +216,22 @@ public class UserController {
 	@PostMapping("/update/{userId}")
 	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName  
 			,@RequestParam(value="departmentId")String departmentName
-			,@RequestParam(value="updateTime")LocalDateTime localDateTime) {
+			,@RequestParam(value="updateTime")LocalDate localDate) {
 
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		System.out.println(userId);
 		System.out.println(positionName);
 		Departments departments=this.departmentsService.findBydepartmentName(departmentName);
 		Positions positions= this.positionService.findByPositionNameAndDepartment(positionName, departments);
-		this.positionService.updatePosition(userId, positions, localDateTime);
-		System.out.println("부서/직급 변경완료");
+		
+		LocalDate now = LocalDate.now();
+		if(localDate.isAfter(now)) {
+			this.positionService.updatePosition(userId, positions, localDate);
+			System.out.println("부서/직급 변경완료");
+		}else {
+			this.positionService.updatePosition(userId, positions);
+			System.out.println("부서/직급 즉시변경완료");
+		}
 		return "redirect:/user/list";
 	}
 	
@@ -241,7 +252,7 @@ public class UserController {
 		UserDetails userDetails= this.userDetailsService.getUser(userId);
 		if(!users.getUsername().equals(principal.getName())) {
 		try {
-			//this.expenseDataService.deleteExpense(userDetails);
+			this.expenseDataService.deleteExpense(userDetails);
 			System.out.println("userExpenseNull완료");
 			this.attendanceService.deleteAttendance(users);
 			System.out.println("userattendanceNull완료");

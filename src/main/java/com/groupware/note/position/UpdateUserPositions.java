@@ -1,6 +1,6 @@
 package com.groupware.note.position;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.groupware.note.user.Users;
 
@@ -28,7 +28,7 @@ public class UpdateUserPositions {
 	@ManyToOne
 	private Positions position;
 	
-	private LocalDateTime localDatetime;
+	private LocalDate localDate;
 	
 	
 	

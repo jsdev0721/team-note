@@ -24,14 +24,18 @@
 			</div>
 			<div class="mb-4">
 				<label for="formfileMultiple" class="form-label">첨부파일</label>
-					<button type="button" onclick="update()">파일 수정</button>
-						<div th:each="file : ${fileList}">	
+					<!--<button type="button" onclick="update()">파일 수정</button>
 							<p class="form-control" id="fileName" th:text="${file.originFileName}"></p>
-								<input type="file" class="form-control" id="formfileMultiple" name="multiPartFile" multiple th:value="${file.originFileName}" style="display: none;">
+								name="multiPartFile" multiple th:value="${file.originFileName}" style="display: none;">-->
+								<input type="file" class="form-control" id="formfileMultiple"name="multiPartFile" multiple> 
+						<div th:each="file : ${fileList}">	
+							<span th:text="${file.originFileName}"></span>
+							<a class="btn btn-danger" th:href="@{|/notices/delete/${notices.noticeId}/${file.fileId}|}">x</a>
 						</div>
 					<!--<span th:text="${file.originFileName}"></span>-->
 			</div>
-			<input type="submit" class="btn btn-success" value="등록하기">				
+			<input class="btn btn-success" type="submit" value="등록하기" />
+			<!--<input type="submit" class="btn btn-success" value="등록하기">-->				
 		</form>
 	</div>
 	<br>

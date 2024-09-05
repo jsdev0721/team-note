@@ -3,34 +3,30 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/noticeForm.css}">
 		<title>공지사항</title>
 	</head>
-<div layout:fragment="content" class="container my-3">
-	<div class="d-flex justify-content-center">
-		<h5>목록</h5>
-	</div>
-	<div  class="my-3 border-bottom pb-2"></div>
-	<div class="searchAndCreate">
-		<div class="search-box">
-			<form th:action="@{/notices/list}" method="post">
-				<input type="text" name="searchkeyword" class="search-txt" placeholder="검색어를 입력해 주세요"/>
+	<div layout:fragment="content" class="container my-3">
+		<div class="txt">
+			<h4>공지사항</h4>
+		</div>
+		<div class="searchAndCreate">
+			<div class="search-box">
+				<form th:action="@{/notices/list}" method="post">
+					<input type="text" name="searchkeyword" class="search-txt" placeholder="검색어를 입력해 주세요"/>
 					<button type="submit" class="search">
 						<img src="/images/search.png" alt="검색">
 					</button>
-			</form>
-		</div><!-- search end -->
-		<a th:href="@{/notices/create}" class="create">
-			<img src="/images/pencil.png" alt="새글 생성">
-		</a>
-	</div><!-- search, create end -->
-	<table class="table">
-		<thead class="table-success">
-			<tr>
+				</form>
+			</div><!-- search end -->
+			<a th:href="@{/notices/create}" class="create">
+				<img src="/images/pencil.png" alt="새글 생성">
+			</a>
+		</div><!-- search, create end -->
+		<table class="table">
+			<tr class="title">
 				<th>번호</th>
 				<th>제목</th>
 				<th>글쓴이</th>
 				<th>작성일시</th>
 			</tr>
-		</thead>
-		<tbody>
 			<tr th:each = "notices , loop : ${paging}">
 				<td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
 				<!--<td th:text="${loop.count}"></td>-->
@@ -38,29 +34,28 @@
 				<td><span th:if="${notices.user != null}" th:text="${notices.user.username}"></span></td>
 				<td th:text="${#temporals.format(notices.createDate , 'yyyy-MM-dd HH:mm')}"></td>
 			</tr>
-		</tbody>
-	</table>
-	
-	<!--페이지 처리 시작-->
-	<div th:if="${!paging.isEmpty()}">
-		<ul class="pagination justify-content-center">
-			<li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-				<a class="page-link" th:href="@{|?page=${paging.number-1}|}">
-					<span>이전</span>
-				</a>
-			</li>
-			<li th:each="page : ${#numbers.sequence(0 , paging.totalPages -1)}"
-			th:if="${page >= paging.number -5 and page <= paging.number +5}"
-			th:classappend="${page == paging.number} ? 'active'" class="page-item">
-				<a th:text="${page}+1" class="page-link" th:href="@{|?page=${page}|}"></a>
-			</li>
-			<li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-				<a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-					<span>다음</span>
-				</a>
-			</li>
-		</ul>
+		</table>
+		<a th:href="@{/}" class="close">나가기</a>
+		<!--페이지 처리 시작-->
+		<div th:if="${!paging.isEmpty()}">
+			<ul class="pagination justify-content-center">
+				<li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+					<a class="page-link" th:href="@{|?page=${paging.number-1}|}">
+						<span>이전</span>
+					</a>
+				</li>
+				<li th:each="page : ${#numbers.sequence(0 , paging.totalPages -1)}"
+				th:if="${page >= paging.number -5 and page <= paging.number +5}"
+				th:classappend="${page == paging.number} ? 'active'" class="page-item">
+					<a th:text="${page}+1" class="page-link" th:href="@{|?page=${page}|}"></a>
+				</li>
+				<li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+					<a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+						<span>다음</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		
 	</div>
-	
-</div>
 </html>

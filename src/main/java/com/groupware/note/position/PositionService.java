@@ -2,6 +2,7 @@ package com.groupware.note.position;
 
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -29,16 +30,24 @@ public class PositionService {
 		}
 		return _position.get();
 	}
-	public  void updatePosition(Integer userId,Positions positions,LocalDateTime localDateTime) {
+	public void updatePosition(Integer userId,Positions positions,LocalDate localDate) {
 		Optional<Users> users = this.userRepository.findById(userId);
 		if(users.isPresent()) {
 			Users user =users.get();
 			UpdateUserPositions updateUserPositions = new UpdateUserPositions();
 			updateUserPositions.setUser(user);
 			updateUserPositions.setPosition(positions);
-			updateUserPositions.setLocalDatetime(localDateTime);
+			updateUserPositions.setLocalDate(localDate);
 			this.updatePositionsRepository.save(updateUserPositions);
-		}else {throw new DataNotFoundException("데이터가 없습니다");}
+		}else {throw new DataNotFoundException("데이터가 없습니다");}	
+	}
+	public void updatePosition(Integer userId,Positions positions) {
+		Optional<Users> users =this.userRepository.findById(userId);
+		if(users.isPresent()) {
+			Users user =users.get();
+			user.setPosition(positions);
+			this.userRepository.save(user);
+		}
 	}
 	public Positions findByPositionNameAndDepartment(String positioName,Departments id) {
 		Optional<Positions> positions =this.positionRepository.findByPositionNameAndDepartment(positioName, id);

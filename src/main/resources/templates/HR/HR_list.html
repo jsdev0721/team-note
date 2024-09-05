@@ -48,6 +48,7 @@
 						<th>username</th>
 						<th>updatePosition</th>
 						<th>updateDepartment</th>
+						<th>updatetime</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -55,6 +56,7 @@
 						<td th:text="${positions.user.username}"></td>
 						<td th:text="${positions.position.positionName}"></td>
 						<td th:text="${positions.position.department.departmentName}"></td>
+						<td th:text="${#temporals.format(positions.localDate,'yyyy.MM.dd')}"></td>
 					</tr>
 				</tbody>
 			</table>

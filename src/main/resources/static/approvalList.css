@@ -1,11 +1,11 @@
-/* 진행 상황 tab */
+/* status tab */
 .list{width: 400px;margin: 0 auto;margin-top: 40px;}
 .list ul{display: flex;border: 1px solid rgb(32, 62, 110);padding: 0 !important;}
 .list ul li{flex: 1;border-right: 1px solid rgb(32, 62, 110);}
 .list ul li:last-child{border: none;}
 .page-link{display: block;height: 40px;line-height: 40px;text-align: center;}
 
-/* 검색, 새글생성 */
+/* search, create */
 .searchAndCreate{display: flex;justify-content: space-between;margin-top: 40px !important;margin-bottom: 20px;}
 .search-box{width: 50%;position: relative;}
 
@@ -18,3 +18,43 @@
 .create{border: 1px solid rgb(32, 62, 110);border-radius: 5px;}
 .create img{width: 35px;margin: 5px 15px;}
 .cart{width: 35px;margin:5px 15px;}
+
+/* list */
+.title th{background-color: #eee;text-align: center;}
+
+/* detail */
+#wrap{display: flex;border: 1px solid rgb(32, 62, 110);border-radius: 5px;padding: 20px;margin-top: 50px;min-height: 200px;}
+.detail{flex: 0.7;}
+.input{display: flex;}
+.input:last-child p{margin-bottom: 0;}
+
+.input p{height: 40px;line-height: 40px;border: 1px solid #ddd;border-radius: 5px;}
+.input p:nth-child(1){flex: 0.3;margin-right: 10px;text-align: center;background-color: #eee;}
+.input p:nth-child(2){flex: 0.7;padding-left: 10px;}
+
+.download{display: flex;width: 100%;}
+.download p{flex: 0.3;height: 40px;line-height: 40px;text-align: center;border: 1px solid #ddd;background-color: #eee;
+	border-top-left-radius: 5px;border-bottom-left-radius: 5px;margin-bottom: 0;}
+.download a{flex: 0.7;display: inline-block;border: 1px solid #ddd;border-top-right-radius: 5px;border-bottom-right-radius: 5px;
+	height: 40px;line-height: 40px;text-align: center;border-left: none;background-color: rgb(223, 227, 238);transition: all 0.3s;}
+.download a:hover{background-color: rgb(91, 128, 187);color: #fff;}
+
+.right{flex: 0.3;margin-left: 15px;border-left: 1px dashed rgb(32, 62, 110);padding-left: 15px;position: relative;}
+.right table{border: 1px solid rgb(32, 62, 110);height: 80px;}
+.right table tr{text-align: center;}
+.right table tr:first-child th{background-color: #eee;}
+.right table tr:nth-child(2){border: 1px solid rgb(32, 62, 110);}
+
+.sign-btn-group{position: absolute;right: 0;bottom: 0;}
+.user-btn{background-color: rgb(32, 62, 110);color: #fff;}
+.user-btn:hover{background-color: rgb(32, 62, 110);color: #fff;}
+.user-btn:focus{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
+.user-btn:active{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
+
+.other-btn{margin-top: 10px;display: flex;justify-content: space-between;}
+.other-btn .update-btn{border: 1px solid rgb(32, 62, 110);}
+.update-btn:hover{background-color: rgb(32, 62, 110);color: #fff;}
+.update-btn:focus{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
+.update-btn:active{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
+
+.close{text-decoration: underline;display: inline-block;}
