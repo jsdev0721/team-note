@@ -48,7 +48,8 @@
 		<tbody>
 			<tr th:each="pData : ${pList}">
 				<td th:text="${#temporals.format(pData.addDate, 'yyyy-MM-dd')}"></td>
-				<td><a th:href="@{|/welfaremall/detail/${pData.product.productId}|}" th:text="${pData.product.productName}"></a></td>
+				<td th:if="${pData.product!=null}"><a th:href="@{|/welfaremall/detail/${pData.product.productId}|}" th:text="${pData.product.productName}"></a></td>
+				<td th:unless="${pData.product!=null}">삭제된 항목</td>
 				<td th:text="${pData.productOption}"></td>
 				<td th:text="${pData.quantity}"></td>
 				<td th:text="${'₩' + #numbers.formatInteger((pData.point * pData.quantity), 3, 'COMMA')}"></td>

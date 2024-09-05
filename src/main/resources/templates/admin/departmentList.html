@@ -28,18 +28,35 @@
 			top: 0px;
 		}
 	</style>
-	
-	
-	
+	<style>
+		.btn-a{
+			background-color:ghostwhite;
+				color: slategray;
+				border: 1px solid slategray;
+				border-radius: 5px;
+				width: 100px;
+				height: 30px;
+		}
+
+
+		.btn-b{
+			background-color:  rgb(32, 62, 110);
+			color: whitesmoke;
+			border: 0px;
+			border-radius: 5px;
+			width: 140px;
+			height: 30px;
+		}
+	</style>
 	
 	<p></p>
 	<div th:if="${OX=='fail'}" >부서명을 다시 입력해주세요</div>
 	<p></p>
 	<div style="text-align: right;">
-		<button type="button" class="btn btn-primary" th:if="${deleteOn=='false'}" data-bs-toggle="modal" data-bs-target="#depCreateModal">부서 새로 만들기</button>
+		<button type="button" class="btn-a" th:if="${deleteOn=='false'}" th:onclick="|location.href='?deleteOn=true'|">부서 삭제</button>
+		<button type="button" class="btn-a" th:if="${deleteOn=='true'}" th:onclick="|location.href='?deleteOn=false'|">삭제 끝</button>
 		&nbsp;
-		<button type="button" class="btn btn-secondary" th:if="${deleteOn=='false'}" th:onclick="|location.href='?deleteOn=true'|">부서 삭제</button>
-		<button type="button" class="btn btn-secondary" th:if="${deleteOn=='true'}" th:onclick="|location.href='?deleteOn=false'|">삭제 끝</button>
+		<button type="button" class="btn-b" th:if="${deleteOn=='false'}" data-bs-toggle="modal" data-bs-target="#depCreateModal">새로 만들기</button>
 		&nbsp;
 			
 	</div>
@@ -97,8 +114,8 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-        <button type="submit" class="btn btn-primary">등록</button>
+        <button type="button" class="btn-a" data-bs-dismiss="modal">취소</button>
+        <button type="submit" class="btn-b" style="width: 100px;">등록</button>
       </div>
 	  </form>
     </div>

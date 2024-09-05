@@ -42,7 +42,12 @@ public class UserSecurityService implements UserDetailsService {
 		}
 		
 		if("admin".equals(username)) { //관리자
-			authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue())); //UserRole에 있는 ADMIN 상수의 값을 부여함
+			authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
+			authorities.add(new SimpleGrantedAuthority(UserRole.HR.getValue()));
+			authorities.add(new SimpleGrantedAuthority(UserRole.ACCOUNTING.getValue()));
+			authorities.add(new SimpleGrantedAuthority(UserRole.MARKETING.getValue()));
+			authorities.add(new SimpleGrantedAuthority(UserRole.SECTIONCHEIF.getValue()));
+			//UserRole에 있는 ADMIN 상수의 값을 부여함
 			//SimpleGrantedAuthority => 권한 부여하는 클래스 (해당 클래스의 매개변수로 문자열 값을 하나만 넣을 수 있음)
 		}else if("HR".equals(departmentName)) { //인사
 			authorities.add(new SimpleGrantedAuthority(UserRole.HR.getValue()));
