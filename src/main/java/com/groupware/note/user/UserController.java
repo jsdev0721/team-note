@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.note.DataNotFoundException;
@@ -27,6 +28,7 @@ import com.groupware.note.attendance.AttendanceService;
 import com.groupware.note.calendar.CalendarService;
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
+import com.groupware.note.email.EmailService;
 import com.groupware.note.expense.ExpenseDataService;
 import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
@@ -50,6 +52,7 @@ public class UserController {
 	
 	private final UserService userService;
 	private final UserDetailsService userDetailsService;
+	private final EmailService emailService;
 	private final FileService fileService;
 	private final AttendanceService attendanceService;
 	private final PositionService positionService;
@@ -121,13 +124,13 @@ public class UserController {
 		return "user/findPW";
 	}
 	
+	@ResponseBody
 	@PostMapping("/find/pw")
-	public String findPW(Model model, @RequestParam(value = "username") String username, UserPasswordForm userPasswordForm) {
-		Users users = this.userService.findPW(username);
-		Boolean check = this.userService.checkPW(username);
-		model.addAttribute("check", check);
-		model.addAttribute("users", users);
-		return "user/findPW";
+	public String findPW(@RequestParam(value = "username") String username) {
+		Users users = this.userService.getUser(username);
+        int number = emailService.sendMail(this.userDetailsService.findByUser(users).getEmail());
+        String code = "" + number;
+        return code;
 	}
 	
 	@PostMapping("/change/pw")

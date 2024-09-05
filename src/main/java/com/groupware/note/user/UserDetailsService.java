@@ -66,7 +66,7 @@ public class UserDetailsService {
 		if(userDetails.isPresent()) {
 			return userDetails.get();
 		}else {
-			return new UserDetails();
+			throw new DataNotFoundException("데이터를 찾을 수 없습니다");
 		}
 	}
 	

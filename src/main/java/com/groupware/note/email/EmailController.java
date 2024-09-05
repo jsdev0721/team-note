@@ -24,7 +24,8 @@ public class EmailController {
 	@ResponseBody
 	@PostMapping("/mailSend")
     public String mailSend(@RequestParam(value = "email") String email) {
-        int number = emailService.sendMail(email);
+		UserDetails userDetails = this.userDetailsService.findID(email);
+        int number = emailService.sendMail(userDetails.getEmail());
         String code = "" + number;
         return code;
     }

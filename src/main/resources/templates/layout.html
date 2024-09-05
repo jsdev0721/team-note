@@ -115,7 +115,7 @@
 						    url: "/calendar/save",
 						    data: eventData,
 						    success: function(response) {
-						        calendar.addEvent(eventData);
+						        calendar.refetchEvents();
 						        $("#exampleModal").modal("hide");
 						        $("#title").val("");
 						        $("#start").val("");
@@ -187,6 +187,9 @@
 			function photoUpdate() { //사진 업로드 토글 버튼
 				$(".imgUpdate").toggle();
 			}
+			function mypage(){
+				$(".my").toggle();
+			}
 		</script>
 		<style>
 			.sticky {
@@ -221,10 +224,10 @@
 			<a th:href="@{/user/logout}" class="logout">로그아웃</a>
 			
 			<!-- 마이페이지 -->
-			<a href="#" class="myPage" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"><img src="/images/person.png"></a>
-			<div class="offcanvas offcanvas-top my" data-bs-backdrop="false" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
-			  	<div class="offcanvas-body d-flex flex-column">
-					<div class="info" style="flex: 0.5;">
+			<a href="#" class="myPage" onclick="mypage()"><img src="/images/person.png"></a>
+			<div class="my" style="display: none;">
+			  	<div class="d-flex flex-column">
+					<div class="info">
 						<div>
 							<div class="info-photo">
 								<div th:if="${file!=null}"><img th:src="@{|/user/photo/${file.fileId}|}"></div>
@@ -249,12 +252,12 @@
 						</div><!-- div(사용자 사진, 정보) end -->
 						<div class="imgUpdate" style="display: none;">
 							<form th:action="@{/user/photo}" method="post" enctype="multipart/form-data"><!-- 사진 업로드 시작 -->
-								<input class="file" type="file" id="formFileMultiple" accept=".jpg, .png, .gif, .jpeg, .bmp" name="multipartFiles">
+								<input class="file form-control" type="file" id="formFileMultiple" accept=".jpg, .png, .gif, .jpeg, .bmp" name="multipartFiles">
 								<input class="file-upload" type="submit" value="수정">
 							</form>
 						</div>
 					</div><!-- 사진 직급(개인정보) info end -->
-					<div class="myApproval" style="flex: 0.25;">
+					<div class="myApproval">
 						<ul>
 							<li>
 								<span th:text="${#lists.size(queue)}"></span>
@@ -270,14 +273,14 @@
 							</li>
 						</ul>
 					</div><!-- 나의 결재 end -->
-					<div class="low" style="flex: 0.25;background-color: #eee;">
+					<div class="low" style="background-color: #eee;">
 						<div class="attendance">
 							<a th:href="@{/attendance/list}">출근 기록</a>
 						</div>
 						<div class="leave">
 							<a th:href="@{/approval/create/HR}">휴가 신청</a>
 						</div>
-						<div class="cart">
+						<div class="myCart">
 							<a th:href="@{/welfaremall/viewCart}">장바구니</a>
 						</div>
 					</div><!-- 출근기록 휴가신청 end -->

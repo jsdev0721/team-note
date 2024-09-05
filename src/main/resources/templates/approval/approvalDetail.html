@@ -1,54 +1,73 @@
 <html layout:decorate="~{layout}">
 	<head>
+		<link rel="stylesheet" type="text/css" th:href="@{/approvalList.css}">
 		<title>결재 상세보기</title>
 	</head>
 	<div layout:fragment="content" class="container">
-		<div class="card">
-			<h5 class="card-header" th:text="${approval.title}"></h5>
-			<div class="card-body">
-				<div class="text-end" style="float: right;">
-					<table class="table table-bordered border-primary">
+		<div id="wrap">
+			<div class="detail">
+				<div class="detail-tit input">
+					<p>제목</p>
+					<p th:text="${approval.title}"></p>
+				</div><!-- detail-tit end --> 
+				<div class="detail-con">
+					<div class="input">
+						<p>내용</p>
+						<p class="card-title" th:text="${approval.content}"></p>
+					</div>
+					<div th:if="${#strings.equals(approval.department.departmentName, 'HR')}" class="leave-wrap"><!-- 휴가 날짜 -->
+						<div class="leave input">
+							<p>휴가 시작 날짜</p>
+							<p th:text="${#temporals.format(approval.startDate, 'yyyy-MM-dd')}" class="leave-start"></p>
+						</div>
+						<div class="leave input">
+							<p>휴가 종료 날짜</p>
+							<p th:text="${#temporals.format(approval.endDate, 'yyyy-MM-dd')}" class="leave-end"></p>
+						</div>
+					</div><!-- leave-wrap end -->
+					<div class="download"  th:if="${!fileList.isEmpty()}">
+						<p>다운로드</p>
+	               		<a th:text="${file.originFileName}" th:each="file : ${fileList}" th:href="@{|/approval/download/${file.fileId}|}"></a>
+					</div>
+					<div class="card-body" th:if="${!commentList.isEmpty()}">
+						<h7> 반려 사유 </h7>
+						<div th:each="comments : ${commentList}" th:text="${comments.comment}"></div>
+					</div>
+				</div><!-- detail-con end -->
+			</div><!-- detail end -->
+			<div class="right">
+				<div class="sign-wrap">
+					<table class="table table-bordered">
 						<tr>
 							<th>작성자</th>
 							<th>대리</th>
 							<th>과장</th>
 						</tr>
-						<tr style="text-align: center;border-right: 1px solid #000;">
+						<tr>
 							<th th:each="signList : ${approval.userSign}" th:text="${signList}"></th>
 						</tr>
 					</table>
-				</div>
-				<h5 class="card-title" th:text="${approval.content}"></h5>
-				<div th:if="${#strings.equals(approval.department.departmentName, 'HR')}"><!-- 휴가 날짜 -->
-					<span th:text="${#temporals.format(approval.startDate, 'yyyy-MM-dd')}"></span>
-					<span th:text="${#temporals.format(approval.endDate, 'yyyy-MM-dd')}"></span>
-				</div>
-				<div class="card-text"  th:if="${!fileList.isEmpty()}">
-					<p class="text-body-secondary">다운로드</p>
-               		<a class="form-control btn btn-primary my-1"th:text="${file.originFileName}" th:each="file : ${fileList}" th:href="@{|/approval/download/${file.fileId}|}"></a>
-					<br/>
-				</div>
-				<br/>
-				<div class="card-body" th:if="${!commentList.isEmpty()}">
-					<h7> 반려 사유 </h7>
-					<div th:each="comments : ${commentList}" th:text="${comments.comment}"></div>
-				</div>
-				<div class="btn-group" role="group" aria-label="Basic mixed styles example">
-					<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-primary" th:href="@{|/approval/update/${id}?status=process|}">제출</a></th:block>
-
+				</div><!-- sign-wrap end -->
+				<div class="sign-btn-group btn-group" role="group" aria-label="Basic mixed styles example">
+					<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn user-btn" th:href="@{|/approval/update/${id}?status=process|}">제출</a></th:block>
+	
 					<th:block th:if="${approval.status.equals('process')} and ${approval.userSign[1]==null}" sec:authorize="hasAuthority('ROLE_DEPUTY')"><a type="button" class="btn btn-outline-primary"th:href="@{|/approval/update/${id}?status=process|}">진행</a></th:block>
-					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
-
+	
+					<th:block th:if="${approval.status.equals('process')} and ${approval.userSign[1]==null}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}" onclick="if(!confirm('전결로 처리됩니다. \n진행하시겠습니까?')){return false;}">진행</a></th:block>
+					<th:block th:if="${approval.status.equals('process')} and ${approval.userSign[1]!=null}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
 					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#ModalProcess">보류</button></th:block>
 					<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalQueue">반려</button></th:block>
-				</div>
+				</div><!-- btn-group end -->
+			</div><!-- right end -->
+		</div><!-- wrap end -->
+		
+		<div class="other-btn">
+			<div class="btn-group" role="group" aria-label="Basic mixed styles example">
+				<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')} or ${!commentList.isEmpty()}"><a type="button" class="btn update-btn" th:href="@{|/approval/edit/${approval.approvalId}|}">수정</a></th:block>
+				<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-danger" th:href="@{|/approval/delete/${approval.approvalId}|}">삭제</a></th:block>
 			</div>
-		</div>
-		<div class="btn-group" role="group" aria-label="Basic mixed styles example">
-			<a type="button" class="btn btn-outline-primary" th:href="@{/approval/list}" >목록</a>
-			<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')} or ${!commentList.isEmpty()}"><a type="button" class="btn btn-outline-primary" th:href="@{|/approval/edit/${approval.approvalId}|}">수정</a></th:block>
-			<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-danger" th:href="@{|/approval/delete/${approval.approvalId}|}">삭제</a></th:block>
-		</div>
+			<a type="button" class="close" th:href="@{/approval/list}">나가기</a>
+		</div><!-- other-btn end -->
 		<div class="modal fade" id="ModalProcess" tabindex="-1" aria-labelledby="ModalProcess" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
