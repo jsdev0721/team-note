@@ -2,6 +2,7 @@
 #wrap{display: flex;margin-top: 20px;margin-bottom: 20px;}
 .my_mall{flex: 0.2;border-right: 1px solid #aaa;padding-right: 20px;}
 .my_mall .my_product{display: flex;justify-content: space-between;}
+.my_mall p{height: 40px;line-height: 40px;border: 1px solid #ddd;border-radius: 5px;}
 .my_mall .my_product a{display: inline-block;height: 40px;line-height: 40px;flex: auto;text-align: center;border-radius: 5px;}
 .my_mall .my_product a:nth-child(1){background-color: rgb(32, 62, 110);color: #fff;margin-right: 10px;}
 .my_mall .my_product a:nth-child(2){border: 1px solid rgb(32, 62, 110);}

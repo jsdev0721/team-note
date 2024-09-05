@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.groupware.note.calendar.Calendar;
+import com.groupware.note.calendar.CalendarService;
 import com.groupware.note.department.DepartmentService;
 import com.groupware.note.department.Departments;
 import com.groupware.note.expense.ExpenseDataService;
@@ -54,6 +58,7 @@ public class ApprovalController {
 	private final LeaveService leaveService;
 	private final CommentService commentService;
 	private final ExpenseDataService expenseDataService;
+	private final CalendarService calendarService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
@@ -264,6 +269,15 @@ public class ApprovalController {
 			Period leaveDate = Period.between(approval.getStartDate(), approval.getEndDate());
 			this.userDetailsService.minusLeave(userDetails, leaveDate.getDays());
 			this.leaveService.create(users, approval.getTitle(), approval.getContent(), approval.getStartDate(), approval.getEndDate(), status, approval.getFileList());
+			Calendar calendar = new Calendar();
+			calendar.setColor("aqua");
+			LocalDateTime startTime = approval.getStartDate().atStartOfDay();
+			LocalDateTime endTime = approval.getEndDate().atTime(LocalTime.MAX);
+			calendar.setStart(startTime);
+			calendar.setEnd(endTime);
+			calendar.setUser(users);
+			calendar.setTitle(approval.getTitle());
+			this.calendarService.create(calendar);
 		}
 		else if(excelCount>0&&imageCount>0&&status.equals("complete")) {
 			try {
