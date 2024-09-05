@@ -154,7 +154,7 @@
 			
 			<!-- 회계 -->
 			<div sec:authorize="hasAuthority('ROLE_ACCOUNTING')">
-				<a th:href="@{/expense/menu}" class="accounting icon-wrap">
+				<a th:href="@{/expense/menu}" class="acscounting icon-wrap">
 					<img src="/images/accounting.png" alt="회계 아이콘" class="icon">
 				</a>
 			</div>
@@ -162,7 +162,7 @@
 			<!-- 부서 생성 -->
 			<div sec:authorize="hasAuthority('ROLE_ADMIN')">
 				<a th:href="@{/department/list}" class="depManage icon-wrap">
-					부서관리 입장
+					<img src="/images/admin.png" alt="관리자 아이콘" class="icon">
 				</a>
 			</div>
 			<!-- 부서 생성 -->
