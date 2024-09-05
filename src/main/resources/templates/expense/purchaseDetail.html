@@ -48,7 +48,7 @@
 		<tbody>
 			<tr th:each="pData : ${pList}">
 				<td th:text="${#temporals.format(pData.addDate, 'yyyy-MM-dd')}"></td>
-				<td th:text="${pData.product.productName}"></td>
+				<td><a th:href="@{|/welfaremall/detail/${pData.product.productId}|}" th:text="${pData.product.productName}"></a></td>
 				<td th:text="${pData.productOption}"></td>
 				<td th:text="${pData.quantity}"></td>
 				<td th:text="${'₩' + #numbers.formatInteger((pData.point * pData.quantity), 3, 'COMMA')}"></td>
