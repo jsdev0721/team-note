@@ -55,15 +55,22 @@ public class WelfareMallController {
 	@GetMapping("/list")
 	public String findAll(Model model , @RequestParam(value = "page" , defaultValue = "0") int page ,@RequestParam(defaultValue = "personal" , value = "type")String type , Principal principal) {
 		model.addAttribute("list", this.welfareMallService.findAll(type , page, 9));
-		Users user = this.userService.getUser(principal.getName());
 		model.addAttribute("type", type);
+		Users user = this.userService.getUser(principal.getName());
+		model.addAttribute("department", user.getPosition().getDepartment());
+		UserDetails userDetail = this.userDetailsService.findByUser(user);
+		model.addAttribute("user", userDetail);
 		return "welfaremall/welfaremallList";
 	}
 	
 	@PostMapping("/list")
-	public String findByProductNameLike(Model model , @RequestParam(value = "page" , defaultValue = "0")int page ,@RequestParam(value = "productName")String productName ,@RequestParam(value = "type") String type) {
+	public String findByProductNameLike(Model model , @RequestParam(value = "page" , defaultValue = "0")int page ,@RequestParam(value = "productName")String productName ,@RequestParam(value = "type") String type , Principal principal) {
 		model.addAttribute("list", this.welfareMallService.findByProductNameLike(productName, type, page, 9));
 		model.addAttribute("type", type);
+		Users user = this.userService.getUser(principal.getName());
+		model.addAttribute("department", user.getPosition().getDepartment());
+		UserDetails userDetail = this.userDetailsService.findByUser(user);
+		model.addAttribute("user", userDetail);
 		return "welfaremall/welfaremallList";
 	}
 	@GetMapping("/create")
