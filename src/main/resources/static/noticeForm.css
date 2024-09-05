@@ -52,4 +52,4 @@ table th,td{text-align: center;}
 .btn-group .button:nth-child(1):hover{background-color: rgb(32, 62, 110);color: #fff;}
 .btn-group .button:nth-child(2){border: 1px solid #dc3545;}
 .btn-group .button:nth-child(2):hover{background-color: #dc3545;color: #fff;}
-.other-btn .button{position: absolute;right: 0;top: 50%;transform: translateY(-50%);}
+.other-btn .c-button{position: absolute;right: 0;top: 0;}
