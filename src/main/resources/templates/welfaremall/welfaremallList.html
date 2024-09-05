@@ -26,8 +26,8 @@
 			<div class="search-box">
 				<form th:action="@{/welfaremall/list}" method="post">
 					<select name="type">
-						<option value="personal">결재 대기</option>
-						<option value="group">결재 중</option>
+						<option value="personal">개인별</option>
+						<option value="group">부서별</option>
 					</select>
 					<input type="text" name="productName" class="search-txt" placeholder="검색어를 입력해 주세요"/>
 					<button type="submit" class="search">
@@ -41,6 +41,12 @@
 		</div><!-- search, create end -->
 		<div id="wrap">
 			<div class="my_mall">
+				<div>
+					<p>이름 : [[${user.name}]]</p>
+					<p>부서 : [[${department.departmentName}]]</p>
+					<p>개인 포인트 : [[${user.points}]]</p>
+					<p>부서 포인트 : [[${department.points}]]</p>
+				</div>
 				<div class="my_product">
 					<a th:href="@{|/welfaremall/viewCart?type=${type}|}">장바구니</a>
 					<a th:href="@{|/welfaremall/purchase?type=${type}|}">구매내역</a>
