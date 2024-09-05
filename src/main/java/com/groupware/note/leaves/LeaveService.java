@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.groupware.note.DataNotFoundException;
+import com.groupware.note.calendar.Calendar;
 import com.groupware.note.files.Files;
 import com.groupware.note.user.Users;
 
