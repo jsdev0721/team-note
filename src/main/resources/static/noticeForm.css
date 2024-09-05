@@ -46,9 +46,10 @@ table th,td{text-align: center;}
 	height: 40px;line-height: 40px;text-align: center;border-left: none;background-color: rgb(223, 227, 238);transition: all 0.3s;}
 .download a:hover{background-color: rgb(91, 128, 187);color: #fff;}
 
-.other-btn{margin-top: 10px;display: flex;justify-content: space-between;}
+.other-btn{margin-top: 10px;position: relative;}
 .btn-group .button{padding: 0 15px;border-radius: 5px;height: 40px;line-height: 40px;transition: all 0.3s;}
 .btn-group .button:nth-child(1){margin-right: 5px;border: 1px solid rgb(32, 62, 110);}
 .btn-group .button:nth-child(1):hover{background-color: rgb(32, 62, 110);color: #fff;}
 .btn-group .button:nth-child(2){border: 1px solid #dc3545;}
 .btn-group .button:nth-child(2):hover{background-color: #dc3545;color: #fff;}
+.other-btn .c-button{position: absolute;right: 0;top: 0;}

@@ -79,6 +79,10 @@ public class ApprovalService {
 			}
 		}
 	}
+	public Page<Approval> myApprovalList(Users user , String status , int page , int quantity) {
+		Pageable pageable = getPageable(page, quantity);
+		return this.approvalRepository.findByUserAndStatus(user, status, pageable);
+	}
 
 	
 	public List<Approval> findByUser(Users users, String status) {
