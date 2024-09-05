@@ -1,6 +1,7 @@
 <html layout:decorate="~{layout}">
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/approvalList.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/welfaremall.css}">
 		<script>
 			$(function(){
 				var type = $('#type').val();
@@ -11,10 +12,9 @@
 				}
 			});
 		</script>
-		<title>복지몰 리스트</title>
+		<title>복지몰</title>
 	</head>
 	<div layout:fragment="content" class="container">
-		
 		<div class="list">
 			<input type="text" style="display: none;" th:value="${type}" id="type">
 		  	<ul> 
@@ -39,38 +39,44 @@
 				<img src="/images/pencil.png" alt="새글 생성">
 			</a>
 		</div><!-- search, create end -->
-		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-			<div class="col" th:each="product : ${list}">
-				<div class="card shadow-sm">
+		<div id="wrap">
+			<div class="my_mall">
+				<div class="my_product">
+					<a th:href="@{|/welfaremall/viewCart?type=${type}|}">장바구니</a>
+					<a th:href="@{|/welfaremall/purchase?type=${type}|}">구매내역</a>
+				</div>
+			</div><!-- my_mall end -->
+			<ul class="product_list">
+				<li class="product shadow-sm" th:each="product : ${list}">
 					<a th:href="@{|/welfaremall/detail/${product.productId}|}" th:if="${product.mainImage!=null}">
 						<img th:src="@{|/welfaremall/photo/${product.mainImage.fileId}|}" alt="productImg" class="bd-placeholder-img card-img-top" width="100%" height="225">
 						<rect width="100%" height="100%" fill="#fff"></rect>
-						<text x="50%" y="50%" th:text="${product.productName}"></text>
-					</a>
+						<span th:text="${product.productName}"></span><!-- 상품명 -->
+						<small class="text-body-secondary" >가격 : [[${product.price}]]</small>
+					</a><!-- 상품 이미지 존재 -->
+					
 					<a th:href="@{|/welfaremall/detail/${product.productId}|}" th:unless="${product.mainImage!=null}">
-						<img src="/images/sub_logo.png" alt="productImg" class="bd-placeholder-img card-img-top" width="100%" height="225">
+						<img src="/images/no_image.jpg" alt="productImg" class="bd-placeholder-img card-img-top" width="100%" height="225">
 						<rect width="100%" height="100%" fill="#fff"></rect>
-						<text x="50%" y="50%" th:text="${product.productName}"></text>
-					</a>
-					<div class="card-body">
-						<p class="card-text" th:text="${product.description}"></p>
-						<div class="d-flex justify-content-between align-items-center">
-							
-							<form th:action="@{|/welfaremall/addCart/${product.productId}|}" method="get" th:if="${product.optionList!=null}">
-								<input type="hidden" name="to" value="list" />
-								<input type="hidden" name="type" th:value="${type}" />
-							<select name="option">
+						<span th:text="${product.productName}"></span>
+						<small class="text-body-secondary" >가격 : [[${product.price}]]</small>
+					</a><!-- 상품 이미지가 없을 경우 -->
+					
+					<div class="product_footer"><!-- 장바구니 추가, 가격 -->
+						<form th:action="@{|/welfaremall/addCart/${product.productId}|}" method="get" th:if="${product.optionList!=null}">
+							<input type="hidden" name="to" value="list" />
+							<input type="hidden" name="type" th:value="${type}" />
+							<select name="option" class="form-select form-select-sm" aria-label="Small select example">
 								<option th:each="option : ${product.optionList}" th:value="${option}" th:text="${option}"></option>
 							</select>
-								<input type="submit" class="btn btn-outline-success btn-sm" value="+" onclick="alert('장바구니추가');"/>
-							</form>
-							<a th:unless="${product.optionList!=null}" th:href="@{|/welfaremall/addCart/${product.productId}?to=list&type=${type}|}" type="button" class="btn btn-outline-success" onclick="alert('장바구니추가');" >+</a>
-							<small class="text-body-secondary" >가격 : [[${product.price}]]</small>
-						</div>
+							<input type="submit" class="btn" value="+" onclick="alert('상품이 장바구니에 추가되었습니다.');"/>
+						</form>
+						<a th:unless="${product.optionList!=null}" th:href="@{|/welfaremall/addCart/${product.productId}?to=list&type=${type}|}" type="button" class="btn" onclick="alert('상품이 장바구니에 추가되었습니다.');">+</a>
 					</div>
-				</div>
-			</div>
-		</div><!-- 결재 리스트 end -->
+				</li><!-- product end -->
+			</ul><!-- product_list end -->
+		</div><!-- wrap end -->
+		
 		<div th:if="${!list.isEmpty()}">
 			<ul class="pagination justify-content-center">
 				<li class="page-item" th:classappend="${!list.hasPrevious}?'disabled'">
@@ -88,11 +94,5 @@
 				</li>
 			</ul>
 		</div><!-- paging end -->
-		<div>
-			<a th:href="@{|/welfaremall/viewCart?type=${type}|}" class="create">
-				<img src="/images/cart.png" alt="카트">
-			</a>
-			<a th:href="@{|/welfaremall/purchase?type=${type}|}">구매내역</a>
-		</div>
 	</div>
 </html>
