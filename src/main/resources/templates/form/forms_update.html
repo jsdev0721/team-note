@@ -1,10 +1,10 @@
 <html layout:decorate="~{layout}">
-	<head>
+	<!--<head>
 		<script>
 			function update(){
 				$("#fileName").css("display", "none");
 				$("#formfileMultiple").css("display", "block");
-			}
+			}-->
 		</script>
 		<title>서식 게시판 수정</title>
 	</head>
@@ -24,10 +24,10 @@
 			</div>
 			<div class="mb-4">
 				<label for="formfileMultiple" class="form-label">첨부파일</label>
-					<button type="button" onclick="update()">파일 수정</button>
-						<div th:each="file : ${fileList}">
-							<p class="form-control" id="fileName" th:text="${file.originFileName}"></p>
-								<input type="file" class="form-control" id="formfileMultiple" name="multiPartFile" multiple th:value="${file.originFileName}" style="display: none;">
+								<input type="file" class="form-control" id="formfileMultiple" name="multiPartFile" multiple>
+							<div th:each="file : ${fileList}">
+								<span th:text="${file.originFileName}"></span>
+								<a class="btn btn-danger" th:href="@{|/forms/delete/${forms.formId}/${file.fileId}|}">x</a>
 					<!--<input type="file" class="form-control" id="formfileMultiple" name="multiPartFile" multiple>-->
 						</div>
 			</div>
