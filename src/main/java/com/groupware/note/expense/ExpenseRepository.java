@@ -20,6 +20,12 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 	@Query("select e from Expense e where e.writer.user.position.department.departmentName like :departmentName order by e.useDate desc, e.writer.name asc")
 	List<Expense> findByDepOrderByDate(@Param("departmentName") String departmentName );
 	
+	@Query("select e from Expense e where e.account like :account order by e.useDate desc, e.writer.name asc")
+	List<Expense> findByAccountOrderByDate(@Param("account") String account);
+	
+	@Query("select e from Expense e where e.expenseType like :expenseType order by e.useDate desc, e.writer.name asc")
+	List<Expense> findByExpenseTypeLikeOrderByDate(@Param("expenseType") String expenseType);
+	
 	
 	@Query("select e from Expense e where e.writer.userId = :userId order by e.useDate desc")
 	List<Expense> findByUserIdOrderByDate(@Param("userId") Integer userId); 
