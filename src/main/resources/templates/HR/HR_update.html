@@ -11,11 +11,10 @@
 				<option for="positionName" class="form-label"></option>
 				<h3>부서/직급 변경</h3>
 				<br>
-				<select  class="form-control"name="departmentId">
-					<option value="HR">HR</option>
-					<option value="accounting">accounting</option>
-					<option value="Marketing">Marketing</option>
-					<option value="temp">temp</option>
+				<select  class="form-control"name="departmentId" >
+					<div th:each="dep : ${depList}">
+						<option th:value="${dep.departmentName}" th:text="${dep.departmentName}"></option>
+					</div>
 				</select>
 				<br>
 				<select  class="form-control" name="positionName">
