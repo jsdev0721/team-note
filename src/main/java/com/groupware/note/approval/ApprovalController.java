@@ -89,7 +89,7 @@ public class ApprovalController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/create")
 	public String approvalCreate(ApprovalForm approvalForm) {
-		approvalForm.setDepartmentName("General");
+		approvalForm.setDepartmentName("general");
 		return "approval/approvalCreate";
 	}
 	@PreAuthorize("isAuthenticated()")
@@ -102,7 +102,7 @@ public class ApprovalController {
 			Approval _approval = new Approval();
 			Users user = this.userService.getUser(principal.getName());
 			_approval.setUser(user);
-			if(approvalForm.getDepartmentName().equals("General")) {
+			if(approvalForm.getDepartmentName().equals("general")) {
 				Departments department = this.userService.getUser(principal.getName()).getPosition().getDepartment();
 				_approval.setDepartment(department);
 			}else if(approvalForm.getDepartmentName().equals("expense")) {
@@ -267,8 +267,14 @@ public class ApprovalController {
 			UserDetails userDetails = this.userDetailsService.findByUser(approval.getUser());
 			Users users = userDetails.getUser();
 			Period leaveDate = Period.between(approval.getStartDate(), approval.getEndDate());
-			this.userDetailsService.minusLeave(userDetails, leaveDate.getDays());
-			this.leaveService.create(users, approval.getTitle(), approval.getContent(), approval.getStartDate(), approval.getEndDate(), status, approval.getFileList());
+			if(approval.getTitle().equals("유급휴가")) {
+				this.userDetailsService.minusLeave(userDetails, leaveDate.getDays());				
+			}
+			List<Files>fileList = approval.getFileList();
+			if(!fileList.isEmpty()) {
+				approval.setFileList(null);
+			}
+			this.leaveService.create(users, approval.getTitle(), approval.getContent(), approval.getStartDate(), approval.getEndDate(), status, fileList);
 			Calendar calendar = new Calendar();
 			calendar.setColor("aqua");
 			LocalDateTime startTime = approval.getStartDate().atStartOfDay();
@@ -278,6 +284,8 @@ public class ApprovalController {
 			calendar.setUser(users);
 			calendar.setTitle(approval.getTitle());
 			this.calendarService.create(calendar);
+			this.approvalService.delete(approval);
+			return "redirect:/approval/list";
 		}
 		else if(excelCount>0&&imageCount>0&&status.equals("complete")) {
 			try {
@@ -337,7 +345,7 @@ public class ApprovalController {
 	public String delete(@PathVariable("id")Integer id) {
 		Approval approval = this.approvalService.findById(id);
 		List<Files> fileList = approval.getFileList();
-		this.approvalService.deleteById(approval);
+		this.approvalService.delete(approval);
 		if(!fileList.isEmpty()) {
 			for(Files file : fileList) {
 				this.fileService.delete(file);

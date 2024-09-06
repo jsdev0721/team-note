@@ -34,6 +34,7 @@ import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.form.FormService;
 import com.groupware.note.leaves.LeaveService;
+import com.groupware.note.leaves.Leaves;
 import com.groupware.note.message.chatRoomService;
 import com.groupware.note.notice.NoticesService;
 import com.groupware.note.position.PositionService;
@@ -196,10 +197,12 @@ public class UserController {
 		Positions positions = users.getPosition();
 		UserDetails userDetails = this.userDetailsService.getUser(userId);
 		List<Attendance> attendance = this.attendanceService.findById(userId);
+		List<Leaves> leaves = this.leaveService.findByUser(users);
 		model.addAttribute("users", users);
 		model.addAttribute("positions",positions);
 		model.addAttribute("userDetails",userDetails);
 		model.addAttribute("attendance", attendance);
+		model.addAttribute("leaves", leaves);
 		System.out.println("불러와 주우우웅우우우세야야야양야ㅑㅇ");
 		
 		return "HR/HR_detail";
@@ -287,5 +290,9 @@ public class UserController {
 		
 		return "redirect:/user/list";
 	}
-	
+	@GetMapping("/download/{id}")
+	public ResponseEntity<Resource> download(@PathVariable(value = "id")Integer id) {
+		Files file = this.fileService.findByFiles(id);
+		return this.fileService.downloadFile(file);
+	}
 }

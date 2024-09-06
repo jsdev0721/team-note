@@ -51,6 +51,27 @@
 							  <td th:text="${attendances.reason}"></td> 
 						</tr>
 				</tbody>
+			</table>
+			<table class="table">
+				<thead class="table-success">
+					<tr>
+						<th>휴가 시작</th>
+						<th>휴가 종료</th>
+						<th>휴가 사유</th>
+						<th> 비  고</th>
+						
+					</tr>
+				</thead>
+				<h4>휴가 내역</h4>
+				<br>
+				<tbody>
+					<tr th:each="leave : ${leaves}">
+				      <td th:text="${#temporals.format(leave.startDate, 'yyyy.MM.dd')}"></td>
+					  <td th:text="${#temporals.format(leave.endDate, 'yyyy.MM.dd')}"></td>
+					  <td th:text="${leave.reason}"></td>
+					  <td th:each="file : ${leave.attachment}"><a th:href="@{|/user/download/${file.fileId}|}" th:text="${file.originFileName}"></a></td> 
+					</tr>
+				</tbody>
 			</table>						
 		</tbody>
 	</div>
