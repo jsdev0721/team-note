@@ -288,13 +288,39 @@
 		</div><!-- header end -->
 		<th:block layout:fragment="content"></th:block>
 		<div id="footer" class="container-fluid">
-			<div class="container">
+			
+			<div class="d-flex justify-content-evenly">
+				<div class="footer-a">
+					<div style="color: lightgray;"><strong>Groupware INFO</strong></div>
+					<div>주)Noneffective Task Eliminator</div>
+					<div>경기도 김포시 김포한강4로 125 10층</div>
+					<div>이젠컴퓨터아카데미</div>
+					<div>T.1544-8147</div>
+				</div>
+				<div class="footer-b">
+					<a th:href="@{/}" class="f_logo"><img src="/images/footer_logo.png"></a>
+				</div>
+				
+				<div class="footer-c">
+					<div>대표자 : 이승호</div>
+					<div>사업자등록번호 : 157-49-00249</div>
+					<div>통신판매업 신고번호 : 제 2010-경기김포-0562호</div>
+					<div>개인정보보호책임자 : 문성경(sweeTB9@yahoo.co.kr)</div>
+					
+				</div>
+				<div class="copy container">
+					<p>Copyright&#169;2024 NoTE all rights reserved.</p>
+				</div>
+			</div>
+			<!--<div class="container">
 				<a th:href="@{/}" class="f_logo"><img src="/images/footer_logo.png"></a>
 				<p class="address">경기도 김포시 김포한강4로 125 10층 이젠아카데미컴퓨터학원</p>
 				<div class="copy container">
 					<p>Copyright&#169;2024 NoTE all rights reserved.</p>
 				</div>
-			</div>
+			</div>-->
+			
+			
 		</div>
 		
 		<!-- 캘린더 modal -->
