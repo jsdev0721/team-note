@@ -196,17 +196,6 @@
 			}
 		</script>
 		<style>
-			.sticky {
-			  position: fixed;
-			  top: 0;
-			  width: 100%;
-			}
-			.mainConfig{
-				min-height: 800px;
-				overflow: auto;
-				overflow-x: hidden;
-			}
-			
 			.test {
 				color:blue;
 			}
@@ -214,7 +203,7 @@
 		</style>
 		<title>게시판</title>
 	</head>
-	<body onload="startTime(), unread()">
+	<body onload="startTime(), unread()" class="body">
 	<form id="checkOutForm" method="post" th:action="@{/attendance/checkout}">
 			    <input type="hidden" id="outlatitude" name="outlatitude">
 			    <input type="hidden" id="outlongitude" name="outlongitude">
@@ -294,7 +283,7 @@
 			
 			<!-- <a href="#" class="menu"><img src="/images/menu.png"></a> -->
 		</div><!-- header end -->
-		<div class="mainConfig"><th:block layout:fragment="content"></th:block></div>
+		<th:block layout:fragment="content"></th:block>
 		<div id="footer" class="container-fluid">
 			<div class="container">
 				<a th:href="@{/}" class="f_logo"><img src="/images/footer_logo.png"></a>
@@ -374,20 +363,5 @@
 			</div>
 		</div>
 		<!-- 캘린더 modal -->
-		
-		<script> //스크롤 시 header 고정
-			window.onscroll = function() {myFunction()};
-
-			var header = document.getElementById("header");
-			var sticky = header.offsetTop;
-
-			function myFunction() {
-			  if (window.pageYOffset > sticky) {
-			    header.classList.add("sticky");
-			  } else {
-			    header.classList.remove("sticky");
-			  }
-			}
-		</script>
 	</body>
 </html>

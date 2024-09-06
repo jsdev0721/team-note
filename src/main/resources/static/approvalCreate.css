@@ -1,5 +1,5 @@
 /* 공통 */
-.select{display: flex;justify-content: space-evenly;margin-bottom: 20px;margin-top: 50px;}
+.select{display: flex;justify-content: space-evenly;margin-bottom: 20px;}
 .input-form{border: 1px solid rgb(32, 62, 110);padding: 30px;border-radius: 10px;}
 .input-form select{appearance: none; width: 100%; padding: 10px;border-radius: 10px; margin-bottom: 20px; text-align: center;}
 input[type=radio]{background: url(/images/check.png);background-size: 100% 100%;font-size: 20px;}

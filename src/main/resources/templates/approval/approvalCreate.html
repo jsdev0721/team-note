@@ -11,7 +11,7 @@
 		</script>
 		<title>결재 폼</title>
 	</head>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container" style="padding-top: 50px;">
 		<form th:action="@{/approval/create}" method="post" th:object="${approvalForm}" enctype="multipart/form-data">
 			<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
 			<div class="select">
