@@ -1,69 +1,55 @@
 <html layout:decorate="~{layout}">
 	<head>
-		<title>복지포인트</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/expense.css}">
+		<title>회계 | 복지포인트 설정</title>
 	</head>
-<div layout:fragment="content" class="container">
-	
-	
-		
-		<p></p>
-
-		<div class="d-flex justify-content-between" >
-		<div style="width: 450px;">
-	<form th:action="@{/expense/wellfarePoint}" method="post" th:object="${pointInputForm}" >
-		<div th:replace="~{form_errors :: formErrorsFragment}"></div>
-		<p></p>
-		<div class="mb-3">
-			<label for="depPointPer" class="form-label">부서 인당 포인트</label>
-			<input type="text" th:field="${wfPointInput.depPointPer}" class="form-control" />
+	<div layout:fragment="content" class="container">
+		<div class="d-flex justify-content-between" id="wrap">
+			<div style="flex: 0.45;">
+				<form th:action="@{/expense/wellfarePoint}" method="post" th:object="${pointInputForm}" >
+					<div th:replace="~{form_errors :: formErrorsFragment}"></div>
+					<div class="input">
+						<label for="depPointPer" class="form-label">부서 인당 포인트</label>
+						<input type="text" th:field="${wfPointInput.depPointPer}" class="form-control" />
+					</div>
+						
+					<div class="input">
+						<label for="depPointPlus" class="form-label">부서 플러스 포인트</label>
+						<input type="text" th:field="${wfPointInput.depPointPlus}" class="form-control" />
+					</div>		
+						
+					<div class="input">
+						<label for="individualPoint" class="form-label">개인 포인트</label>
+						<input type="text" th:field="${wfPointInput.individualPoint}" class="form-control" />
+					</div>
+					<input type="submit" value="저장하기" class="btn"/>
+					
+				</form>
+				<div class="point-input">
+					<strong>※ 포인트 입력시기 ※</strong>
+					<p>부서 : 3월과 9월 1일 이후 첫 번째 평일 <br> 사원 : 매달 1일 이후 첫 번째 평일</p>
+					<p>포인트 계산식 : 부서 인원 x 인당 포인트 + 플러스 포인트</p>
+				</div>
+			</div><!-- 포인트 지급 end -->
+			<div style="flex: 0.4;">
+				<div class="point">
+					<strong>각 부서별 입력될 포인트</strong>
+					<div>
+						<p th:each="point : ${DeppList}" th:text="${point}"></p>
+					</div>
+				</div>
+				<div class="point">
+					<strong>현재 부서별 포인트</strong>
+					<div>
+						<p th:each="d : ${dep}" th:text="|${d.departmentName} : ${d.points} p|"></p>
+					</div>
+				</div>
+				<div class="user-point">
+					<strong>사원에게 입력되는 포인트</strong>
+					<p th:text="|${wfPointInput.individualPoint} p|"></p>
+				</div>
+			</div><!-- 입력된 포인트 내역 end -->
 		</div>
-			
-		<div class="mb-3">
-			<label for="depPointPlus" class="form-label">부서 플러스 포인트</label>
-			<input type="text" th:field="${wfPointInput.depPointPlus}" class="form-control" />
-		</div>		
-			
-		<div class="mb-3">
-			<label for="individualPoint" class="form-label">개인 포인트</label>
-			<input type="text" th:field="${wfPointInput.individualPoint}" class="form-control" />
-		</div>
-		<input type="submit" value="저장하기" class="btn btn-primary my-2" style="background-color:  rgb(32, 62, 110); 	color: whitesmoke;
-			border: 0px;
-			border-radius: 5px;
-			width: 90px;
-			height: 35px;" />
-		
-	</form>
-	
-	
-	<div><strong>포인트 입력시기</strong></div>
-	<div>부서 : 3월과 9월 1일 이후 첫 번째 평일 <br> 사원 : 매달 1일 이후 첫 번째 평일</div>
-	<p></p>
-	<div>포인트 계산식 : 부서 인원 x 인당 포인트 + 플러스 포인트</div>
-	</div>
-	
-	
-	<p></p>
-		<div style="text-align: left; width: 500px;">
-			<p></p>	
-		<table>
-			<tr><th>각 부서별 입력될 포인트</th></tr>
-			<tr th:each="point : ${DeppList}">
-				<td th:text="${point}"></td>
-			</tr>
-		</table>
-		<p></p>
-		<table>
-			<tr><th>현재 부서별 포인트</th></tr>
-			<tr th:each="d : ${dep}">
-				<td th:text="|${d.departmentName} : ${d.points} p|"></td>
-			</tr>
-		</table>
-		<p></p>
-		<div><strong>사원에게 입력되는 포인트 : </strong><span th:text="|${wfPointInput.individualPoint} p|"></span> </div>
-		
-	</div>
-
-</div>
-</div>
+		<a th:href="@{/expense/menu}" class="close">나가기</a>
+	</div><!-- container end -->
 </html>

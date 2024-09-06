@@ -1,7 +1,7 @@
 <html layout:decorate="~{layout}">
 	<head>
 		<link rel="stylesheet" type="text/css" th:href="@{/approvalList.css}">
-		<title>결재 상세보기</title>
+		<title>결재 | 상세페이지</title>
 	</head>
 	<div layout:fragment="content" class="container">
 		<div id="wrap">
@@ -91,7 +91,7 @@
 				<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn btn-outline-danger" th:href="@{|/approval/delete/${approval.approvalId}|}">삭제</a></th:block>
 
 			</div>
-			<a type="button" class="close" th:href="@{/approval/list}">나가기</a>
+			<a type="button" class="detail-close" th:href="@{/approval/list}">나가기</a>
 		</div><!-- other-btn end -->
 		<div class="modal fade" id="ModalProcess" tabindex="-1" aria-labelledby="ModalProcess" aria-hidden="true">
 			<div class="modal-dialog">
