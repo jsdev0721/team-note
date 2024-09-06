@@ -147,7 +147,7 @@ public class WelfareMallController {
 		return "welfaremall/welfaremallEdit";
 	}
 	@PostMapping("/edit/{id}")
-	public String editWelfaremall(@Valid WelfareMallForm welfareMallForm , BindingResult bindingResult ,@PathVariable("id")Integer id) {
+	public String editWelfaremall(@Valid WelfareMallForm welfareMallForm , BindingResult bindingResult ,@PathVariable("id")Integer id ,	@RequestParam("type")String type) {
 		if(bindingResult.hasErrors()) {
 			return "welfaremall/welfaremallDetail";
 		}
@@ -167,6 +167,7 @@ public class WelfareMallController {
 		welfareMall.setProductName(welfareMallForm.getProductName());
 		welfareMall.setDescription(welfareMallForm.getDesciption());
 		welfareMall.setPrice(welfareMallForm.getPrice());
+		welfareMall.setType(type);
 		this.welfareMallService.save(welfareMall);
 		return String.format("redirect:/welfaremall/detail/%s", id);
 	}
