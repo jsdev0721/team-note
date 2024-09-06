@@ -68,6 +68,7 @@ public class ApprovalController {
 		Page<Approval> approvalList = this.approvalService.ApprovalList(user, department, status , page , 10);
 		model.addAttribute("approvalList", approvalList);
 		model.addAttribute("status", status);
+		model.addAttribute("userList", this.userDetailsService.userfindByAll());
 		return "approval/approvalList";
 	}
 	@PostMapping("/list")
@@ -76,6 +77,8 @@ public class ApprovalController {
 		Departments department = user.getPosition().getDepartment();
 		Page<Approval> approvalList =  this.approvalService.findByLike(user, search , department , status , page , 10);
 		model.addAttribute("approvalList" , approvalList);
+		model.addAttribute("status", status);
+		model.addAttribute("userList", this.userDetailsService.userfindByAll());
 		return "approval/approvalList";
 	}
 	@GetMapping("/mylist")
@@ -84,6 +87,16 @@ public class ApprovalController {
 		Page<Approval> approvalList = this.approvalService.myApprovalList(user, status, page, 10);
 		model.addAttribute("approvalList", approvalList);
 		model.addAttribute("status", status);
+		model.addAttribute("userList", this.userDetailsService.userfindByAll());
+		return "approval/myApprovalList";
+	}
+	@PostMapping("/mylist")
+	public String mysearch(Model model , @RequestParam(value = "status") String status , @RequestParam(value = "page" , defaultValue = "0")int page , Principal principal , @RequestParam(value = "search")String search) {
+		Users user = this.userService.getUser(principal.getName());
+		Page<Approval> approvalList =  this.approvalService.findByLike(user, search , status , page , 10);
+		model.addAttribute("approvalList" , approvalList);
+		model.addAttribute("status", status);
+		model.addAttribute("userList", this.userDetailsService.userfindByAll());
 		return "approval/myApprovalList";
 	}
 	@PreAuthorize("isAuthenticated()")
