@@ -45,13 +45,20 @@
 		</div><!-- search, create end -->
 		<table class="table table-scriped-columns table-hover align-middle">
 			<thead>
-				<tr>
+				<tr class="title">
 					<th>제목</th>
+					<th width="20%">작성자</th>
+					<th width="20%">직급</th>
+					<th width="15%" align="center">작성일자</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="approval : ${approvalList}">
 					<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
+					<td th:if="${approval.user==null}" align="center">퇴사직원</td>
+					<td th:each="user : ${userList}" th:if="${user.user==approval.user}" align="center"th:text="${user.name}"></td>
+					<td th:text="${approval.user.position.positionName}" align="center"></td>
+					<td th:text="${#temporals.format(approval.updateTime,'yy-MM-dd')}" align="center"></td>
 				</tr>
 			</tbody>
 		</table><!-- 결재 리스트 end -->

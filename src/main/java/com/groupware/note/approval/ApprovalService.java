@@ -83,7 +83,11 @@ public class ApprovalService {
 		Pageable pageable = getPageable(page, quantity);
 		return this.approvalRepository.findByUserAndStatus(user, status, pageable);
 	}
-
+	public Page<Approval> findByLike(Users users , String search , String status , int page , int quantity) {
+		String _search = "%"+search+"%";
+		Pageable pageable = getPageable(page, quantity);
+		return this.approvalRepository.findByUserAndStatusAndTitleLike(users, status, _search, pageable);
+	}
 	
 	public List<Approval> findByUser(Users users, String status) {
 		return this.approvalRepository.findByUserAndStatus(users, status);
