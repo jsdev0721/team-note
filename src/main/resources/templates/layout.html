@@ -75,8 +75,10 @@
 				},
 				eventClick: function (info){
 					info.jsEvent.preventDefault();
-					
-					if(confirm("'"+ info.event.title +"' 일정을 삭제하시겠습니까 ?")){
+					console.log(info);
+					if(info.event.backgroundColor == "aqua"){
+						alert("휴가는 삭제할 수 없습니다.");
+					}else if(confirm("'"+ info.event.title +"' 일정을 삭제하시겠습니까 ?")){
 						var eventData = {
 							id: info.event.id,
 						};
@@ -88,7 +90,8 @@
 							})
 						info.event.remove();
 						}
-					}					
+					},
+					displayEventTime: false,				
 				});
 
 				//모달창 이벤트
@@ -109,6 +112,7 @@
 				      } else {
 						if(eventData.check == "팀"){
 							eventData.title = "[팀] " + eventData.title;
+							eventData.color = "#203e6e";
 						}
 						$.ajax({
 						    type: "POST",
@@ -302,6 +306,28 @@
 		</div>
 		
 		<!-- 캘린더 modal -->
+		<script>
+		    document.addEventListener('DOMContentLoaded', function() {
+		        var colorSelect = document.getElementById('color');
+		        var teamRadio = document.getElementById('teamCheck');
+		        var personalRadio = document.getElementById('personalCheck');
+
+		        // 팀이 선택되면 색상 선택을 비활성화
+		        teamRadio.addEventListener('change', function() {
+		            if (teamRadio.checked) {
+		                colorSelect.disabled = true;
+		            }
+		        });
+
+		        // 개인이 선택되면 색상 선택을 활성화
+		        personalRadio.addEventListener('change', function() {
+		            if (personalRadio.checked) {
+		                colorSelect.disabled = false;
+		            }
+		        });
+		    });
+		</script>
+		
 		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm">
 		        <div class="modal-content">
@@ -326,13 +352,13 @@
 						<!-- <th:block sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"></th:block> -->
 						<div class="row justify-content-center mt-3">
 							<div class="col">
-						  		<input class="form-check-input" type="radio" name="flexRadioDefault" id="check" value="개인"  checked>
+						  		<input class="form-check-input" type="radio" name="flexRadioDefault" id="personalCheck" value="개인"  checked>
 						  		<label class="form-check-label" for="flexRadioDefault1">
 						    	개인
 						  		</label>
 							</div>
 							<div class="col">
-						  		<input class="form-check-input" type="radio" name="flexRadioDefault" id="check" value="팀">
+						  		<input class="form-check-input" type="radio" name="flexRadioDefault" id="teamCheck" value="팀">
 						  		<label class="form-check-label" for="flexRadioDefault2">
 						    	팀
 						  		</label>
