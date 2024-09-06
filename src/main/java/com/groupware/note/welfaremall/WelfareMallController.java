@@ -298,21 +298,6 @@ public class WelfareMallController {
 		model.addAttribute("quantity", quantity);
 		return "welfaremall/cartList";
 	}
-//	@PostMapping("/viewCart")
-//	public String viewCart(Model model , Principal principal , @RequestParam("productName")String productName , @RequestParam(value = "type" , defaultValue = "personal")String type) {
-//		List<Cart> cartList = new ArrayList<>();
-//		Users user = this.userService.getUser(principal.getName());
-//		for(WelfareMall welfareMall : this.welfareMallService.findByProductNameLike(productName , type)) {
-//			Cart cart = new Cart();
-//			cart = this.cartService.findByProductAndUser(welfareMall, user);
-//			if(cart.getCartId()!=null) {
-//				cartList.add(cart);	
-//			}
-//		}
-//		model.addAttribute("run", true);
-//		model.addAttribute("cartList", cartList);
-//		return "welfaremall/cartList";
-//	}
 	@PostMapping("/purchase")
 	public String purchase(Principal principal , @RequestParam(value = "type")String type) {
 		Users user = this.userService.getUser(principal.getName());

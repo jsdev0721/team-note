@@ -65,7 +65,7 @@ public class ApprovalService {
 		}
 		return this.approvalRepository.findByDepartmentAndStatusAndTitleLike(department, status, _search, pageable);
 	}
-	public void deleteById(Approval approval) {
+	public void delete(Approval approval) {
 		this.approvalRepository.delete(approval);
 		
 	}
