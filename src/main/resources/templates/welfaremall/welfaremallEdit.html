@@ -8,7 +8,7 @@
 			}
 		</script>
 	</head>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container" style="padding-top: 50px;">
 		<form th:action="@{|/welfaremall/edit/${welfaremall.productId}|}" method="post" enctype="multipart/form-data">
 			<div class="card" th:object="${welfareMallForm}">
 				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>

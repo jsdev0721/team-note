@@ -3,7 +3,7 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/welfaremall.css}">
 		<title>복지몰 | 상세페이지</title>
 	</head>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container" style="padding-top: 50px;">
 		<div class="detail">
 			<div class="product_img" th:if="${welfaremall.mainImage!=null}">
 				<img th:src="@{|/welfaremall/photo/${welfaremall.mainImage.fileId}|}" class="card-img-middle" width="100%">
