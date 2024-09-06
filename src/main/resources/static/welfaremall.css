@@ -27,6 +27,8 @@
 .product_footer .btn:focus{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
 .product_footer .btn:active{background-color: rgb(32, 62, 110) !important;color: #fff !important;}
 
+.close{display: block;text-align: right;text-decoration: underline;}
+
 /* detail */
 .detail{display: flex;margin-top: 50px !important;width: 70%;margin: 0 auto;margin-bottom: 20px;}
 .detail .product_img{flex: 1;}
@@ -48,7 +50,7 @@
 .detail_img{width: 70%;margin: 0 auto;}
 .button{width: 70%;margin: 0 auto;position: relative;}
 
-.close{text-decoration: underline;position: absolute;right: 0;top: 0;}
+.detail-close{text-decoration: underline;position: absolute;right: 0;top: 0;}
 
 /* cartlist */
 .table{margin-top: 20px;}
