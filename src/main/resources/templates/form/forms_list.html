@@ -16,7 +16,7 @@
 					</button>
 				</form>
 			</div><!-- search end -->
-			<a th:href="@{/forms/create}" class="create">
+			<a sec:authorize="!hasAnyAuthority('ROLE_INTERN','ROLE_USER')" th:href="@{/forms/create}" class="create">
 				<img src="/images/pencil.png" alt="새글 생성">
 			</a>
 		</div><!-- search, create end -->
