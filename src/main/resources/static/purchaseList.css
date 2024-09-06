@@ -12,3 +12,5 @@
 		width: 120px;
 		height: 30px;
 }
+
+.close{display: block;text-align: right;text-decoration: underline;}
