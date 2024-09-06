@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.stereotype.Service;
 
+import com.groupware.note.files.FileService;
 import com.groupware.note.files.Files;
 import com.groupware.note.user.UserDetails;
 import com.groupware.note.user.UserDetailsRepository;
@@ -45,6 +46,13 @@ public class ExpenseDataService {
 		case "DEPARTMENT":
 			List<Expense> list2 = this.eRepository.findByDepOrderByDate("%" + browse+ "%");
 			return list2;
+		case "account" :
+			List<Expense> list3 = this.eRepository.findByAccountOrderByDate("%" + browse+ "%");
+			return list3;
+		case "expenseType" :
+			List<Expense> list4 = this.eRepository.findByExpenseTypeLikeOrderByDate("%" + browse+ "%");
+			return list4;
+			
 		}
 		return null;
 	}

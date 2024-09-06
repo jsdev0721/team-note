@@ -8,8 +8,8 @@
 		</script>
 		<title>공지사항 수정</title>
 	</head>
-	<div layout:fragment="content" class="container my-3">
-		<div class="my-3 border-bottom">
+	<div layout:fragment="content" class="container" style="padding-top: 50px;">
+		<div class="border-bottom">
 			<h4>공지사항 수정</h4>
 		</div>
 		<form th:action="@{|/notices/update/${notices.noticeId}|}" th:object="${noticeForm}" method="post" enctype="multipart/form-data">

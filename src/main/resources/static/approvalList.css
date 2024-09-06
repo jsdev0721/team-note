@@ -1,5 +1,5 @@
 /* status tab */
-.list{width: 400px;margin: 0 auto;margin-top: 40px;}
+.list{width: 400px;margin: 0 auto;}
 .list ul{display: flex;border: 1px solid rgb(32, 62, 110);padding: 0 !important;}
 .list ul li{flex: 1;border-right: 1px solid rgb(32, 62, 110);}
 .list ul li:last-child{border: none;}
@@ -25,7 +25,7 @@
 .close{display: block;text-align: right;text-decoration: underline;width: 100%;}
 
 /* detail */
-#wrap{display: flex;border: 1px solid rgb(32, 62, 110);border-radius: 5px;padding: 20px;margin-top: 50px;min-height: 200px;}
+#wrap{display: flex;border: 1px solid rgb(32, 62, 110);border-radius: 5px;padding: 20px;min-height: 200px;}
 .detail{flex: 0.7;}
 .input{display: flex;}
 .input:last-child p{margin-bottom: 0;}

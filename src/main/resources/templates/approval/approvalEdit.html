@@ -2,7 +2,7 @@
 	<head>
 		<title>결재 | 나의 결재 | 수정</title>
 	</head>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container" style="padding-top: 50px;">
 		<form th:action="@{|/approval/edit/${approval.approvalId}|}" method="post" enctype="multipart/form-data">
 			<div class="card" th:object="${approvalForm}">
 				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>

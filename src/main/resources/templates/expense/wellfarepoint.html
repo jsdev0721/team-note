@@ -3,7 +3,7 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/expense.css}">
 		<title>회계 | 복지포인트 설정</title>
 	</head>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container" style="padding-top: 50px;">
 		<div class="d-flex justify-content-between" id="wrap">
 			<div style="flex: 0.45;">
 				<form th:action="@{/expense/wellfarePoint}" method="post" th:object="${pointInputForm}" >

@@ -14,7 +14,7 @@
 		</script>
 		<title>복지몰</title>
 	</head>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container" style="padding-top: 50px;">
 		<div class="list">
 			<input type="text" style="display: none;" th:value="${type}" id="type">
 		  	<ul> 
@@ -35,7 +35,7 @@
 					</button>
 				</form>
 			</div><!-- search end -->
-			<a sec:authorize="hasAuthority('ROLE_ACCOUNTING')" th:href="@{/welfaremall/create}" class="create">
+			<a sec:authorize="!hasAnyAuthority('ROLE_INTERN','ROLE_USER','ROLE_HR','ROLE_MARKETING')" th:href="@{/welfaremall/create}" class="create">
 				<img src="/images/pencil.png" alt="새글 생성">
 			</a>
 		</div><!-- search, create end -->

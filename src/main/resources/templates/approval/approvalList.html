@@ -15,7 +15,7 @@
 		</script>
 		<title>결재</title>
 	</head>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container" style="padding-top: 50px;">
 		
 		<div class="list">
 			<input type="text" style="display: none;" th:value="${status}" id="status">
@@ -39,7 +39,7 @@
 					</button>
 				</form>
 			</div><!-- search end -->
-			<a th:href="@{/approval/create}" class="create">
+			<a sec:authorize="!hasAnyAuthority('ROLE_INTERN','ROLE_USER')" th:href="@{/approval/create}" class="create">
 				<img src="/images/pencil.png" alt="새글 생성">
 			</a>
 		</div><!-- search, create end -->
@@ -47,11 +47,20 @@
 			<thead>
 				<tr class="title">
 					<th>제목</th>
+					<th width="20%">작성자</th>
+					<th width="20%">직급</th>
+					<th width="15%" align="center">작성일자</th>
 				</tr>
 			</thead>
-			<tr th:each="approval : ${approvalList}">
-				<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
-			</tr>
+			<tbody>
+				<tr th:each="approval : ${approvalList}">
+					<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
+					<td th:if="${approval.user==null}" align="center">퇴사직원</td>
+					<td th:each="user : ${userList}" th:if="${user.user==approval.user}" align="center"th:text="${user.name}"></td>
+					<td th:text="${approval.user.position.positionName}" align="center"></td>
+					<td th:text="${#temporals.format(approval.updateTime,'yy-MM-dd')}" align="center"></td>
+				</tr>
+			</tbody>
 		</table><!-- 결재 리스트 end -->
 		<a th:href="@{/}" class="close">나가기</a>
 		<div th:if="${!approvalList.isEmpty()}">

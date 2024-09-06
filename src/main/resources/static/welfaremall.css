@@ -30,7 +30,7 @@
 .close{display: block;text-align: right;text-decoration: underline;}
 
 /* detail */
-.detail{display: flex;margin-top: 50px !important;width: 70%;margin: 0 auto;margin-bottom: 20px;}
+.detail{display: flex;width: 70%;margin: 0 auto;margin-bottom: 20px;}
 .detail .product_img{flex: 1;}
 .detail .product_info{flex: 1;padding-left: 10%;}
 

@@ -3,7 +3,7 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/noticeForm.css}">
 		<title>서식 게시판</title>
 	</head>
-	<div layout:fragment="content" class="container my-3">
+	<div layout:fragment="content" class="container" style="padding-top: 50px;">
 		<div class="txt">
 			<h4>서식게시판</h4>
 		</div>
@@ -16,7 +16,7 @@
 					</button>
 				</form>
 			</div><!-- search end -->
-			<a th:href="@{/forms/create}" class="create">
+			<a sec:authorize="!hasAnyAuthority('ROLE_INTERN','ROLE_USER')" th:href="@{/forms/create}" class="create">
 				<img src="/images/pencil.png" alt="새글 생성">
 			</a>
 		</div><!-- search, create end -->

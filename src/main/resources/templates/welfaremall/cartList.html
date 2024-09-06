@@ -14,7 +14,7 @@
 		</script>
 		<title>복지몰 | 장바구니</title>
 	</head>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container" style="padding-top: 50px;">
 		<div class="list">
 			<input type="text" style="display: none;" th:value="${type}" id="type">
 		  	<ul> 
@@ -25,11 +25,11 @@
 		<table class="table table-scriped-columns table-hover align-middle">
 			<thead>
 				<tr class="title">
-					<th scope="col">제목</th>
-					<th scope="col">옵션</th>
+					<th width="35%" scope="col">제목</th>
+					<th width="25%" scope="col">옵션</th>
 					<th scope="col">가격</th>
 					<th scope="col" align="middle" colspan="3" width="10%" >수량</th>
-					<th scope="col">추가날짜</th>
+					<th width="10%" scope="col">추가날짜</th>
 				</tr>
 			</thead>
 
