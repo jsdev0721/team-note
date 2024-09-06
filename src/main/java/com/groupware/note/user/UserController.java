@@ -212,6 +212,7 @@ public class UserController {
 	public String userUpdate(Model model,@PathVariable("userId") Integer userId) {
 		Users users =this.userService.getUser(userId);
 		model.addAttribute("users",users);
+		model.addAttribute("depList",  this.departmentsService.findAll());
 		
 		return "HR/HR_update";
 	}
