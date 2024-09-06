@@ -32,14 +32,18 @@
 					<label for="formMainImage" class="form-label">표지사진</label>
 					<input class="form-control" type="file" id="formMainImage" name="mainImage" accept=".jpg, .png, .gif, .jpeg, .bmp"/>
 				</div>
+					<div th:if="${welfaremall.mainImage!=null}">
+						<span th:text="${welfaremall.mainImage.originFileName}"></span>
+						<a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/edit/${welfaremall.productId}/${welfaremall.mainImage.fileId}|}">-</a>
+					</div>
 				<div>					
 					<label for="formFileMultiple" class="form-label">파일업로드</label>
                     <input class="form-control" type="file" id="formFileMultiple" name="fileList" accept=".jpg, .png, .gif, .jpeg, .bmp" multiple/>
-					<div th:each="file : ${fileList}">
+				</div>
+					<div th:if="${fileList!=null}" th:each="file : ${fileList}">
 						<span th:text="${file.originFileName}"></span>
 						<a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/edit/${welfaremall.productId}/${file.fileId}|}">-</a>
 					</div>
-				</div>
 				<div class="card-footer">
 					<p><input type="number" th:field="*{price}" min="100" max="999999999" placeholder="가격을 입력해 주세요" style="font-size: 16px;"/></p>
 				</div>

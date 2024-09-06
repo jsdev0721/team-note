@@ -37,11 +37,12 @@ table th,td{text-align: center;}
 .detail{border: 1px solid rgb(32, 62, 110);border-radius: 5px;padding: 20px;}
 .detail-input{display: flex;}
 .detail-input p{height: 40px;line-height: 40px;border: 1px solid #ddd;border-radius: 5px;}
-.detail-input p:nth-child(1){flex: 0.3;margin-right: 10px;text-align: center;background-color: #eee;}
+.detail-input p:nth-child(1){flex: 0.3;margin-right: 10px;text-align: center;background-color: #eee; margin-bottom: 0%;}
 .detail-input p:nth-child(2){flex: 0.7;padding-left: 10px;}
-.detail-input textarea{flex: 0.7;padding-left: 10px;}
-.detail-input:nth-child(2){height: auto;}
+.detail-input textarea{flex: 0.7;padding-left: 10px;border: 1px solid #ddd;border-radius: 5px;}
+.detail-input:nth-child(2){height: auto;padding-bottom: 20px;}
 .detail-input:nth-child(2) p{height: auto;}
+
 
 .download{display: flex;width: 100%;}
 .download p{flex: 0.3;height: 40px;line-height: 40px;text-align: center;border: 1px solid #ddd;background-color: #eee;
