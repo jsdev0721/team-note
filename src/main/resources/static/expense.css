@@ -1,5 +1,4 @@
-#wrap{margin-top: 50px;}
-form{margin-bottom: 20px;}
+#wrap form{margin-bottom: 20px;}
 form:after{content: "";display: block;clear: both;}
 
 .input{display: flex;margin-bottom: 10px;}
