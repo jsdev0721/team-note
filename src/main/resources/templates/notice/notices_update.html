@@ -24,9 +24,6 @@
 			</div>
 			<div class="mb-4">
 				<label for="formfileMultiple" class="form-label">첨부파일</label>
-					<!--<button type="button" onclick="update()">파일 수정</button>
-							<p class="form-control" id="fileName" th:text="${file.originFileName}"></p>
-								name="multiPartFile" multiple th:value="${file.originFileName}" style="display: none;">-->
 								<input type="file" class="form-control" id="formfileMultiple"name="multiPartFile" multiple> 
 						<div th:each="file : ${fileList}">	
 							<span th:text="${file.originFileName}"></span>
