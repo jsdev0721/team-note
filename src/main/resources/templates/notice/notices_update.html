@@ -1,37 +1,32 @@
 <html layout:decorate="~{layout}">
 	<head>
-		<script>
-			function update(){
-				$("#fileName").css("display", "none");
-				$("#formfileMultiple").css("display", "block");
-			}
-		</script>
+		<link rel="stylesheet" type="text/css" th:href="@{/noticeForm.css}">
 		<title>공지사항 수정</title>
 	</head>
 	<div layout:fragment="content" class="container" style="padding-top: 50px;">
-		<div class="border-bottom">
+		<div class="tit">
 			<h4>공지사항 수정</h4>
 		</div>
 		<form th:action="@{|/notices/update/${notices.noticeId}|}" th:object="${noticeForm}" method="post" enctype="multipart/form-data">
 			<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
-			<div class="mb-4">
-				<lable for="title" class="form-label">제목</lable>
-				<textarea class="form-control" name="title" th:text="${notices.title}"></textarea>
-			</div>
-			<div class="mb-4">
+			<div class="input-form">
+				<div class="input">
+					<label for="title" class="form-label">제목</label>
+					<input type="text" class="form-control" name="title" th:value="${notices.title}"></input>
+				</div>
+			<div class="input">
 				<label for="content" class="form-label">내용</label>
-				<textarea  class="form-control" name="content" th:text="${notices.content}"></textarea>
+				<textarea class="form-control" name="content" th:text="${notices.content}" rows="10"></textarea>
 			</div>
-			<div class="mb-4">
 				<label for="formfileMultiple" class="form-label">첨부파일</label>
 								<input type="file" class="form-control" id="formfileMultiple"name="multiPartFile" multiple> 
 						<div th:each="file : ${fileList}">	
 							<span th:text="${file.originFileName}"></span>
-							<a class="btn btn-danger" th:href="@{|/notices/delete/${notices.noticeId}/${file.fileId}|}">x</a>
+							<a class="button" th:href="@{|/notices/delete/${notices.noticeId}/${file.fileId}|}">x</a>
 						</div>
 					<!--<span th:text="${file.originFileName}"></span>-->
-			</div>
 			<input class="btn btn-success" type="submit" value="등록하기" />
+			</div>
 			<!--<input type="submit" class="btn btn-success" value="등록하기">-->				
 		</form>
 	</div>
