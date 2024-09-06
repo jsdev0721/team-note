@@ -184,7 +184,7 @@ public class ApprovalController {
 		Users users = this.userService.getUser(principal.getName());
 		UserDetails userDetails = this.userDetailsService.findByUser(users);
 		Period leaveDate = Period.between(leaveForm.getStartDate(), leaveForm.getEndDate());
-		if(0 > (userDetails.getLeaves() - (leaveDate.getDays()+1))) {
+		if(leaveForm.getTitle().equals("유급휴가")&&0 > (userDetails.getLeaves() - (leaveDate.getDays()+1))) {
 			bindingResult.reject("HRcreateFailed", "남은 휴가 일수가 선택한 휴가 일수보다 짧습니다.");
 			return "approval/approvalCreate_leave";
 		}
@@ -303,6 +303,15 @@ public class ApprovalController {
 				XSSFWorkbook excelworkbook = new XSSFWorkbook(_file);
 				XSSFSheet worksheet = excelworkbook.getSheetAt(0);
 				this.expenseDataService.uploadExpenseData(worksheet, image, approval.getUser());
+				List<Files> fileList = approval.getFileList();
+				approval.setFileList(null);
+				for(Files file : fileList) {
+					if(this.fileService.validExcelFileExtension(this.fileService.extendsFile(file.getOriginFileName()))) {
+						this.fileService.delete(file);						
+					}
+				}
+				this.approvalService.delete(approval);
+				return "redirect:/approval/list";
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
