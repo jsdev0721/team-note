@@ -24,6 +24,7 @@ table th,td{text-align: center;}
 .input label{flex: 0.1;margin-right: 10px !important;border-radius: 5px;margin: 0;border: 1px solid #ddd;text-align: center;line-height: 38px;}
 .input input{flex: 0.9;}
 .input textarea{flex: 0.9;}
+.input:nth-child(2){height: auto;}
 
 .btn{width: 100%;background-color: rgb(32, 62, 110);color: #fff;height: 50px;margin-top: 30px;}
 .btn:hover{background-color: rgb(32, 62, 110);color: #fff;}
@@ -38,6 +39,9 @@ table th,td{text-align: center;}
 .detail-input p{height: 40px;line-height: 40px;border: 1px solid #ddd;border-radius: 5px;}
 .detail-input p:nth-child(1){flex: 0.3;margin-right: 10px;text-align: center;background-color: #eee;}
 .detail-input p:nth-child(2){flex: 0.7;padding-left: 10px;}
+.detail-input textarea{flex: 0.7;padding-left: 10px;}
+.detail-input:nth-child(2){height: auto;}
+.detail-input:nth-child(2) p{height: auto;}
 
 .download{display: flex;width: 100%;}
 .download p{flex: 0.3;height: 40px;line-height: 40px;text-align: center;border: 1px solid #ddd;background-color: #eee;

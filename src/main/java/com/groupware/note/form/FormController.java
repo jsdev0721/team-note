@@ -132,15 +132,14 @@ public class FormController {
 	@GetMapping("/delete/{formId}")
 	public String delete(@PathVariable("formId") Integer formId,Principal principal) {
 		Forms forms = this.formService.getForm(formId);
-		if(forms.getUser().getUsername().equals(principal.getName())) {
 		List<Files> files = forms.getFileList();
 		if(!files.isEmpty()) {
 			for(Files file : files) {
 				this.formService.deleteForms(forms);
 				this.fileService.delete(file);
 			}
-		}
-	}else {return "redirect:/forms/list";}
+		}else {this.formService.deleteForms(forms);}
+	
 		return "redirect:/forms/list";
 	}
 	@GetMapping("/delete/{formId}/{fileId}")

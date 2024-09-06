@@ -146,7 +146,6 @@ public class NoticesController {
 	@GetMapping("/delete/{noticeId}")
 	public String delete(@PathVariable("noticeId") Integer noticeId,Principal priclpal) {
 		Notices notices =this.noticesService.getNotice(noticeId);
-		if(notices.getUser().getUsername().equals(priclpal.getName())) {
 		List<Files> files = notices.getFileList();
 		if(!files.isEmpty()) {
 			for(Files file : files) {
@@ -155,8 +154,7 @@ public class NoticesController {
 		this.fileService.delete(file);
 		System.out.println("파일 지워어워워워워워워워워워");
 			}
-		}
-	}else {return "redirect:/notices/list";}
+		}else {this.noticesService.deleteNotices(notices);}
 		return "redirect:/notices/list";
 	}
 	@GetMapping("/delete/{noticeId}/{fileId}")
