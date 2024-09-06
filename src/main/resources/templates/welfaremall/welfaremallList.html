@@ -82,7 +82,7 @@
 				</li><!-- product end -->
 			</ul><!-- product_list end -->
 		</div><!-- wrap end -->
-		
+		<a th:href="@{/}" class="close">나가기</a>
 		<div th:if="${!list.isEmpty()}">
 			<ul class="pagination justify-content-center">
 				<li class="page-item" th:classappend="${!list.hasPrevious}?'disabled'">

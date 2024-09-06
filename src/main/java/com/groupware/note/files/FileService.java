@@ -147,7 +147,7 @@ public class FileService {
 	public void delete(Files _file) {
 		String filePath = getFilePath(_file.getOriginFileName(), _file.getStoreFileName());
 		File file = new File(filePath);
-		if(file.delete()) {
+		if(!fileExists(_file)||file.delete()) {
 			this.fileRepository.delete(_file);
 		}else {
 			return;

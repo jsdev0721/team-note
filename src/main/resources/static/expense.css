@@ -1,0 +1,26 @@
+#wrap{margin-top: 50px;}
+form{margin-bottom: 20px;}
+form:after{content: "";display: block;clear: both;}
+
+.input{display: flex;margin-bottom: 10px;}
+.input label,input{height: 40px;line-height: 40px;border: 1px solid #ddd;border-radius: 5px;}
+.input label{flex: 0.3;margin-right: 10px;text-align: center;background-color: #eee;}
+.input input{flex: 0.7;padding-left: 10px;}
+
+.point-input{border: 1px solid #ddd;border-radius: 5px;padding: 10px;}
+.point-input strong{color: rgba(230, 62, 62,0.7);}
+.point-input p{font-size: 0.9em;color: #777;}
+.point-input p:last-child{margin-bottom: 0;}
+
+.btn{background-color: rgb(32, 62, 110);color: whitesmoke;border: 0px;border-radius: 5px;width: 90px;height: 40px;float: right;}
+
+.point{border: 1px solid #ddd;border-radius: 5px;margin-bottom: 20px;}
+.point strong{height: 40px;line-height: 40px;text-align: center;border-bottom: 1px solid #ddd;display: block;background-color: #eee;}
+.point div{padding: 10px;}
+.point p{margin-bottom: 5px;}
+
+.user-point{display: flex;}
+.user-point strong{flex: 0.6;border: 1px solid #ddd;border-radius: 5px;height: 40px;line-height: 40px;text-align: center;background-color: #eee;}
+.user-point p{flex: 0.4;border: 1px solid #ddd;border-radius: 5px;height: 40px;line-height: 40px;padding-left: 5px;margin-left: 5px;}
+
+.close{display: block;text-align: right;text-decoration: underline;}

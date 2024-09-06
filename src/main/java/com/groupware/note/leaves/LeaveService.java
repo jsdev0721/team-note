@@ -33,10 +33,12 @@ public class LeaveService {
 		this.leaveRepository.save(leave);
 	}
 	public void deleteLeave(Users user) {
-		Optional<Leaves> optional = this.leaveRepository.findByUser(user);
-		if(optional.isPresent()) {
-			Leaves leave=optional.get();
+		List<Leaves> leaveList = this.leaveRepository.findByUser(user);
+		for(Leaves leave : leaveList) {
 			leave.setUser(null);
 		}
+	}
+	public List<Leaves> findByUser(Users user) {
+		return this.leaveRepository.findByUser(user);
 	}
 }

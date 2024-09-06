@@ -13,7 +13,7 @@
 				}
 			});
 		</script>
-		<title>결재 내역</title>
+		<title>결재</title>
 	</head>
 	<div layout:fragment="content" class="container">
 		
@@ -53,11 +53,12 @@
 				<td><a th:href="@{|/approval/detail/${approval.approvalId}|}" th:text="${approval.title}"></a></td>
 			</tr>
 		</table><!-- 결재 리스트 end -->
+		<a th:href="@{/}" class="close">나가기</a>
 		<div th:if="${!approvalList.isEmpty()}">
 			<ul class="pagination justify-content-center">
 				<li class="page-item" th:classappend="${!approvalList.hasPrevious}?'disabled'">
 					<a class="page-link" th:href="@{|?page=${approvalList.number-1}|}">
-						<span>&#60;</span>
+						<span>이전</span>
 					</a>
 				</li>
 				<li th:each="page : ${#numbers.sequence(0, approvalList.totalPages-1)}" th:if="${page >= approvalList.number -3 and page<= approvalList.number +3}" th:classappend="${page==approvalList.number} ? 'active'" class="page-item">
@@ -65,7 +66,7 @@
 				</li>
 				<li class="page-item" th:classappend="${!approvalList.hasNext} ? 'disabled'">
 					<a class="page-link" th:href="@{|?page=${approvalList.number+1}|}">
-						<span>&#62;</span>
+						<span>다음</span>
 					</a>
 				</li>
 			</ul>

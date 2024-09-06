@@ -40,7 +40,7 @@ a{text-decoration: none;color: #000;}
 .icon{width: 60px;margin: 20px 10px;}
 
 /* calendar */
-.offcanvas.offcanvas-end{width: 40% !important;height: 75%;top: 70px;box-shadow: 0 0 10px rgba(0,0,0,0.5);}
+.offcanvas.offcanvas-end{width: 40% !important;height: 80%;top: 70px;box-shadow: 0 0 10px rgba(0,0,0,0.5);}
 .fc-day-sun a{
     color: red !important;
 }

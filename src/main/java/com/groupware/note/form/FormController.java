@@ -143,6 +143,17 @@ public class FormController {
 	}else {return "redirect:/forms/list";}
 		return "redirect:/forms/list";
 	}
+	@GetMapping("/delete/{formId}/{fileId}")
+	public String fileDate(@PathVariable("formId")Integer formId,@PathVariable("fileId")Integer fileId) {
+		Forms forms =this.formService.getForm(formId);
+		List<Files> fileList = forms.getFileList();
+		Files file = this.fileService.findByFiles(fileId);
+		fileList.remove(file);
+		this.fileService.delete(file);
+		return  String.format("redirect:/forms/update/%s",formId);
+		
+	}
+	
 	
 
 }

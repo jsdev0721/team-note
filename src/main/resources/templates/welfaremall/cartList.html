@@ -58,5 +58,6 @@
 			<input class="buy-btn" th:unless="${run} and ${!cartList.isEmpty}" type="text" value="구매하기" disabled/>
 			<input class="buy-btn" th:if="${run} and ${!cartList.isEmpty}" type="text" value="구매하기" style="cursor: pointer;" onclick="if(!confirm('정말로 결제하시겠습니까?')){return false;}" />
 		</form>
+		<a th:href="@{/welfaremall/list}" class="close">나가기</a>
 	</div><!-- container end -->
 </html>
