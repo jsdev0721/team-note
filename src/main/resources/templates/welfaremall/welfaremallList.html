@@ -35,7 +35,7 @@
 					</button>
 				</form>
 			</div><!-- search end -->
-			<a sec:authorize="hasAuthority('ROLE_ACCOUNTING')" th:href="@{/welfaremall/create}" class="create">
+			<a sec:authorize="!hasAnyAuthority('ROLE_INTERN','ROLE_USER','ROLE_HR','ROLE_MARKETING')" th:href="@{/welfaremall/create}" class="create">
 				<img src="/images/pencil.png" alt="새글 생성">
 			</a>
 		</div><!-- search, create end -->
