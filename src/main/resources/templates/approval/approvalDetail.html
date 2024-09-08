@@ -27,9 +27,9 @@
 						</div>
 					</div><!-- leave-wrap end -->
 
-					<div class="input" th:if="${!commentList.isEmpty()}">
+					<div class="input" th:if="${!commentList.isEmpty()}" th:each="comments : ${commentList}">
 						<p> 반려 사유 </p>
-						<p class="card-body" th:each="comments : ${commentList}" th:text="${comments.comment}"></p>
+						<p class="card-body" th:text="${comments.comment}"></p>
 					</div>
 				</div><!-- detail-con end -->
 			</div><!-- detail end -->
@@ -99,7 +99,7 @@
 					</div>
 					<form th:action="@{|/approval/revoke/${id}?status=process|}" method="post" th:object="${comments}">
 						<div class="modal-body">
-							<textarea th:field="*{comment}"></textarea>						
+							<textarea th:field="*{comment}" style="width: 100%;"></textarea>						
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -118,7 +118,7 @@
 					</div>
 					<form th:action="@{|/approval/revoke/${id}?status=queue|}" method="post" th:object="${comments}">
 						<div class="modal-body">
-							<textarea th:field="*{comment}"></textarea>						
+							<textarea th:field="*{comment}" style="width: 100%;"></textarea>						
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
