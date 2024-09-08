@@ -35,9 +35,9 @@
 .detail .product_info{flex: 1;padding-left: 10%;}
 
 .product_info .input{display: flex;}
-.input p{height: 40px;line-height: 40px;border: 1px solid #ddd;border-radius: 5px;}
+.input p{height: 40px;line-height: 40px;border: 1px solid #ddd;border-radius: 5px;min-height: 40px;}
 .input p:nth-child(1){flex: 0.3;margin-right: 10px;text-align: center;background-color: #eee;}
-.input p:nth-child(2){flex: 0.7;padding-left: 10px;}
+.input p:nth-child(2){flex: 0.7;padding-left: 10px; height: auto;}
 
 .card-footer{height: 40px;}
 .card-footer form{width: 100%;display: flex;justify-content: space-between;}
