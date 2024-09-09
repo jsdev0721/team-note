@@ -82,6 +82,7 @@ public class ExpenseController {
 		depList = this.wfiService.calDepPoint();
 		model.addAttribute("DeppList", depList);
 		List<Departments> dep = this.dService.findAll();
+		dep.remove(this.dService.findBydepartmentName("temp"));
 		model.addAttribute("dep", dep);
 		return "expense/wellfarepoint";
 	}
