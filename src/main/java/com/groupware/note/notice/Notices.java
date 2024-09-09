@@ -33,6 +33,7 @@ public class Notices {
 	
 	private String title;
 	
+	@Column(length = 1000)
 	private String content;
 	
 	@OneToMany
