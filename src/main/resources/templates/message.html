@@ -196,12 +196,10 @@
 	    }
 	    function sendMessage() { // 전송을 누르면, 대화내용 정보를 Controller로 보냄
 	        let content = document.getElementById('messageInput').value;
-			if((content != '') &&(content != ' ') &&(content !='  ') &&(content !='   ')&&(content !='    ')){
 	        stompClient.send("/app/message.sendMessage", {}, JSON.stringify({
 	            'content': content,
 	            'chatRoom': { 'user2': { 'username': selectedUsername } }
 	        }));
-			}
 			scrollToBottom();
 			document.getElementById("messageInput").value = "";
 	    }
