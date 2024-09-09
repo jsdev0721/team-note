@@ -233,16 +233,26 @@
 							</div><!-- info-photo end -->
 							<div class="info-profile">
 								<p class="profile">이름&nbsp;<strong th:text="${userDetails.name}"></strong></p>
-								<div class="profile">
-									<span th:if="${#strings.equals(users.position.department.departmentName, 'accounting')}">회계</span>
-									<span th:if="${#strings.equals(users.position.department.departmentName, 'HR')}">인사</span>
-									<span th:if="${#strings.equals(users.position.department.departmentName, 'Marketing')}">영업</span>
+								<div>
+									<div class="profile">
+										<span th:if="${#strings.equals(users.position.department.departmentName, 'accounting')}">회계</span>
+										<span th:if="${#strings.equals(users.position.department.departmentName, 'HR')}">인사</span>
+										<span th:if="${#strings.equals(users.position.department.departmentName, 'Marketing')}">영업</span>
+									</div>
+									<div class="profile">
+										<span th:if="${#strings.equals(users.position.positionName, 'section chief')}">과장</span>
+										<span th:if="${#strings.equals(users.position.positionName, 'deputy')}">대리</span>
+										<span th:if="${#strings.equals(users.position.positionName, 'worker')}">사원</span>
+										<span th:if="${#strings.equals(users.position.positionName, 'intern')}">인턴</span>
+									</div>
 								</div>
-								<div class="profile">
-									<span th:if="${#strings.equals(users.position.positionName, 'section chief')}">과장</span>
-									<span th:if="${#strings.equals(users.position.positionName, 'deputy')}">대리</span>
-									<span th:if="${#strings.equals(users.position.positionName, 'worker')}">사원</span>
-									<span th:if="${#strings.equals(users.position.positionName, 'intern')}">인턴</span>
+								<div class="leavePoint">
+									<div>
+										<p>남은 휴가일&nbsp;<strong th:text="${userDetails.leaves}"></strong></p>
+									</div>
+									<div>
+										<p>보유 포인트&nbsp;<strong th:text="${userDetails.points}"></strong></p>
+									</div>
 								</div>
 							</div><!-- info-profile end -->
 						</div><!-- div(사용자 사진, 정보) end -->

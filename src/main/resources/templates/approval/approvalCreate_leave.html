@@ -40,6 +40,9 @@
 					<label class="form-label">내용</label>
 					<textarea th:field="*{reason}" class="form-control" placeholder="사유를 입력해 주세요" style="font-size: 16px;"></textarea>
 				</div>
+				<span class="notice" style="font-size: 0.9em;color: #777;">
+					※ 사용가능한 휴가일은 <strong th:text="${userDetails.leaves}"></strong>일 입니다. 개인연차를 사용하실 경우 참고하여 휴가를 신청하시기 바랍니다. ※
+				</span>
 				<div class="input">
 					<label for="startDate" class="form-label">휴가 시작 날짜</label>
 					<input type="date" id="startDate" th:field="*{startDate}" class="form-control">
