@@ -29,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 public class MessageController {
 	private final MessageService mService;
 	private final UserService uService;
-	private final UserDetailsService udService;
 	
 	//대화방에 사용자 리스트 출력
 	@PreAuthorize("isAuthenticated()")
@@ -37,13 +36,8 @@ public class MessageController {
 	public String get(Model model, Principal principal) {
 		List<UserListForDep> depList = this.mService.messageListForDep(model, principal);
 		model.addAttribute("depList", depList);
+		model.addAttribute("me", this.uService.getUser(principal.getName()));
 		
-		
-//		List<UserDetails> nameList = this.udService.userfindByAll();
-//		UserDetails acessUser = this.udService.findByUser(this.uService.getUser(principal.getName()));
-//		nameList.remove(acessUser);
-//		
-//		model.addAttribute("nameList", nameList);
 		return "message";
 	}
 	

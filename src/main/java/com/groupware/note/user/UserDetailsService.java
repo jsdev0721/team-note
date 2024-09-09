@@ -25,6 +25,7 @@ public class UserDetailsService {
 		userDetails.setBirthdate(brithdate);
 		userDetails.setEmail(email);
 		userDetails.setLeaves(leave);
+		userDetails.setPoints(150000);//0909 이승호 포인트 업데이트
 		this.userDetailsRepository.save(userDetails);
 	}
 	
