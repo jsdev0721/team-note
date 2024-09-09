@@ -296,4 +296,5 @@ public class UserController {
 		Files file = this.fileService.findByFiles(id);
 		return this.fileService.downloadFile(file);
 	}
+	
 }
