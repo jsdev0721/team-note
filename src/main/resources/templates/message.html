@@ -86,8 +86,8 @@
 			
 			<div class="row justify-content-center my-3">
 				<div class="input-group col-9" style="width: 400px;">
-	        	<input class="form-control" type="text" id="messageInput" placeholder="메시지를 입력하세요" />
-					<button class="btn-a" id="enterkey" onclick="sendMessage()">전송</button>
+	        	<input class="form-control" type="text" id="messageInput" placeholder="메시지를 입력하세요" style="border-radius: 10px;"/>
+					<button class="btn-a" id="enterkey" onclick="sendMessage()"><img src="/images/send.png" style="width: 30px; height: 30px;"></button>
 				</div>
 				
 			</div>
@@ -196,10 +196,12 @@
 	    }
 	    function sendMessage() { // 전송을 누르면, 대화내용 정보를 Controller로 보냄
 	        let content = document.getElementById('messageInput').value;
+			if((content != '') &&(content != ' ') &&(content !='  ') &&(content !='   ')&&(content !='    ')){
 	        stompClient.send("/app/message.sendMessage", {}, JSON.stringify({
 	            'content': content,
 	            'chatRoom': { 'user2': { 'username': selectedUsername } }
 	        }));
+			}
 			scrollToBottom();
 			document.getElementById("messageInput").value = "";
 	    }
