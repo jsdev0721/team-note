@@ -27,13 +27,15 @@ public class WellfareInputService {
 	@Scheduled(cron = " 0 0 10 1W 3,9 * " )
 	public void pointInputToDep() {
 		for(Departments dep : this.dRepo.findAll()) {
-			Optional<WellfarePointInput> pointInput = this.wpiRepo.findById(1);
-			if(pointInput.isPresent()) {
-				long pByDep = (this.uRepo.findByDep(dep.getDepartmentName()).size()
-						* pointInput.get().getDepPointPer()  )
-						+  pointInput.get().getDepPointPlus();
-				dep.setPoints(pByDep);
-				this.dRepo.save(dep);
+			if(!dep.getDepartmentName().equals("temp")) {
+				Optional<WellfarePointInput> pointInput = this.wpiRepo.findById(1);
+				if(pointInput.isPresent()) {
+					long pByDep = (this.uRepo.findByDep(dep.getDepartmentName()).size()
+							* pointInput.get().getDepPointPer()  )
+							+  pointInput.get().getDepPointPlus();
+					dep.setPoints(pByDep);
+					this.dRepo.save(dep);
+				}
 			}
 		}
 	}
@@ -42,11 +44,13 @@ public class WellfareInputService {
 	@Scheduled(cron = " 0 10 9 1W * * " )
 	public void pointInputToWorker() {
 		for(UserDetails ud : this.udRepo.findAll()) {
-			Optional<WellfarePointInput> pointInput = this.wpiRepo.findById(1);
-				if(pointInput.isPresent()) {
-				Long pByWor = pointInput.get().getIndividualPoint();
-				ud.setPoints(pByWor);
-				this.udRepo.save(ud);
+			if(!ud.getUser().getPosition().getDepartment().getDepartmentName().equals("temp")) {
+				Optional<WellfarePointInput> pointInput = this.wpiRepo.findById(1);
+					if(pointInput.isPresent()) {
+					Long pByWor = pointInput.get().getIndividualPoint();
+					ud.setPoints(pByWor);
+					this.udRepo.save(ud);
+				}
 			}
 		}
 	}
@@ -76,11 +80,13 @@ public class WellfareInputService {
 	public List<String> calDepPoint() {//다음 입력시 입력될 포인트 계산
 		List<String> list = new ArrayList<>();
 		for(Departments dep : this.dRepo.findAll()) {
-			Long pByDep = (this.uRepo.findByDep(dep.getDepartmentName()).size()
-					* this.wpiRepo.findById(1).get().getDepPointPer()  )
-					+  this.wpiRepo.findById(1).get().getDepPointPlus();
-			String _deppoint =  dep.getDepartmentName() + " 에 입력될 포인트 : " + Long.toString(pByDep);
-			list.add(_deppoint);
+			if(!dep.getDepartmentName().equals("temp")) {
+				Long pByDep = (this.uRepo.findByDep(dep.getDepartmentName()).size()
+						* this.wpiRepo.findById(1).get().getDepPointPer()  )
+						+  this.wpiRepo.findById(1).get().getDepPointPlus();
+				String _deppoint =  dep.getDepartmentName() + " 에 입력될 포인트 : " + Long.toString(pByDep);
+				list.add(_deppoint);
+			}
 		}
 		
 		return list;
