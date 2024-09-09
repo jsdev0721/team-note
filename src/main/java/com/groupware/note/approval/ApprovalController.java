@@ -182,8 +182,10 @@ public class ApprovalController {
 	}
 	
 	@GetMapping("/create/HR")
-	public String approvalCreateLeave(LeaveForm leaveForm) { //휴가폼
+	public String approvalCreateLeave(LeaveForm leaveForm, Principal principal, Model model) { //휴가폼
+		Users users = this.userService.getUser(principal.getName());
 		leaveForm.setDepartmentName("HR");
+		model.addAttribute("userDetails", this.userDetailsService.findByUser(users));
 		return "approval/approvalCreate_leave";
 	}
 	
@@ -204,7 +206,10 @@ public class ApprovalController {
 		try {
 			Approval _approval = new Approval();
 			_approval.setUser(users);
-			Departments department = this.departmentService.findBydepartmentName(leaveForm.getDepartmentName());
+			Departments department = leaveForm.getTitle().equals("경조휴가") ? this.departmentService.findBydepartmentName(leaveForm.getDepartmentName()) : users.getPosition().getDepartment();
+			if(users.getPosition().equals("intern")) {
+				this.departmentService.findBydepartmentName(leaveForm.getDepartmentName());
+			}
 			_approval.setDepartment(department);
 			_approval.setTitle(leaveForm.getTitle());
 			_approval.setContent(leaveForm.getReason());

@@ -21,7 +21,7 @@ table th,td{text-align: center;}
 .input-form{border: 1px solid rgb(32, 62, 110);padding: 30px;border-radius: 10px;}
 
 .input{display: flex;margin-bottom: 20px;height: 40px;}
-.input label{flex: 0.1;margin-right: 10px !important;border-radius: 5px;margin: 0;border: 1px solid #ddd;text-align: center;line-height: 38px;}
+.input label{flex: 0.1;margin-right: 10px !important;border-radius: 5px;margin: 0;border: 1px solid #ddd;text-align: center;line-height: 38px;background-color: #eee;}
 .input input{flex: 0.9;}
 .input textarea{flex: 0.9;}
 .input:nth-child(2){height: auto;}
