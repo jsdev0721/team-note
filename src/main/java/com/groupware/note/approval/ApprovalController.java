@@ -204,7 +204,7 @@ public class ApprovalController {
 		try {
 			Approval _approval = new Approval();
 			_approval.setUser(users);
-			Departments department = this.departmentService.findBydepartmentName(leaveForm.getDepartmentName());
+			Departments department = leaveForm.getTitle().equals("경조휴가") ? this.departmentService.findBydepartmentName(leaveForm.getDepartmentName()) : users.getPosition().getDepartment();
 			_approval.setDepartment(department);
 			_approval.setTitle(leaveForm.getTitle());
 			_approval.setContent(leaveForm.getReason());
