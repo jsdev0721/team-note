@@ -31,15 +31,15 @@ li{list-style: none;}
 .info-photo img{width: 100%;border-radius: 50%;}
 .bi-camera{position: absolute;bottom: -5px;right: -10px;}
 
-.info-profile{flex-grow: 1;margin-left: 30px;}
+.info-profile{flex-grow: 1;margin-left: 30px; display: flex;}
 .info-profile p{margin: 0;width: 100%;display: inline-block;}
+
+.info-profile .left{flex: 1;}
 .info-profile .profile:nth-child(2)::before{content: "/";display: inline-block;color: #ccc;}
 .info-profile .profile{display: inline-block;}
-.info-profile .leavePoint{display: flex;}
-.info-profile .leavePoint div{flex: 1;}
-.info-profile .leavePoint div:first-child p:after{content: "/";display: inline-block;color: #ccc;margin-left: 5px;}
-.info-profile .leavePoint p{font-size: 0.85em;color: #777;display: inline-block;}
-.info-profile .leavePoint p strong{color: #555;}
+.info-profile .leavePoint{flex: 1;padding-left: 10px;}
+.info-profile .leavePoint p{font-size: 0.85em;color: #777;}
+.info-profile .leavePoint strong{color: #555;font-size: 0.85em;}
 
 .info .imgUpdate{margin-top: 10px;}
 .info .imgUpdate form{display: flex;}

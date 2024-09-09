@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.groupware.note.DataNotFoundException;
@@ -27,6 +28,25 @@ public class AttendanceService {
 	private final AttendanceRepository attendanceRepository;
 	private final UserRepository userRepository;
 	private final UserService userService;
+	
+	@Scheduled(cron = "0 0 0 * * ?")
+	public void autoGetOffWork() {
+		System.out.println("===================00시 자동퇴근 시작========================");
+		List<Users> users = this.userService.workingList();
+		for(Users user : users) {
+			Attendance attendance = this.attendanceRepository.findLatestCheckInByUser(user.getUsername());
+			LocalDateTime testTime = attendance.getCheckInTime().withHour(18).withMinute(0).withSecond(0); // 24시간 넘어가면 당일 출근한날 퇴근시간을 18:00로 변경해서 계산
+			Duration duration2 = Duration.between(attendance.getCheckInTime(), testTime);
+			LocalTime workTime2 = LocalTime.ofSecondOfDay(duration2.getSeconds());
+			attendance.setWorkTime(workTime2);
+			attendance.setCheckOutTime(testTime);
+			
+			this.attendanceRepository.save(attendance);
+			user.setStatus("퇴근"); // 유저 상태 출근으로 변경
+			this.userRepository.save(user);
+		}
+		System.out.println("==================자동 퇴근 완료==================");
+	}
 	
 	public void createIn(String username, double lat, double lon, String reason) {
 		Users user = new Users();

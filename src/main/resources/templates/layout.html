@@ -232,26 +232,30 @@
 								<i class="bi bi-camera" onclick="photoUpdate()"></i>
 							</div><!-- info-photo end -->
 							<div class="info-profile">
-								<p class="profile">이름&nbsp;<strong th:text="${userDetails.name}"></strong></p>
-								<div>
-									<div class="profile">
-										<span th:if="${#strings.equals(users.position.department.departmentName, 'accounting')}">회계</span>
-										<span th:if="${#strings.equals(users.position.department.departmentName, 'HR')}">인사</span>
-										<span th:if="${#strings.equals(users.position.department.departmentName, 'Marketing')}">영업</span>
-									</div>
-									<div class="profile">
-										<span th:if="${#strings.equals(users.position.positionName, 'section chief')}">과장</span>
-										<span th:if="${#strings.equals(users.position.positionName, 'deputy')}">대리</span>
-										<span th:if="${#strings.equals(users.position.positionName, 'worker')}">사원</span>
-										<span th:if="${#strings.equals(users.position.positionName, 'intern')}">인턴</span>
+								<div class="left" style="border-right: 1px solid #777;">
+									<p class="profile">이름&nbsp;<strong th:text="${userDetails.name}"></strong></p>
+									<div class="dep">
+										<div class="profile">
+											<span th:if="${#strings.equals(users.position.department.departmentName, 'accounting')}">회계</span>
+											<span th:if="${#strings.equals(users.position.department.departmentName, 'HR')}">인사</span>
+											<span th:if="${#strings.equals(users.position.department.departmentName, 'Marketing')}">영업</span>
+											<span th:if="${#strings.equals(users.position.department.departmentName, 'temp')}">미정</span>
+										</div>
+										<div class="profile">
+											<span th:if="${#strings.equals(users.position.positionName, 'section chief')}">과장</span>
+											<span th:if="${#strings.equals(users.position.positionName, 'deputy')}">대리</span>
+											<span th:if="${#strings.equals(users.position.positionName, 'worker')}">사원</span>
+											<span th:if="${#strings.equals(users.position.positionName, 'intern')}">인턴</span>
+										</div>
 									</div>
 								</div>
 								<div class="leavePoint">
-									<div>
+									<div style="border-bottom: 1px dashed #777;">
 										<p>남은 휴가일&nbsp;<strong th:text="${userDetails.leaves}"></strong></p>
 									</div>
 									<div>
-										<p>보유 포인트&nbsp;<strong th:text="${userDetails.points}"></strong></p>
+										<p>보유 포인트</p>
+										<strong th:text="${userDetails.points}"></strong>
 									</div>
 								</div>
 							</div><!-- info-profile end -->
@@ -285,6 +289,7 @@
 						</div>
 						<div class="leave">
 							<a th:href="@{/approval/create/HR}">휴가 신청</a>
+							
 						</div>
 						<div class="myCart">
 							<a th:href="@{/welfaremall/viewCart}">장바구니</a>
