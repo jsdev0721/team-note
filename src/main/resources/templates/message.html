@@ -41,10 +41,7 @@
 						word-wrap: break-word;						
 					}
 		</style>
-		
-
 	</head>
-	
 	<body>
 	
 	
@@ -68,7 +65,8 @@
 							<div  th:each="user : ${dep.udList}" style="text-align: start;">
 								<div style="text-align: right">
 									<small><span th:text="${user.user.position.positionName}"></span></small>
-									<a class="nameclick" href="#" th:text="|/ ${user.name}|" th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]])"></a>
+									<a class="nameclick" href="#" th:text="|/ ${user.name}|" 
+									th:onclick="openMessageRoom([[${user.user.username}]], [[${user.name}]], [[${me.username}]] )"></a>
 								</div>
 							</div>
 						</div>
@@ -88,8 +86,8 @@
 			
 			<div class="row justify-content-center my-3">
 				<div class="input-group col-9" style="width: 400px;">
-	        	<input class="form-control" type="text" id="messageInput" placeholder="메시지를 입력하세요" />
-					<button class="btn-a" id="enterkey" onclick="sendMessage()">전송</button>
+	        	<input class="form-control" type="text" id="messageInput" placeholder="메시지를 입력하세요" style="border-radius: 10px;"/>
+					<button class="btn-a" id="enterkey" onclick="sendMessage()"><img src="/images/send.png" style="width: 30px; height: 30px;"></button>
 				</div>
 				
 			</div>
@@ -178,9 +176,10 @@
 	    }
 		
 		let selectedUsername = null; // 유저목록에서 선택한 유저
-	    function openMessageRoom(username, name) { // 유저목록에서 유저를 클릭하면 시작
+	    function openMessageRoom(username, name, myname) { // 유저목록에서 유저를 클릭하면 시작
 			test_id.innerHTML = name;
 			selectedUsername = username;
+			sessionmy = myname; 
 	        document.getElementById('messageRoom').classList.remove('d-none');
 
 			fetch(`/message/messages/${selectedUsername}`) // Controller로 보내기
@@ -205,7 +204,11 @@
 			document.getElementById("messageInput").value = "";
 	    }
 		
-	    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬	
+	    function showMessage(message, name) { // 상대방은 왼쪽정렬, 본인은 오른쪽정렬
+			if(    ((message.chatRoom.user1.username===selectedUsername) && (message.chatRoom.user2.username===sessionmy)) || 
+				 ((message.chatRoom.user2.username===selectedUsername) && (message.chatRoom.user1.username===sessionmy))   
+				 
+			  ){
 	        let messages = document.getElementById('messages');
 	        let messageElement = document.createElement('div');
 			let mess = document.createElement('div');
@@ -217,19 +220,18 @@
 			let efont = empty.style.fontSize = "small";
 			//fetch로 메세지 데이터 1로 바꿔주기
 			messageElement.classList.add(alignmentClass);
-			messageElement.innerText =  message.content ;
+			messageElement.innerText = message.content ;
 			mess.classList.add(alignmentClass);
 			mess.innerText = messageTime;
 			messages.appendChild(messageElement);
 			messages.appendChild(mess);
 			messages.appendChild(empty);
 			
-			
 			messageElement.style.borderBottomLeftRadius = "0%";
 			messageElement.style.borderBottomRightRadius = "0%";
 			mess.style.borderTopLeftRadius = "0%";
 			mess.style.borderTopRightRadius = "0%";
-			
+			}
 			scrollToBottom();
 	    }
 		

@@ -81,7 +81,6 @@ public class MessageService {
 		message.setSendTime(LocalDateTime.now());
 		message.setSeenByR(0);
 		Optional<ChatRooms> _chatRoom1 = this.crRepo.findByUser1AndUser2(sender, receiver);
-		
 		if(_chatRoom1.isPresent()) {
 			ChatRooms chatRoom = _chatRoom1.get();
 			message.setSender(sender);

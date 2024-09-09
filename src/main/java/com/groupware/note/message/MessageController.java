@@ -29,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 public class MessageController {
 	private final MessageService mService;
 	private final UserService uService;
-	private final UserDetailsService udService;
 	
 	//대화방에 사용자 리스트 출력
 	@PreAuthorize("isAuthenticated()")
@@ -37,13 +36,8 @@ public class MessageController {
 	public String get(Model model, Principal principal) {
 		List<UserListForDep> depList = this.mService.messageListForDep(model, principal);
 		model.addAttribute("depList", depList);
+		model.addAttribute("me", this.uService.getUser(principal.getName()));
 		
-		
-//		List<UserDetails> nameList = this.udService.userfindByAll();
-//		UserDetails acessUser = this.udService.findByUser(this.uService.getUser(principal.getName()));
-//		nameList.remove(acessUser);
-//		
-//		model.addAttribute("nameList", nameList);
 		return "message";
 	}
 	
@@ -51,10 +45,13 @@ public class MessageController {
 	@MessageMapping("/message.sendMessage")
 	@SendTo("/topic/messages")
 	public Messages sendMessage(Messages message, Principal principal) {
-		Users sender = this.uService.getUser(principal.getName());
-		Users reseiver = this.uService.getUser(message.getChatRoom().getUser2().getUsername());
-		String content = message.getContent();
-		return this.mService.saveMessage(sender, reseiver, content);
+		if(!message.getContent().isBlank()) {
+			Users sender = this.uService.getUser(principal.getName());
+			Users reseiver = this.uService.getUser(message.getChatRoom().getUser2().getUsername());
+			String content = message.getContent();
+			return this.mService.saveMessage(sender, reseiver, content);
+		}
+		return null;
 	}
 	
 	//기존 대화방 대화내용 불러오기
