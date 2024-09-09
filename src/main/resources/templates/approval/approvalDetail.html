@@ -65,21 +65,12 @@
 					<th:block th:if="${userInfo.position.department==approval.department} and ${approval.status.equals('process')} and ${approval.userSign[1]==null}" sec:authorize="hasAuthority('ROLE_DEPUTY')"><a type="button" class="btn btn-outline-primary"th:href="@{|/approval/update/${id}?status=process|}">진행</a></th:block>
 					<th:block th:if="${userInfo.position.department==approval.department} and ${approval.status.equals('process')} and ${approval.userSign[1]==null}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}" onclick="if(!confirm('전결로 처리됩니다. \n진행하시겠습니까?')){return false;}">진행</a></th:block>
 					<th:block th:if="${userInfo.position.department==approval.department} and ${approval.status.equals('process')} and ${approval.userSign[1]!=null}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
-					<th:block th:if="${userInfo.position.department==approval.department} and ${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#ModalProcess">보류</button></th:block>
-					<th:block th:if="${userInfo.position.department==approval.department} and ${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalQueue">반려</button></th:block>
+					<th:block th:if="${userInfo.position.department==approval.department} and ${approval.status.equals('process')} and ${commentList.isEmpty()}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#ModalProcess">보류</button></th:block>
+					<th:block th:if="${userInfo.position.department==approval.department} and ${approval.status.equals('process')} and ${commentList.isEmpty()}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalQueue">반려</button></th:block>
 				</div><!-- btn-group end -->
 
 			</div><!-- right end -->
-			<div class="sign-btn-group btn-group" role="group" aria-label="Basic mixed styles example">
-				<th:block th:if="${userInfo==approval.user} and ${approval.status.equals('queue')}"><a type="button" class="btn user-btn" th:href="@{|/approval/update/${id}?status=process|}">제출</a></th:block>
 
-				<th:block th:if="${approval.status.equals('process')} and ${approval.userSign[1]==null}" sec:authorize="hasAuthority('ROLE_DEPUTY')"><a type="button" class="btn btn-outline-primary"th:href="@{|/approval/update/${id}?status=process|}">진행</a></th:block>
-
-				<th:block th:if="${approval.status.equals('process')} and ${approval.userSign[1]==null}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}" onclick="if(!confirm('전결로 처리됩니다. \n진행하시겠습니까?')){return false;}">진행</a></th:block>
-				<th:block th:if="${approval.status.equals('process')} and ${approval.userSign[1]!=null}" sec:authorize="hasAuthority('ROLE_SECTIONCHEIF')"><a type="button" class="btn btn-outline-success"th:href="@{|/approval/update/${id}?status=complete|}">진행</a></th:block>
-				<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#ModalProcess">보류</button></th:block>
-				<th:block th:if="${approval.status.equals('process')}" sec:authorize="hasAnyAuthority('ROLE_DEPUTY','ROLE_SECTIONCHEIF')"><button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#ModalQueue">반려</button></th:block>
-			</div><!-- sign-btn-group end -->
 		</div><!-- wrap end -->
 		
 		<div class="other-btn">

@@ -364,6 +364,12 @@ public class ApprovalController {
 			}
 			approval.setFileList(fileList);
 		}
+		if(!approval.getCommentList().isEmpty()) {
+			for(Comments comment : approval.getCommentList()) {
+				this.commentService.delete(comment);
+			}
+			approval.setCommentList(null);
+		}
 		this.approvalService.save(approval);
 		return String.format("redirect:/approval/detail/%s", id);
 	}
