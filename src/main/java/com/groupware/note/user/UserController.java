@@ -129,9 +129,18 @@ public class UserController {
 	@PostMapping("/find/pw")
 	public String findPW(@RequestParam(value = "username") String username) {
 		Users users = this.userService.getUser(username);
-        int number = emailService.sendMail(this.userDetailsService.findByUser(users).getEmail());
-        String code = "" + number;
-        return code;
+		UserDetails userDetails = this.userDetailsService.findByUser(users);
+    	int domain = userDetails.getEmail().indexOf("@");
+		String domainCheck = userDetails.getEmail().substring(domain+1);
+		if(domainCheck.equals("naver.com") || domainCheck.equals("daum.net") || domainCheck.equals("gmail.com")
+				|| domainCheck.equals("icloud.com") || domainCheck.equals("kakao.com") || domainCheck.equals("nate.com")) {
+			
+			int number = emailService.sendMail(userDetails.getEmail());
+			String code = "" + number;
+			return code;
+		}else {
+			throw new DataNotFoundException("데이터를 찾을 수 없습니다");
+		}
 	}
 	
 	@PostMapping("/change/pw")
