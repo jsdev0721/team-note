@@ -24,4 +24,5 @@ public interface UserRepository extends JpaRepository<Users, Integer>{
 	
 	List<Users> findAllByPosition(Positions position);
 
+	List<Users> findByStatus(String status); //0909 장진수
 }

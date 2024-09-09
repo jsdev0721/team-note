@@ -99,4 +99,8 @@ public class UserService {
 		}else {throw new DataNotFoundException("유저정보가 없습니다");}
 	}
 	
+	public List<Users> workingList(){ //0909 장진수, 현재 출근상태인 사람목록
+		return this.userRepository.findByStatus("출근");
+	}
+	
 }

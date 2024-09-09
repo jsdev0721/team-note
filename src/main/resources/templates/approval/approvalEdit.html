@@ -7,9 +7,9 @@
 			<div class="card" th:object="${approvalForm}">
 				<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
 				<input type="hidden" th:field="*{departmentName}" th:value="${approvalForm.departmentName}" />
-				<h5 class="card-header"><input type="text" th:value="${approval.title}" name="title" /></h5>
+				<h5 class="card-header"><input style="width: 100%; height: auto;" type="text" th:value="${approval.title}" name="title" /></h5>
 				<div class="card-body">
-					<h5 class="card-title"><textarea th:text="${approval.content}" name="content"></textarea></h5>
+					<h5 class="card-title"><textarea style="width: 100%; height: 300px;" th:text="${approval.content}" name="content"></textarea></h5>
 					<label for="formFileMultiple" class="form-label">파일업로드</label>
                     <input class="form-control" type="file" id="formFileMultiple" name="multipartFiles" multiple>
 					<div th:each="file : ${fileList}">
