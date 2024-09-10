@@ -80,6 +80,7 @@ public class MessageController {
 		return noReadMessages;
 	}
 	
+	//메세지 보낸 사용자 이름 출력
 	@GetMapping("/message/sendUser")
 	@ResponseBody
 	public String getSendUser(Principal principal) {
@@ -92,8 +93,6 @@ public class MessageController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		
-		
 		return jsonStr;
 	}
 	

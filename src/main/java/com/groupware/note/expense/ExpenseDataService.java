@@ -38,7 +38,6 @@ public class ExpenseDataService {
 	
 	//위쪽에 검색창 통해 부서/이름 검색	
 	public List<Expense> barSearchedList(String browse, String search ){
-		
 		switch(search) {
 		case "WRITER" :
 			List<Expense> list1 = this.eRepository.findByNameOrderByDate("%" + browse+ "%");
@@ -52,16 +51,15 @@ public class ExpenseDataService {
 		case "expenseType" :
 			List<Expense> list4 = this.eRepository.findByExpenseTypeLikeOrderByDate("%" + browse+ "%");
 			return list4;
-			
 		}
 		return null;
 	}
+	
 	//이름 클릭시 실행
 	public List<Expense> nameList(Integer userId){
 		List<Expense> list = this.eRepository.findByUserIdOrderByDate(userId);
 		return list;
 	}
-	
 	
 	//부서 클릭시 실행
 	public List<Expense> depList(String st){
@@ -108,6 +106,7 @@ public class ExpenseDataService {
 			
 		}
 	}
+	
 	public void deleteExpense(UserDetails user) {//0827 박은영 null처리
 		List<Expense> list = this.eRepository.findByWriter(user);
 		if(!list.isEmpty() || list.isEmpty()) {

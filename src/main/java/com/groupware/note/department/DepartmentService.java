@@ -41,6 +41,7 @@ public class DepartmentService {
 		return this.departmentRepository.save(departments);
 	}
 	
+	//부서 생성
 	public String createNewDep(String depName ) {
 		Optional<Departments> depExist = this.departmentRepository.findByDepartmentName(depName);
 		if(depExist.isEmpty() && depName!=null && !depName.equals("noString")) {
@@ -55,6 +56,7 @@ public class DepartmentService {
 		}
 	}
 	
+	//부서 삭제
 	public void deleteDepartment(Integer departmentId) {
 		Optional<Departments> dep = this.departmentRepository.findById(departmentId);
 		Departments depTemp = this.departmentRepository.findByDepartmentName("temp").get();
@@ -68,5 +70,6 @@ public class DepartmentService {
 			this.pService.deletePositionOfDep(dep.get());
 			this.departmentRepository.delete(dep.get());
 		}
+		
 	}
 }
