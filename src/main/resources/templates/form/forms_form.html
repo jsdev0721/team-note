@@ -5,7 +5,7 @@
 	</head>
 	<div layout:fragment="content" class="container" style="padding-top: 50px;">
 		<div class="tit">
-			<h4>서식 등록</h4>
+			<h4>서식 | 서식 글 생성</h4>
 		</div>
 		<form th:action="@{/forms/create}" th:object="${formsForm}" method="post" enctype="multipart/form-data">
 			<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>

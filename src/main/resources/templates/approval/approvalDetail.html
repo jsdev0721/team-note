@@ -14,7 +14,7 @@
 					
 					<div class="input">
 						<p>내용</p>
-						<p class="card-title" th:text="${approval.content}"></p>
+						<p th:text="${approval.content}"></p>
 					</div>
 					<div th:if="${approval.startDate!=null}" class="leave-wrap"><!-- 휴가 날짜 -->
 						<div class="leave input">
@@ -36,7 +36,7 @@
 			<div class="right">
 				<div class="input">
 					<p>제출부서</p>
-					<p class="card-title text-center" th:text="${approval.department.departmentName}"></p>
+					<p class="text-center" th:text="${approval.department.departmentName}"></p>
 				</div>
 				<div class="sign-wrap">
 					<table class="table table-bordered">
