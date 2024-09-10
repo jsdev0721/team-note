@@ -78,8 +78,8 @@ public class PurchaseDataService {
 			List<Users> userList = this.uRepo.findAll();
 			for(Users u : userList) {
 				List<Cart> cList = this.cRepo.findByStatusAndTypeAndUserOrderByDate("complete", type, u);
-				for(int i=2010; i<=LocalDateTime.now().getYear(); i++) {
-					for(int j=1; j<=12; j++) {
+				for(int i=LocalDateTime.now().getYear(); i>=2010; i--) {
+					for(int j=12; j>=1; j--) {
 						Integer price = 0; 
 						for(Cart c : cList) {
 							if(c.getAddDate().getMonthValue()==j && c.getAddDate().getYear()==i) {
@@ -134,12 +134,6 @@ public class PurchaseDataService {
 		return idList;
 	}
 	
-//	@Setter
-//	@Getter
-//	public class CartDataDetail {
-//		private UserDetails ud;
-//		private List<Cart> cartList;
-//	}
 	
 	//해당 월의 사원/부서 구매목록 전체
 	public List<Cart> findPurchaseDetailList(Model model, int year, int month, int id, String purchaseType) {

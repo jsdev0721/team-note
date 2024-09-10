@@ -30,14 +30,14 @@ public class PositionService {
 		}
 		return _position.get();
 	}
-	public void updatePosition(Integer userId,Positions positions,LocalDate localDate) {
+	public void updatePosition(Integer userId,Positions positions,LocalDateTime localDateTime) {
 		Optional<Users> users = this.userRepository.findById(userId);
 		if(users.isPresent()) {
 			Users user =users.get();
 			UpdateUserPositions updateUserPositions = new UpdateUserPositions();
 			updateUserPositions.setUser(user);
 			updateUserPositions.setPosition(positions);
-			updateUserPositions.setLocalDate(localDate);
+			updateUserPositions.setLocalDateTime(localDateTime);
 			this.updatePositionsRepository.save(updateUserPositions);
 		}else {throw new DataNotFoundException("데이터가 없습니다");}	
 	}

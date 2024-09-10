@@ -1,7 +1,7 @@
 package com.groupware.note.position;
 
 import java.time.Duration;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,6 +12,7 @@ import com.groupware.note.user.Users;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Service
 @RequiredArgsConstructor
 public class UpdateUserPositionsService {
@@ -19,12 +20,14 @@ public class UpdateUserPositionsService {
 	private final UpdatePositionsRepository updatePositionsRepository;
 	private final UserRepository userRepository;
 	
-	@Scheduled(cron = " 0 0 9 * * * " )
+	//@Scheduled(cron = " 0 0 9 * * * " )
+	//@Scheduled(cron = " 0 0/3 * * * ? " )
+	@Scheduled(cron = " 0 * 14 * * * " )
 	public void updatePositions() {
 		List<UpdateUserPositions> list = this.updatePositionsRepository.findAll();
 		for(UpdateUserPositions updateUserPositions : list) {
-			 LocalDate localDate = LocalDate.now();
-			  Duration duration = Duration.between(localDate,updateUserPositions.getLocalDate());
+			  Duration duration = Duration.between(LocalDateTime.now(),updateUserPositions.getLocalDateTime());
+			  System.out.println(duration);
 			 if(duration.isNegative()) {
 				 Users users = updateUserPositions.getUser();
 				 users.setPosition(updateUserPositions.getPosition());

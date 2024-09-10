@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -253,9 +254,9 @@ public class WelfareMallController {
 		}
 		this.cartService.save(cart);
 		if(to.equals("list")) {
-			return String.format("redirect:/welfaremall/list?type=%s", type);			
+			return String.format("redirect:/welfaremall/list?type=%s", type);
 		}
-		return String.format("redirect:/welfaremall/viewCart?type=%s", type);
+		return String.format("redirect:/welfaremall/list?type=%s", type);
 	}
 	@GetMapping("/deleteCart/{id}")
 	public String deleteCart(@PathVariable("id")Integer id,@RequestParam("to") String to , Principal principal , @RequestParam("type")String type , @RequestParam("option")String option) {
