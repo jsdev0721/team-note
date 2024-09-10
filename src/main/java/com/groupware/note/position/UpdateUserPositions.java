@@ -1,9 +1,7 @@
 package com.groupware.note.position;
 
-import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 import com.groupware.note.user.Users;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +26,7 @@ public class UpdateUserPositions {
 	@ManyToOne
 	private Positions position;
 	
-	private LocalDate localDate;
+	private LocalDateTime localDateTime;
 	
 	
 	

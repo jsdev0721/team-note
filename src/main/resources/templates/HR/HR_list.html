@@ -56,7 +56,7 @@
 						<td th:text="${positions.user.username}"></td>
 						<td th:text="${positions.position.positionName}"></td>
 						<td th:text="${positions.position.department.departmentName}"></td>
-						<td th:text="${#temporals.format(positions.localDate,'yyyy.MM.dd')}"></td>
+						<td th:text="${#temporals.format(positions.localDateTime,'yyyy.MM.dd HH:mm')}"></td>
 					</tr>
 				</tbody>
 			</table>
