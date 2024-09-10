@@ -1,8 +1,9 @@
 package com.groupware.note.user;
 
 import java.net.MalformedURLException;
+
 import java.security.Principal;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -229,7 +230,7 @@ public class UserController {
 	@PostMapping("/update/{userId}")
 	public String userupdate(@PathVariable("userId") Integer userId,@RequestParam(value="positionName")String positionName  
 			,@RequestParam(value="departmentId")String departmentName
-			,@RequestParam(value="updateTime")LocalDate localDate) {
+			,@RequestParam(value="updateTime")LocalDateTime localDateTime) {
 
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		System.out.println(userId);
@@ -237,10 +238,11 @@ public class UserController {
 		Departments departments=this.departmentsService.findBydepartmentName(departmentName);
 		Positions positions= this.positionService.findByPositionNameAndDepartment(positionName, departments);
 		
-		LocalDate now = LocalDate.now();
-		if(localDate.isAfter(now)) {
-			this.positionService.updatePosition(userId, positions, localDate);
-			System.out.println("부서/직급 변경완료");
+		LocalDateTime now = LocalDateTime.now();
+		
+		if(localDateTime.isAfter(now)) {
+			this.positionService.updatePosition(userId, positions, localDateTime);
+			System.out.println("부서/직급 예약 변경완료");
 		}else {
 			this.positionService.updatePosition(userId, positions);
 			System.out.println("부서/직급 즉시변경완료");
