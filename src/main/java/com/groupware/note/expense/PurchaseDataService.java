@@ -39,30 +39,27 @@ public class PurchaseDataService {
 	public class PData{
 		private UserDetails userDetail;
 		private Departments dep;
-		
 		private int year;
 		private int month; 
 		private Integer totalPrice;
 	}
-	
-	
 	
 	//구매내역 findPurchaseList 제일 기본. 부서/개인별
 	public List<PData> fpcList(String type){
 		List<PData> list = new ArrayList<>();
 		
 		if(type.equals("group")) {	
-			
-			for(int i=LocalDateTime.now().getYear(); i>=2010; i--) {
+			List<Departments> depList = this.dRepo.findAll();
+			for(int i=LocalDateTime.now().getYear(); i>=2020; i--) {
 			for(int j=12; j>=1; j--) {
 				LocalDate baseDate = LocalDate.of(i	, j, 15);
 				LocalDateTime startDate = baseDate.with(firstDayOfMonth()).atStartOfDay(); // 00:00:00.00000000
 			    LocalDateTime endDate = baseDate.with(lastDayOfMonth()).atTime(LocalTime.MAX); // 23:59:59.999999
-			    List<Departments> depList = this.dRepo.findAll();
+			    
 			    
 			    for(Departments d : depList) {
 					List<Cart> cList = this.cRepo.findByStatusAndTypeAndDepAndAddDateBetween("complete", type, d, startDate, endDate);
-					Integer price = 0; 
+					Integer price = 0;
 					for(Cart c : cList) {
 						if(c.getAddDate().getMonthValue()==j && c.getAddDate().getYear()==i) {
 							price = price + c.getPoint();
@@ -82,13 +79,13 @@ public class PurchaseDataService {
 			
 			return list;
 		} else {
-			
+			List<Users> userList = this.uRepo.findAll();
 			for(int i=LocalDateTime.now().getYear(); i>=2010; i--) {
 			for(int j=12; j>=1; j--) {
 				LocalDate baseDate = LocalDate.of(i	, j, 15);
 				LocalDateTime startDate = baseDate.with(firstDayOfMonth()).atStartOfDay(); // 00:00:00.00000000
 			    LocalDateTime endDate = baseDate.with(lastDayOfMonth()).atTime(LocalTime.MAX); // 23:59:59.999999
-				List<Users> userList = this.uRepo.findAll();
+				
 				
 				for(Users u : userList) {
 					List<Cart> cList = this.cRepo.findByStatusAndTypeAndUserAndAddDateBetween("complete", type, u, startDate, endDate );

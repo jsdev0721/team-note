@@ -101,15 +101,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">데이터 업로드</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">새 부서 생성</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 	  <form th:action="@{/department/create}" method="post" >
       <div class="modal-body">
-		<h4>새 부서</h4>
+		<p></p>
 			<input class="form-control" type="text" id="createDep" name="createDep" />
 			<br>
-			<small>새로운 부서의 이름을 입력해주세요. 이미 존재하는 부서 이름은 사용할 수 없습니다.</small>
+			<small>새로운 부서의 이름을 입력해주세요. <br>이미 존재하는 부서 이름은 사용할 수 없습니다.</small>
 			
 
       </div>

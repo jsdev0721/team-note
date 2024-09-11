@@ -65,13 +65,13 @@
 				<tr th:if="${pt=='personal'}" th:each="pd : ${purchaseList}" >
 					<td><a th:href="@{|/expense/purchaseList?year=${pd.year}&month=${pd.month}&pt=personal|}" th:text="|${pd.year}년 ${pd.month}월|"></a></td>
 					<td><a th:href="@{|/expense/purchaseList?id=${pd.userDetail.userId}&pt=personal |}" th:text="${pd.userDetail.name}"></a></td>
-					<td><a th:href="@{|/expense/purchaseDetail?year=${pd.year}&month=${pd.month}&id=${pd.userDetail.userId}&pType=personal|}" th:text="|￦ ${pd.totalPrice}|"></a></td>
+					<td><a th:href="@{|/expense/purchaseDetail?year=${pd.year}&month=${pd.month}&id=${pd.userDetail.userId}&pType=personal|}" th:text="${#numbers.formatInteger(pd.totalPrice, 3, 'COMMA') + 'p'}"></a></td>
 				</tr>
 				
 				<tr th:if="${pt=='group'}" th:each="pd : ${purchaseList}" >
 					<td><a th:href="@{|/expense/purchaseList?year=${pd.year}&month=${pd.month}&pt=group|}" th:text="|${pd.year}년 ${pd.month}월|"></a></td>
 					<td><a th:href="@{|/expense/purchaseList?id=${pd.dep.departmentId}&pt=group |}" th:text="${pd.dep.departmentName}"></a></td>
-					<td><a th:href="@{|/expense/purchaseDetail?year=${pd.year}&month=${pd.month}&id=${pd.dep.departmentId}&pType=group|}" th:text="|￦ ${pd.totalPrice}|"></a></td>
+					<td><a th:href="@{|/expense/purchaseDetail?year=${pd.year}&month=${pd.month}&id=${pd.dep.departmentId}&pType=group|}" th:text="${#numbers.formatInteger(pd.totalPrice, 3, 'COMMA') + 'p'}" ></a></td>
 				</tr>
 			</tbody>
 		</table>

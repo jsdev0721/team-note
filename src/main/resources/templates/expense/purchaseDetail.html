@@ -52,7 +52,7 @@
 				<td th:unless="${pData.product!=null}">삭제된 항목</td>
 				<td th:text="${pData.productOption}"></td>
 				<td th:text="${pData.quantity}"></td>
-				<td th:text="${'₩' + #numbers.formatInteger((pData.point * pData.quantity), 3, 'COMMA')}"></td>
+				<td th:text="${#numbers.formatInteger((pData.point * pData.quantity), 3, 'COMMA') + 'p'}"></td>
 			</tr>
 		</tbody>
 	</table>
