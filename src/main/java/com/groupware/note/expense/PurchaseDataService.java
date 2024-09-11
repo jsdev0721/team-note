@@ -50,12 +50,18 @@ public class PurchaseDataService {
 	//구매내역 findPurchaseList 제일 기본. 부서/개인별
 	public List<PData> fpcList(String type){
 		List<PData> list = new ArrayList<>();
-		if(type.equals("group")) {
-			List<Departments> depList = this.dRepo.findAll();
-			for(Departments d : depList) {
-				List<Cart> cList = this.cRepo.findByStatusAndTypeAndDepOrderByDate("complete", type, d);
-				for(int i=2010; i<=LocalDateTime.now().getYear(); i++) {
-				for(int j=1; j<=12; j++) {
+		
+		if(type.equals("group")) {	
+			
+			for(int i=LocalDateTime.now().getYear(); i>=2010; i--) {
+			for(int j=12; j>=1; j--) {
+				LocalDate baseDate = LocalDate.of(i	, j, 15);
+				LocalDateTime startDate = baseDate.with(firstDayOfMonth()).atStartOfDay(); // 00:00:00.00000000
+			    LocalDateTime endDate = baseDate.with(lastDayOfMonth()).atTime(LocalTime.MAX); // 23:59:59.999999
+			    List<Departments> depList = this.dRepo.findAll();
+			    
+			    for(Departments d : depList) {
+					List<Cart> cList = this.cRepo.findByStatusAndTypeAndDepAndAddDateBetween("complete", type, d, startDate, endDate);
 					Integer price = 0; 
 					for(Cart c : cList) {
 						if(c.getAddDate().getMonthValue()==j && c.getAddDate().getYear()==i) {
@@ -70,32 +76,39 @@ public class PurchaseDataService {
 						pd.setMonth(j);
 						list.add(pd);
 					}
-				}	
-				}
+			    }
+			}	
 			}
+			
 			return list;
 		} else {
-			List<Users> userList = this.uRepo.findAll();
-			for(Users u : userList) {
-				List<Cart> cList = this.cRepo.findByStatusAndTypeAndUserOrderByDate("complete", type, u);
-				for(int i=LocalDateTime.now().getYear(); i>=2010; i--) {
-					for(int j=12; j>=1; j--) {
-						Integer price = 0; 
-						for(Cart c : cList) {
-							if(c.getAddDate().getMonthValue()==j && c.getAddDate().getYear()==i) {
-								price = price + c.getPoint();
-							}
+			
+			for(int i=LocalDateTime.now().getYear(); i>=2010; i--) {
+			for(int j=12; j>=1; j--) {
+				LocalDate baseDate = LocalDate.of(i	, j, 15);
+				LocalDateTime startDate = baseDate.with(firstDayOfMonth()).atStartOfDay(); // 00:00:00.00000000
+			    LocalDateTime endDate = baseDate.with(lastDayOfMonth()).atTime(LocalTime.MAX); // 23:59:59.999999
+				List<Users> userList = this.uRepo.findAll();
+				
+				for(Users u : userList) {
+					List<Cart> cList = this.cRepo.findByStatusAndTypeAndUserAndAddDateBetween("complete", type, u, startDate, endDate );
+					Integer price = 0;
+			    
+					for(Cart c : cList) {
+						if(c.getAddDate().getMonthValue()==j && c.getAddDate().getYear()==i) {
+							price = price + c.getPoint();
 						}
-						if(price!=0) {
-							PData pd = new PData();
-							pd.setUserDetail(this.udService.findByUser(u));
-							pd.setTotalPrice(price);
-							pd.setYear(i);
-							pd.setMonth(j);
-							list.add(pd);
-						}
-					}	
 					}
+					if(price!=0) {
+						PData pd = new PData();
+						pd.setUserDetail(this.udService.findByUser(u));
+						pd.setTotalPrice(price);
+						pd.setYear(i);
+						pd.setMonth(j);
+						list.add(pd);
+					}
+				}
+			}	
 			}
 			return list;
 		}
