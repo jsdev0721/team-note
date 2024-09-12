@@ -23,10 +23,10 @@
 			<table class="table" style="flex: 0.4;margin-right: 20px;">
 				<thead class="table-success">
 					<tr>	
-						<th>name</th>
-						<th>username</th>
-						<th>email</th>
-						<!--<th>birtdate</th>-->
+						<th>이름</th>
+						<th>아이디</th>
+						<th>부서</th>
+						<th>이메일</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -35,20 +35,18 @@
 							<a th:href="@{|/user/detail/${users.userId}|}" th:text="${users.name}"></a>
 						</td>
 						<td th:text="${users.user.username}"></td>
+						<td th:text="${users.user.position.department.departmentName}"></td>
 						<td th:text="${users.email}"></td>
-						<!--<td th:text="${users.birthdate}"></td>-->
 					</tr>
 				</tbody>
 			</table>
-			
-			
 			<table class="table" style="flex: 0.4;">
 				<thead class="table-success">
 					<tr>	
-						<th>username</th>
-						<th>updatePosition</th>
-						<th>updateDepartment</th>
-						<th>updatetime</th>
+						<th>아이디</th>
+						<th>변경/직급</th>
+						<th>변경/부서</th>
+						<th>변경예정일</th>
 					</tr>
 				</thead>
 				<tbody>

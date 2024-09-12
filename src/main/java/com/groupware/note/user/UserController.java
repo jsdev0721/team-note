@@ -268,31 +268,17 @@ public class UserController {
 		if(!users.getUsername().equals(principal.getName())) {
 		try {
 			this.expenseDataService.deleteExpense(userDetails);
-			System.out.println("userExpenseNull완료");
 			this.attendanceService.deleteAttendance(users);
-			System.out.println("userattendanceNull완료");
 			this.noticesService.deleteNotices(users);
-			System.out.println("usernoticesNull완료");
 			this.formService.deleteForm(users);
-			System.out.println("userformNull완료");
 			this.calendarService.deleteCalender(users);
-			System.out.println("usercalenderNull완료");
 			this.approvalService.deleteApproval(users);
-			System.out.println("userapprovalNull완료");
 			this.leaveService.deleteLeave(users);
-			System.out.println("userLeavNull완료");
 			this.cartService.deleteCart(users);
-			System.out.println("userCartNull완료");
-			//this.messageService.deleteMessage(users);
-			//System.out.println("userMessage삭제");
 			this.chatRoomService.deleteChatRoom(users);
-			System.out.println("userChatRoom삭제");
 			this.userDetailsService.deleteUserDetails(users);
-			System.out.println("userdetailsNull완료");
 			this.userService.deletePosition(userId);
-			System.out.println("userpositionNull완료");
 			this.userService.deleteUser(userId);
-			System.out.println("userdelete 완료");
 		}catch(DataNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("처리할 데이터가 없습니다");

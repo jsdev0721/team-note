@@ -20,9 +20,9 @@ public class UpdateUserPositionsService {
 	private final UpdatePositionsRepository updatePositionsRepository;
 	private final UserRepository userRepository;
 	
-	//@Scheduled(cron = " 0 0 9 * * * " )
+	@Scheduled(cron = " 0 0 10 * * * " )
 	//@Scheduled(cron = " 0 0/3 * * * ? " )
-	@Scheduled(cron = " 0 * 14 * * * " )
+	//@Scheduled(cron = " 0 * 14 * * * " )
 	public void updatePositions() {
 		List<UpdateUserPositions> list = this.updatePositionsRepository.findAll();
 		for(UpdateUserPositions updateUserPositions : list) {
@@ -32,7 +32,6 @@ public class UpdateUserPositionsService {
 				 Users users = updateUserPositions.getUser();
 				 users.setPosition(updateUserPositions.getPosition());
 				 this.userRepository.save(users);
-				 System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 				 this.updatePositionsRepository.delete(updateUserPositions);
 			 }
 		}
