@@ -256,7 +256,7 @@ public class WelfareMallController {
 		if(to.equals("list")) {
 			return String.format("redirect:/welfaremall/list?type=%s", type);
 		}
-		return String.format("redirect:/welfaremall/list?type=%s", type);
+		return String.format("redirect:/welfaremall/viewCart?type=%s", type);
 	}
 	@GetMapping("/deleteCart/{id}")
 	public String deleteCart(@PathVariable("id")Integer id,@RequestParam("to") String to , Principal principal , @RequestParam("type")String type , @RequestParam("option")String option) {
