@@ -32,6 +32,12 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 	@Query("select c FROM Cart c WHERE c.type= :type and c.status= :status and c.user.position.department= :department and c.addDate > :start AND c.addDate <= :end order by c.addDate desc")
 	List<Cart> findByStatusAndTypeAndDepAndDateBetOrderBydate(@Param("status") String status, @Param("type") String type, @Param("department") Departments department, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 	
+	List<Cart> findByStatusAndType(String status, String type);
 	
+	@Query("select c.user from Cart c where c.status = :status and c.type = :type")
+	List<Users> findUserByStatusAndType(@Param("status") String status, @Param("type") String type);
+	
+	@Query("select c.user.position.department from Cart c where c.status= :status and c.type = :type")
+	List<Departments> findDepByStatusAndType(@Param("status") String status, @Param("type") String type);
 	
 }
