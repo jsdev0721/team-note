@@ -71,19 +71,20 @@ li{list-style: none;}
 .low .myCart img{width: 30px;}
 
 /* footer */ /* 203E6E(32, 62, 110) / (17, 36, 80) */
-#footer{height: 200px;background-color: rgb(32, 62, 110);position: relative;}
+#footer{height: 200px;background-color: rgb(32, 62, 110);position: relative;margin-top: 50px;}
 
 .footer-a{
 	margin-top: 20px;
-	margin-right: 90px;
+	margin-right: 5%;
 	color: whitesmoke;
 }
 .footer-b{
-	margin-left: 50px;
-	margin-right: 50px;
+	margin-left: 5%;
+	margin-right: 5%;
 }
 .footer-c{
 	margin-top: 40px;
+	margin-right: -2%;
 	color: whitesmoke;
 }
 

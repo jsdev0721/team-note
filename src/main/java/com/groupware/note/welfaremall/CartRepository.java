@@ -24,11 +24,11 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 	List<Cart> findByProduct(WelfareMall product);
 	
 	//회계
-	@Query("select c from Cart c where c.status= :status and c.type= :type and c.user.position.department= :department order by c.addDate desc")
-	List<Cart> findByStatusAndTypeAndDepOrderByDate(@Param("status") String status,  @Param("type") String type,  @Param("department") Departments department );
+	@Query("select c from Cart c where c.status= :status and c.type= :type and c.user.position.department= :department and c.addDate > :start AND c.addDate <= :end")
+	List<Cart> findByStatusAndTypeAndDepAndAddDateBetween(@Param("status") String status,  @Param("type") String type,  @Param("department") Departments department, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 	
-	@Query("select c from Cart c where c.status= :status and c.type= :type and c.user = :user order by c.addDate desc")
-	List<Cart> findByStatusAndTypeAndUserOrderByDate(@Param("status") String status,  @Param("type") String type,  @Param("user") Users user );
+	@Query("select c from Cart c where c.status= :status and c.type= :type and c.user = :user and c.addDate > :start AND c.addDate <= :end ")
+	List<Cart> findByStatusAndTypeAndUserAndDateBet(@Param("status") String status,  @Param("type") String type,  @Param("user") Users user,  @Param("start") LocalDateTime start, @Param("end") LocalDateTime end  );
 	
 	List<Cart> findByStatusAndTypeAndUserAndAddDateBetween(String status, String type, Users user, LocalDateTime start, LocalDateTime end);
 	

@@ -39,24 +39,27 @@ public class PurchaseDataService {
 	public class PData{
 		private UserDetails userDetail;
 		private Departments dep;
-		
 		private int year;
 		private int month; 
 		private Integer totalPrice;
 	}
 	
-	
-	
 	//구매내역 findPurchaseList 제일 기본. 부서/개인별
 	public List<PData> fpcList(String type){
 		List<PData> list = new ArrayList<>();
-		if(type.equals("group")) {
+		
+		if(type.equals("group")) {	
 			List<Departments> depList = this.dRepo.findAll();
-			for(Departments d : depList) {
-				List<Cart> cList = this.cRepo.findByStatusAndTypeAndDepOrderByDate("complete", type, d);
-				for(int i=2010; i<=LocalDateTime.now().getYear(); i++) {
-				for(int j=1; j<=12; j++) {
-					Integer price = 0; 
+			for(int i=LocalDateTime.now().getYear(); i>=2020; i--) {
+			for(int j=12; j>=1; j--) {
+				LocalDate baseDate = LocalDate.of(i	, j, 15);
+				LocalDateTime startDate = baseDate.with(firstDayOfMonth()).atStartOfDay(); // 00:00:00.00000000
+			    LocalDateTime endDate = baseDate.with(lastDayOfMonth()).atTime(LocalTime.MAX); // 23:59:59.999999
+			    
+			    
+			    for(Departments d : depList) {
+					List<Cart> cList = this.cRepo.findByStatusAndTypeAndDepAndAddDateBetween("complete", type, d, startDate, endDate);
+					Integer price = 0;
 					for(Cart c : cList) {
 						if(c.getAddDate().getMonthValue()==j && c.getAddDate().getYear()==i) {
 							price = price + c.getPoint();
@@ -70,32 +73,39 @@ public class PurchaseDataService {
 						pd.setMonth(j);
 						list.add(pd);
 					}
-				}	
-				}
+			    }
+			}	
 			}
+			
 			return list;
 		} else {
 			List<Users> userList = this.uRepo.findAll();
-			for(Users u : userList) {
-				List<Cart> cList = this.cRepo.findByStatusAndTypeAndUserOrderByDate("complete", type, u);
-				for(int i=2010; i<=LocalDateTime.now().getYear(); i++) {
-					for(int j=1; j<=12; j++) {
-						Integer price = 0; 
-						for(Cart c : cList) {
-							if(c.getAddDate().getMonthValue()==j && c.getAddDate().getYear()==i) {
-								price = price + c.getPoint();
-							}
+			for(int i=LocalDateTime.now().getYear(); i>=2010; i--) {
+			for(int j=12; j>=1; j--) {
+				LocalDate baseDate = LocalDate.of(i	, j, 15);
+				LocalDateTime startDate = baseDate.with(firstDayOfMonth()).atStartOfDay(); // 00:00:00.00000000
+			    LocalDateTime endDate = baseDate.with(lastDayOfMonth()).atTime(LocalTime.MAX); // 23:59:59.999999
+				
+				
+				for(Users u : userList) {
+					List<Cart> cList = this.cRepo.findByStatusAndTypeAndUserAndAddDateBetween("complete", type, u, startDate, endDate );
+					Integer price = 0;
+			    
+					for(Cart c : cList) {
+						if(c.getAddDate().getMonthValue()==j && c.getAddDate().getYear()==i) {
+							price = price + c.getPoint();
 						}
-						if(price!=0) {
-							PData pd = new PData();
-							pd.setUserDetail(this.udService.findByUser(u));
-							pd.setTotalPrice(price);
-							pd.setYear(i);
-							pd.setMonth(j);
-							list.add(pd);
-						}
-					}	
 					}
+					if(price!=0) {
+						PData pd = new PData();
+						pd.setUserDetail(this.udService.findByUser(u));
+						pd.setTotalPrice(price);
+						pd.setYear(i);
+						pd.setMonth(j);
+						list.add(pd);
+					}
+				}
+			}	
 			}
 			return list;
 		}
@@ -134,12 +144,6 @@ public class PurchaseDataService {
 		return idList;
 	}
 	
-//	@Setter
-//	@Getter
-//	public class CartDataDetail {
-//		private UserDetails ud;
-//		private List<Cart> cartList;
-//	}
 	
 	//해당 월의 사원/부서 구매목록 전체
 	public List<Cart> findPurchaseDetailList(Model model, int year, int month, int id, String purchaseType) {

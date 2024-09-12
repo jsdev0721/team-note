@@ -94,22 +94,20 @@ public class UserController {
 		if(bindingResult.hasErrors()) {
 			return "user/regist";
 		}
-		if(!userCreateForm.getPassword().equals(userCreateForm.getPasswordCheck())) { //비밀번호와 비밀번호 확인이 일치하지 않으면
+		if(!userCreateForm.getPassword().equals(userCreateForm.getPasswordCheck())) {
 			bindingResult.rejectValue("passwordCheck", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
-			//bindingResult.rejectValue(잘못입력 된 값(필드명), 에러코드(내가 지정함), 에러 메세지) => bindingResult에서 에러 메세지를 하나 더 추가하여 넘겨주어야 할 때
 			return "user/regist";
 		}
-		try { //중복검사
+		try {
 			Users users = this.userService.create(userCreateForm.getUsername(), userCreateForm.getPassword());
 			this.userDetailsService.create(users, userCreateForm.getName(), userCreateForm.getBirthdate(), userCreateForm.getEmail(),  15);
-		} catch (DataIntegrityViolationException e) { //SiteUser에서 주었던 unique 제약조건 위반시 해당 에러클래스가 처리함 
+		} catch (DataIntegrityViolationException e) { 
 			e.printStackTrace();
 			bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
 			return "user/regist";
 		} catch (Exception e) {
 			e.printStackTrace();
 			bindingResult.reject("signupFailed", e.getMessage());
-			//bindingResult.reject(에러코드, 에러메세지)
 			return "user/regist";
 		}
 		

@@ -23,16 +23,15 @@ public class UserSecurityService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<Users> _users = this.userRepository.findByUsername(username); //'_'는 임시라는 뜻
+		Optional<Users> _users = this.userRepository.findByUsername(username);
 		
-		if(_users.isEmpty()) { //데이터가 없다면
+		if(_users.isEmpty()) {
 			throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
 		}
 		
-		Users users = _users.get(); //데이터가 존재하기 때문에 인증 성공
+		Users users = _users.get();
 		System.out.println(users.getUsername() + "\t" + users.getPassword());
-		List<GrantedAuthority> authorities = new ArrayList<>(); //권한 부여를 해주는 클래스를 List타입의 객체로 생성
-		//GrantedAuthority => 권한 부여를 해주는 클래스 (부여할 권한이 여러개일 수 있기 때문에 List에 넣어서 권한을 부여함)
+		List<GrantedAuthority> authorities = new ArrayList<>();
 		
 		String departmentName = null;
 		String position = null;
@@ -47,8 +46,6 @@ public class UserSecurityService implements UserDetailsService {
 			authorities.add(new SimpleGrantedAuthority(UserRole.ACCOUNTING.getValue()));
 			authorities.add(new SimpleGrantedAuthority(UserRole.MARKETING.getValue()));
 			authorities.add(new SimpleGrantedAuthority(UserRole.SECTIONCHEIF.getValue()));
-			//UserRole에 있는 ADMIN 상수의 값을 부여함
-			//SimpleGrantedAuthority => 권한 부여하는 클래스 (해당 클래스의 매개변수로 문자열 값을 하나만 넣을 수 있음)
 		}else if("HR".equals(departmentName)) { //인사
 			authorities.add(new SimpleGrantedAuthority(UserRole.HR.getValue()));
 		}else if("accounting".equals(departmentName)) { //회계
@@ -70,7 +67,7 @@ public class UserSecurityService implements UserDetailsService {
 		else {
 			authorities.add(new SimpleGrantedAuthority(UserRole.INTERN.getValue()));
 		}
-		return new User(users.getUsername(), users.getPassword(), authorities); //인증 정보와 인가(권한)을 함께 User()를 통해 넘겨줌
+		return new User(users.getUsername(), users.getPassword(), authorities);
 	}
 
 }

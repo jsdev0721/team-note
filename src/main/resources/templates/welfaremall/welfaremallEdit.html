@@ -25,12 +25,16 @@
 				
 				<div class="input">
 					<label class="form-label">제목</label>
-					<input type="text" th:field="*{productName}" placeholder="제품명을 입력해 주세요" style="font-size: 16px;"/>
+					<input type="text" class="form-control" th:field="*{productName}" placeholder="제품명을 입력해 주세요" style="font-size: 16px;"/>
 				</div>
-				<div class="card-body">
-					<div class="form-control" th:if="${optionList!=null}" th:each="option : ${optionList}">
-						[[${option}]]
+				<div class="card-body" style="margin-bottom: 20px;">
+					<div style="padding: 10px;border: 1px solid #ddd;border-radius: 5px;box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+						<div style="width: 30%;margin: 0 auto;margin-bottom: 10px;"><button type="button" class="btn" style="margin-top: 0;" data-bs-toggle="modal" data-bs-target="#exampleModal">옵션 수정</button></div>
+						<div class="form-control" th:if="${optionList!=null}" th:each="option : ${optionList}" style="margin-bottom: 5px;">
+							[[${option}]]
+						</div>
 					</div>
+					<h5 class="card-text"> <textarea name="desciption" class="form-control" placeholder="내용을 입력해 주세요" style="font-size: 16px; width: 100%; height: 200px;margin-top: 20px;"></textarea></h5>
 					<div><button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#exampleModal">옵션 수정</button></div>
 					<h5 class="card-text"> <textarea th:field="*{desciption}" placeholder="내용을 입력해 주세요" style="font-size: 16px; width: 100%; height: 200px;"></textarea></h5>
 				</div>
@@ -38,23 +42,24 @@
 					<label for="formMainImage" class="form-label">표지사진</label>
 					<input class="form-control" type="file" id="formMainImage" name="mainImage" accept=".jpg, .png, .gif, .jpeg, .bmp"/>
 				</div>
-					<div th:if="${welfaremall.mainImage!=null}">
-						<span th:text="${welfaremall.mainImage.originFileName}"></span>
-						<a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/edit/${welfaremall.productId}/${welfaremall.mainImage.fileId}|}">-</a>
-					</div>
+				<div th:if="${welfaremall.mainImage!=null}" style="display: flex;">
+					<span th:text="${welfaremall.mainImage.originFileName}"></span>
+					<a class="btn" style="margin-top: 0;width: 30px;height: 30px;padding: 0;margin-left: 10px;" th:href="@{|/welfaremall/edit/${welfaremall.productId}/${welfaremall.mainImage.fileId}|}">-</a>
+				</div>
 				<div>					
-					<label for="formFileMultiple" class="form-label">파일업로드</label>
+					<label for="formFileMultiple" class="form-label" style="margin-top: 20px;">파일업로드</label>
                     <input class="form-control" type="file" id="formFileMultiple" name="fileList" accept=".jpg, .png, .gif, .jpeg, .bmp" multiple/>
 				</div>
 					<div th:if="${fileList!=null}" th:each="file : ${fileList}">
 						<span th:text="${file.originFileName}"></span>
-						<a class="btn btn-danger btn-sm" th:href="@{|/welfaremall/edit/${welfaremall.productId}/${file.fileId}|}">-</a>
+						<a class="btn" type="button" th:href="@{|/welfaremall/edit/${welfaremall.productId}/${file.fileId}|}">-</a>
 					</div>
-				<div class="card-footer">
-					<p><input type="number" th:field="*{price}" min="100" max="999999999" placeholder="가격을 입력해 주세요" style="font-size: 16px; width: 100%;"/></p>
+				<div class="input" style="height: 40px;margin-top: 20px;">
+					<label style="line-height: 40px;">가격</label>
+					<input type="number" th:field="*{price}" min="100" max="999999999" class="form-control" placeholder="가격을 입력해 주세요" style="font-size: 16px; width: 100%;"/>
 				</div>
 				<div>
-					<input class="btn btn-success" type="submit" value="등록하기" />
+					<input class="btn" type="submit" value="등록하기" />
 				</div>
 		
 			</div>

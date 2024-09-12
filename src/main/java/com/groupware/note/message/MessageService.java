@@ -39,7 +39,7 @@ public class MessageService {
 		
 	}
 	
-	
+	//사용자 리스트 출력
 	public List<UserListForDep> messageListForDep(Model model, Principal principal) {
 		List<UserListForDep> userListForDep = new ArrayList<>();
 		for(Departments d : this.dRepo.findAll()) {
@@ -55,10 +55,8 @@ public class MessageService {
 			ulfd.setUdList(udList);
 			userListForDep.add(ulfd);
 		}
-		
 		return userListForDep;
 	}
-	
 	
 	
 	//대화방 생성
@@ -104,7 +102,6 @@ public class MessageService {
 	
 	//전체 안읽은 대화 목록
 	public int getAllUnreadMessage(Users user) {
-		
 		List<ChatRooms> crList = new ArrayList<>();
 		crList = this.crRepo.allRoomList(user);
 		int noRM = 0;
@@ -124,7 +121,7 @@ public class MessageService {
 		private String depName;
 	}
 	
-	//안읽은 대화 목록
+	//안읽은 대화 사용자 목록
 	public List<URMessageData> getUnreadUser(Users user) {
 		List<URMessageData> urMsgDataList = new ArrayList<>();
 		List<ChatRooms> crListByUser = this.crRepo.allRoomList(user);
@@ -144,11 +141,9 @@ public class MessageService {
 						urMsgDataList.add(_ur);
 						break;
 					}
-					
 				}
 			}
 		}
-		
 		return urMsgDataList;
 	}
 	
@@ -160,15 +155,12 @@ public class MessageService {
 		Optional<ChatRooms> cr1 = this.crRepo.findByUser1AndUser2(user1, user2);
 		
 		if(cr1.isPresent()) {
-			System.out.println("=============1===================================");
 			return cr1.get().getMessages();
 		} else {
 			Optional<ChatRooms> cr2 = this.crRepo.findByUser1AndUser2(user2, user1);
 			if(cr2.isPresent()) {
-				System.out.println("=============233===================================");
 				return cr2.get().getMessages();
 			} else {
-				System.out.println("=============222222222222222===================");
 				return new ArrayList<>();
 			}//if : cr2.isPresent
 		} //if : cr1.isPresent
