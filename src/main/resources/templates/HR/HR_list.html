@@ -40,24 +40,26 @@
 					</tr>
 				</tbody>
 			</table>
-			<table class="table" style="flex: 0.4;">
-				<thead class="table-success">
-					<tr>	
-						<th>아이디</th>
-						<th>변경/직급</th>
-						<th>변경/부서</th>
-						<th>변경예정일</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="positions : ${positionsList}">
-						<td th:text="${positions.user.username}"></td>
-						<td th:text="${positions.position.positionName}"></td>
-						<td th:text="${positions.position.department.departmentName}"></td>
-						<td th:text="${#temporals.format(positions.localDateTime,'yyyy.MM.dd HH:mm')}"></td>
-					</tr>
-				</tbody>
-			</table>
+			<div style="flex: 0.4;">
+				<table class="table">
+					<thead class="table-success">
+						<tr>	
+							<th>아이디</th>
+							<th>변경/직급</th>
+							<th>변경/부서</th>
+							<th>변경예정일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="positions : ${positionsList}">
+							<td th:text="${positions.user.username}"></td>
+							<td th:text="${positions.position.positionName}"></td>
+							<td th:text="${positions.position.department.departmentName}"></td>
+							<td th:text="${#temporals.format(positions.localDateTime,'yyyy.MM.dd HH:mm')}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 		<a th:href="@{/}" class="close" style="text-decoration: underline;display: block;text-align: right;margin-top: 10px;">나가기</a>
 	</div>
