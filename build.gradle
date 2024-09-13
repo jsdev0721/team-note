@@ -35,7 +35,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
-	//runtimeOnly 'mysql:mysql-connector-java:5.1.45' // mysql 5.1.45
+	//runtimeOnly 'mysql:mysql-connector-java:5.1.45' // 서버용 mysql 5.1.45
+	//runtimeOnly 'com.mysql:mysql-connector-j' // 로컬용 
+	//implementation 'com.mysql:mysql-connector-j' // 로컬용 
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
