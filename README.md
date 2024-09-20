@@ -1,3 +1,5 @@
+<img src="https://github.com/user-attachments/assets/cb420b15-0606-4f57-b813-32f67f4f7ad0" alt="footer logo" width="200"/>
+
 사내 웹 그룹웨어 NoTE (2023.07.15 ~ 2024.09.13)
 
 <details>
